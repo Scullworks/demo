@@ -8,7 +8,8 @@
         "start": "next start",
         "lint": "next lint",
         "lint:fix": "eslint --fix src",
-        "format": "prettier --write . --config .prettierrc"
+        "format": "prettier --write . --config .prettierrc",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@types/node": "18.15.0",
