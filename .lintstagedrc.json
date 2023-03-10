@@ -1,5 +1,5 @@
 {
     "*.{ts,tsx}": "bash -c tsc --skipLibCheck --noEmit",
     "*.{js,jsx,ts,tsx}": ["prettier --write", "eslint --fix", "eslint"],
-    "*.{md,json}": "prettier --write"
+    "*.{json,md,html,css,scss}": "prettier --write"
 }
