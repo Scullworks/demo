@@ -1,27 +1,39 @@
+@use '@/styles/abstracts/colors' as *;
 @use '@/styles/abstracts/mixins' as *;
+@use '@/styles/abstracts/variables' as *;
 
 .header {
-    @include flex-center;
-    margin-top: 5rem;
+    @include flex-center(row);
+    position: relative;
+    margin-inline: 5rem;
+    height: 100vh;
+    max-width: 1340px;
+
+    @include tablet {
+        @include flex-center;
+        margin-top: 5rem;
+        margin-inline: 0;
+        height: auto;
+    }
 }
 
 .header__text {
     width: 90%;
-    margin-bottom: 5rem;
 
     h1 {
         font-weight: 400;
         letter-spacing: 0.1rem;
-    }
-
-    span {
-        display: block;
-        font-weight: 600;
-        letter-spacing: 0.05rem;
+        margin-bottom: 1rem;
     }
 
     p {
+        width: 90%;
         padding-inline: 8px;
+
+        @include tablet {
+            margin-bottom: 3rem;
+            width: 100%;
+        }
 
         @include small-mobile {
             padding-inline: 0;
@@ -31,6 +43,15 @@
     button {
         height: 5rem;
         width: 13rem;
+    }
+
+    @include tablet {
+        margin-bottom: 3rem;
+        span {
+            display: block;
+            font-weight: 600;
+            letter-spacing: 0.05rem;
+        }
     }
 }
 
@@ -43,10 +64,11 @@
     position: relative;
     margin-top: 2.5rem;
     z-index: 100;
+    height: 45rem;
+    width: auto;
 
     @include tablet {
         height: 35rem;
-        width: auto;
     }
 
     @include mobile {
@@ -55,19 +77,55 @@
 }
 
 .header__background-image {
-    display: none;
+    display: inline;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 70rem;
+    width: auto;
 
     @include tablet {
-        display: inline;
-        position: absolute;
-        top: 45%;
-        left: 50%;
-        transform: translate(-50%, -50%);
         height: 50rem;
-        width: auto;
     }
 
     @include mobile {
         height: 35rem;
     }
+}
+
+.header__benefits-image {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    height: 6rem;
+    width: min(86.4rem, 70vw);
+    padding-left: 2rem;
+    position: absolute;
+    bottom: -5.4rem;
+    right: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    box-shadow: $box-shadow;
+    user-select: none;
+
+    @include tablet {
+        display: none;
+    }
+}
+
+.header__benefits-image--divider {
+    border: 1px solid $color-white-1;
+    width: 30px;
+    transform: rotate(90deg);
+}
+
+.header__benefits--cta {
+    background-color: $color-purple;
+    color: $color-white;
+    height: 100%;
+    padding: 1.9rem 3rem;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
