@@ -1,3 +1,5 @@
+@use '@/styles/abstracts/colors' as *;
+
 *,
 *::after,
 *::before {
@@ -8,4 +10,5 @@
 
 html {
     box-sizing: border-box;
+    background-color: $color-background-main;
 }

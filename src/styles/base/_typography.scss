@@ -1,7 +1,42 @@
+@use '@/styles/abstracts/fonts' as *;
+
+// Teko Font Family
+// https://fonts.google.com/specimen/Teko?query=teko
+
+//  Montserrat Font Family
+// https://fonts.google.com/specimen/Montserrat?query=montserrat
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Teko:wght@500;600&display=swap');
+
 html {
     font-size: 62.5%;
 }
 
 body {
-    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: $font-size-base;
+    text-align: center;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Teko', sans-serif;
+    margin-block: 3rem;
+}
+
+h1 {
+    font-size: clamp(5rem, 7vw + 0.1rem, 6.4rem);
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+p {
+    font-size: clamp($font-size-300, 4vw + 0.1rem, 1.9rem);
+    // font-size: 1.7rem;
+    margin-bottom: 3rem;
+    line-height: 1.7;
 }
