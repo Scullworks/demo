@@ -60,7 +60,7 @@ function Header() {
                     className="header__benefits-image"
                     variants={benefitsVariants}
                     initial="initial"
-                    animate="animate"
+                    whileInView="animate"
                 >
                     <span>100+ Clubs</span>
                     <span className="header__benefits-image--divider" />
