@@ -1,0 +1,53 @@
+@use '@/styles/abstracts/mixins' as *;
+
+.header {
+    @include flex-center;
+    margin-top: 5rem;
+}
+
+.header__text {
+    width: 90%;
+    margin-bottom: 5rem;
+
+    h1 {
+        font-weight: 400;
+        letter-spacing: 0.1rem;
+    }
+
+    span {
+        display: block;
+        font-weight: 600;
+        letter-spacing: 0.05rem;
+    }
+
+    p {
+        padding-inline: 8px;
+
+        @include small-mobile {
+            padding-inline: 0;
+        }
+    }
+
+    button {
+        height: 5rem;
+        width: 13rem;
+    }
+}
+
+.header__images {
+    position: relative;
+    width: 90%;
+}
+
+.header__image {
+    position: relative;
+    margin-top: 2.5rem;
+    z-index: 100;
+}
+
+.header__background-image {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
