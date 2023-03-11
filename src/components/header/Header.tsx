@@ -5,7 +5,7 @@ import headerBackground from '@/assets/header-background.png';
 import header from '@/assets/header.png';
 import content from '@/utils/home-content.json';
 
-const variants: Variants = {
+const textVariants: Variants = {
     initial: {
         y: 20,
         opacity: 0
@@ -19,12 +19,25 @@ const variants: Variants = {
     }
 };
 
+const benefitsVariants: Variants = {
+    initial: {
+        opacity: 0
+    },
+    animate: {
+        opacity: 1,
+        transition: {
+            delay: 0.8,
+            duration: 0.8
+        }
+    }
+};
+
 function Header() {
     return (
         <div className="header">
             <motion.div
                 className="header__text"
-                variants={variants}
+                variants={textVariants}
                 initial="initial"
                 animate="animate"
             >
@@ -32,7 +45,7 @@ function Header() {
                     Take rowing to <span> the next level</span>
                 </h1>
                 <p>{content.header}</p>
-                <Link href="/join">
+                <Link href="/">
                     <button>Join Now</button>
                 </Link>
             </motion.div>
@@ -43,6 +56,17 @@ function Header() {
                     src={headerBackground}
                     alt="header background"
                 />
+                <motion.div
+                    className="header__benefits-image"
+                    variants={benefitsVariants}
+                    initial="initial"
+                    animate="animate"
+                >
+                    <span>100+ Clubs</span>
+                    <span className="header__benefits-image--divider" />
+                    <span>Find your nearest club & enjoy the benefits</span>
+                    <span className="header__benefits--cta">Choose your club</span>
+                </motion.div>
             </div>
         </div>
     );
