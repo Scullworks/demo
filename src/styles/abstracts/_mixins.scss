@@ -1,0 +1,45 @@
+@mixin flex-center($direction: column) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin scrollbar() {
+    &::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border: 2px solid transparent;
+        border-radius: 5px;
+        background-clip: padding-box;
+        background-color: $color-scrollbar-transparent-2;
+        box-shadow: $color-scrollbar-box-shadow;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: $color-scrollbar-transparent-1;
+    }
+}
+
+// Media Queries
+
+@mixin tablet() {
+    @media (min-width: breakpoint(small)) {
+        @content;
+    }
+}
+
+@mixin laptop() {
+    @media (min-width: breakpoint(medium)) {
+        @content;
+    }
+}
+
+@mixin desktop() {
+    @media (min-width: breakpoint(big)) {
+        @content;
+    }
+}
