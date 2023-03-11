@@ -1,0 +1,11 @@
+@use '@/styles/abstracts/colors' as *;
+
+button {
+    background-color: $color-button;
+    color: $color-white;
+    border: none;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    font-family: inherit;
+    font-weight: 600;
+}
