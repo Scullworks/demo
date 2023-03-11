@@ -37,12 +37,11 @@ function Header() {
                 </Link>
             </motion.div>
             <div className="header__images">
-                <Image className="header__image" src={header} alt="header" height={250} />
+                <Image className="header__image" src={header} alt="header" />
                 <Image
                     className="header__background-image"
                     src={headerBackground}
                     alt="header background"
-                    height={350}
                 />
             </div>
         </div>
