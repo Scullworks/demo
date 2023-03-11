@@ -1,3 +1,5 @@
+@use './breakpoints' as *;
+
 @mixin flex-center($direction: column) {
     display: flex;
     flex-direction: $direction;
@@ -26,20 +28,38 @@
 
 // Media Queries
 
+@mixin small-mobile() {
+    @media (max-width: $breakpoint-width-tiny) {
+        @content;
+    }
+}
+
+@mixin mobile() {
+    @media (max-width: $breakpoint-width-small) {
+        @content;
+    }
+}
+
 @mixin tablet() {
-    @media (min-width: breakpoint(small)) {
+    @media (max-width: $breakpoint-width-medium) {
         @content;
     }
 }
 
 @mixin laptop() {
-    @media (min-width: breakpoint(medium)) {
+    @media (max-width: $breakpoint-width-big) {
         @content;
     }
 }
 
 @mixin desktop() {
-    @media (min-width: breakpoint(big)) {
+    @media (max-width: $breakpoint-width-huge) {
+        @content;
+    }
+}
+
+@mixin tall-mobile {
+    @media (min-height: $breakpoint-height-tall) {
         @content;
     }
 }
