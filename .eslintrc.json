@@ -42,7 +42,7 @@
         "import/order": [
             "error",
             {
-                "groups": ["builtin", "external", "sibling", "parent", "index", "object", "type"],
+                "groups": ["builtin", "external", "parent", "sibling", "index", "object", "type"],
                 "pathGroups": [
                     {
                         "pattern": "@/**/**",
