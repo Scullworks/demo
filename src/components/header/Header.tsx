@@ -1,45 +1,29 @@
-import { motion, Variants } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useRef } from 'react';
+import { benefitsVariants, textVariants } from './Header.animations';
 import headerBackground from '@/assets/header-background.png';
 import header from '@/assets/header.png';
+import { useAnimationStore } from '@/hooks/store/useAnimationStore';
 import content from '@/utils/home-content.json';
 
-const textVariants: Variants = {
-    initial: {
-        y: 20,
-        opacity: 0
-    },
-    animate: {
-        y: 0,
-        opacity: 1,
-        transition: {
-            duration: 0.8
-        }
-    }
-};
-
-const benefitsVariants: Variants = {
-    initial: {
-        opacity: 0
-    },
-    animate: {
-        opacity: 1,
-        transition: {
-            delay: 0.8,
-            duration: 0.8
-        }
-    }
-};
-
 function Header() {
+    const benefitsRef = useRef<HTMLDivElement | null>(null);
+    const benefitsInView = useInView(benefitsRef, { once: true });
+    const setHeaderBenefitsIsInView = useAnimationStore(state => state.setHeaderBenefitsIsInView);
+
+    useEffect(() => {
+        setHeaderBenefitsIsInView(benefitsInView);
+    }, [benefitsInView, setHeaderBenefitsIsInView]);
+
     return (
         <div className="header">
             <motion.div
                 className="header__text-container"
-                variants={textVariants}
                 initial="initial"
                 animate="animate"
+                variants={textVariants}
             >
                 <h1 className="header__heading">
                     Take rowing to <span>the next level</span>
@@ -59,9 +43,11 @@ function Header() {
                 />
                 <motion.div
                     className="header__image-benefits"
-                    variants={benefitsVariants}
+                    ref={benefitsRef}
                     initial="initial"
                     whileInView="animate"
+                    variants={benefitsVariants}
+                    viewport={{ once: true }}
                 >
                     <span>100+ Clubs</span>
                     <span className="header__image-benefits--divider" />
