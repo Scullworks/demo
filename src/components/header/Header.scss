@@ -5,6 +5,11 @@
 
 .header {
     @include flex-center(row);
+    width: 100vw;
+}
+
+.header__container {
+    @include flex-center(row);
     position: relative;
     margin-inline: 5rem;
     height: 100vh;
