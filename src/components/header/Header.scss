@@ -4,6 +4,11 @@
 @use '@/styles/abstracts/variables' as *;
 
 .header {
+    width: 100vw;
+    @include flex-center(row);
+}
+
+.header__container {
     @include flex-center(row);
     width: 100vw;
 }

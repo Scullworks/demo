@@ -18,7 +18,7 @@ function Header() {
     }, [benefitsInView, setHeaderBenefitsIsInView]);
 
     return (
-        <div className="header">
+        <header className="header">
             <div className="header__container">
                 <motion.div
                     className="header__text-container"
@@ -40,7 +40,6 @@ function Header() {
                         className="header__image--background"
                         src={headerBackground}
                         alt="header background"
-                        priority
                     />
                     <motion.div
                         className="header__image-benefits"
@@ -57,7 +56,7 @@ function Header() {
                     </motion.div>
                 </div>
             </div>
-        </div>
+        </header>
     );
 }
 
