@@ -17,7 +17,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     font-size: $font-size-base;
 
-    @include tablet {
+    @include laptop-small {
         text-align: center;
     }
 }

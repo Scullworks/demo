@@ -28,38 +28,50 @@
 
 // Media Queries
 
-@mixin small-mobile() {
-    @media (max-width: $breakpoint-width-tiny) {
+@mixin mobile-small() {
+    @media (max-width: $breakpoint-mobile-small) {
         @content;
     }
 }
 
-@mixin mobile() {
-    @media (max-width: $breakpoint-width-small) {
+@mixin mobile-medium() {
+    @media (max-width: $breakpoint-mobile-medium) {
+        @content;
+    }
+}
+
+@mixin mobile-large() {
+    @media (max-width: $breakpoint-mobile-large) {
         @content;
     }
 }
 
 @mixin tablet() {
-    @media (max-width: $breakpoint-width-medium) {
+    @media (max-width: $breakpoint-tablet) {
         @content;
     }
 }
 
-@mixin laptop() {
-    @media (max-width: $breakpoint-width-big) {
+@mixin laptop-small() {
+    @media (max-width: $breakpoint-laptop-small) {
         @content;
     }
 }
 
-@mixin desktop() {
-    @media (max-width: $breakpoint-width-huge) {
+@mixin laptop-large() {
+    @media (max-width: $breakpoint-laptop-large) {
         @content;
     }
 }
 
 @mixin tall-mobile {
     @media (min-height: $breakpoint-height-tall) {
+        @content;
+    }
+}
+
+@mixin respond-to($width) {
+    @media (max-width: $width) {
         @content;
     }
 }

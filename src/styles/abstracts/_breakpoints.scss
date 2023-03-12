@@ -1,6 +1,17 @@
+// Devices
+$breakpoint-mobile-small: 320px;
+$breakpoint-mobile-medium: 375px;
+$breakpoint-mobile-large: 430px;
+$breakpoint-tablet: 768px;
+$breakpoint-laptop-small: 1024px;
+$breakpoint-laptop-large: 1440px;
+
+// Sizes
 $breakpoint-width-tiny: 370px;
 $breakpoint-width-small: 600px;
 $breakpoint-width-medium: 900px;
 $breakpoint-width-big: 1200px;
 $breakpoint-width-huge: 1800px;
+
+// Height
 $breakpoint-height-tall: 780px;
