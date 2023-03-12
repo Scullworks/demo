@@ -36,36 +36,37 @@ function Header() {
     return (
         <div className="header">
             <motion.div
-                className="header__text"
+                className="header__text-container"
                 variants={textVariants}
                 initial="initial"
                 animate="animate"
             >
-                <h1>
-                    Take rowing to <span> the next level</span>
+                <h1 className="header__heading">
+                    Take rowing to <span>the next level</span>
                 </h1>
-                <p>{content.header}</p>
+                <p className="header__text">{content.header}</p>
                 <Link href="/">
-                    <button>Join Now</button>
+                    <button className="header__button">Join Now</button>
                 </Link>
             </motion.div>
             <div className="header__images">
                 <Image className="header__image" src={header} alt="header" />
                 <Image
-                    className="header__background-image"
+                    className="header__image--background"
                     src={headerBackground}
                     alt="header background"
+                    priority
                 />
                 <motion.div
-                    className="header__benefits-image"
+                    className="header__image-benefits"
                     variants={benefitsVariants}
                     initial="initial"
                     whileInView="animate"
                 >
                     <span>100+ Clubs</span>
-                    <span className="header__benefits-image--divider" />
+                    <span className="header__image-benefits--divider" />
                     <span>Find your nearest club & enjoy the benefits</span>
-                    <span className="header__benefits--cta">Choose your club</span>
+                    <span className="header__image-benefits--cta">Choose your club</span>
                 </motion.div>
             </div>
         </div>
