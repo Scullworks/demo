@@ -2,4 +2,5 @@
 @use 'base' as *;
 @use 'layout' as *;
 
+@use '@/components/About/About';
 @use '@/components/Header/Header';
