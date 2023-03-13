@@ -26,6 +26,12 @@
     }
 }
 
+@mixin no-pointer {
+    @media (hover: hover) and (pointer: fine) {
+        @content;
+    }
+}
+
 // Media Queries
 
 @mixin mobile-small() {
