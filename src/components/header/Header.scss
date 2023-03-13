@@ -3,15 +3,17 @@
 @use '@/styles/abstracts/mixins' as *;
 @use '@/styles/abstracts/variables' as *;
 
-.header,
-.header__container {
+.header {
     @include flex-center(row);
-    width: min(100vw, 134rem);
+    width: 100vw;
+    background-color: $color-background-main;
 }
 
 .header__container {
+    @include flex-center(row);
     position: relative;
     margin-inline: 5rem;
+    width: min(100vw, 134rem);
     height: 100vh;
 
     @include laptop-small {
