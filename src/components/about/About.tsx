@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import athletes from '@/assets/about/athletes.png';
 import clubs from '@/assets/about/clubs.png';
 import coaches from '@/assets/about/coaches.png';
 import { useAnimationStore } from '@/hooks/store/useAnimationStore';
 import content from '@/utils/about-content.json';
 import {
+    aboutVariants,
     athletesVariants,
     clubsVariants,
     coachesVariants,
@@ -14,26 +16,39 @@ import {
 } from './About.animations';
 
 function About() {
+    const [isMediumMobile, setIsMediumMobile] = useState(false);
     const headerBenefitsIsInView = useAnimationStore(state => state.headerBenefitsIsInView);
 
+    useEffect(() => {
+        if (typeof window !== 'undefined' && window.innerWidth <= 375) {
+            setIsMediumMobile(true);
+        }
+    }, [isMediumMobile]);
+
     return (
-        <motion.div className="about">
+        <section className="about">
             <motion.h2
                 className="about__heading"
                 initial="initial"
                 whileInView="animate"
-                custom={headerBenefitsIsInView}
+                custom={isMediumMobile ? true : headerBenefitsIsInView}
                 viewport={{ once: true }}
                 variants={headingVariants}
             >
                 Benefits for everyone
             </motion.h2>
-            <div className="about__benefits">
+            <motion.div
+                className="about__benefits"
+                initial="initial"
+                whileInView="animate"
+                custom={isMediumMobile ? true : headerBenefitsIsInView}
+                viewport={{ once: true }}
+                variants={aboutVariants}
+            >
                 {/* Athletes Card */}
                 <motion.div
                     className="about__athletes"
-                    initial="initial"
-                    whileInView="animate"
+                    viewport={{ once: true }}
                     variants={athletesVariants}
                 >
                     <Image
@@ -50,8 +65,7 @@ function About() {
                 {/* Clubs Card */}
                 <motion.div
                     className="about__clubs"
-                    initial="initial"
-                    whileInView="animate"
+                    viewport={{ once: true }}
                     variants={clubsVariants}
                 >
                     <Image
@@ -68,8 +82,7 @@ function About() {
                 {/* Coaches Card */}
                 <motion.div
                     className="about__coaches"
-                    initial="initial"
-                    whileInView="animate"
+                    viewport={{ once: true }}
                     variants={coachesVariants}
                 >
                     <Image
@@ -82,11 +95,11 @@ function About() {
                         <p>{content.coaches}</p>
                     </div>
                 </motion.div>
-            </div>
+            </motion.div>
             <Link href="/">
                 <button className="about__button">Request a Demo</button>
             </Link>
-        </motion.div>
+        </section>
     );
 }
 

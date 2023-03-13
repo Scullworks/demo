@@ -4,11 +4,24 @@ export const headingVariants: Variants = {
     initial: {
         opacity: 0
     },
-    animate: headerBenefitsIsInView => ({
+    animate: (headerBenefitsIsInView: boolean) => ({
         opacity: 1,
         transition: {
             duration: 0.8,
             delay: headerBenefitsIsInView ? 0.3 : 1.7
+        }
+    })
+};
+
+export const aboutVariants: Variants = {
+    initial: {
+        opacity: 1
+    },
+    animate: (headerBenefitsIsInView: boolean) => ({
+        opacity: 1,
+        transition: {
+            delayChildren: headerBenefitsIsInView ? 1 : 2,
+            staggerChildren: 0.5
         }
     })
 };
@@ -21,7 +34,6 @@ export const athletesVariants: Variants = {
         opacity: 1,
         transition: {
             duration: 0.8,
-            delay: 0.2,
             ease: 'easeOut'
         }
     }
@@ -35,7 +47,6 @@ export const clubsVariants: Variants = {
         opacity: 1,
         transition: {
             duration: 0.8,
-            delay: 0.6,
             ease: 'easeOut'
         }
     }
@@ -49,7 +60,6 @@ export const coachesVariants: Variants = {
         opacity: 1,
         transition: {
             duration: 0.8,
-            delay: 1,
             ease: 'easeOut'
         }
     }
