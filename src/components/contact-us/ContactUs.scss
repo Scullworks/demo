@@ -1,0 +1,28 @@
+@use '@/styles/abstracts/colors' as *;
+@use '@/styles/abstracts/mixins' as *;
+
+.contact-us {
+    @include flex-center;
+    background-color: $color-background-main;
+    height: 100vh;
+    width: 100vw;
+}
+
+.contact-us__heading {
+    margin-bottom: 0.5rem;
+}
+
+.contact-us__text {
+    margin-bottom: 5rem;
+    margin-inline: 1rem;
+    width: 90vw;
+    text-align: center;
+}
+
+.contact-us-form {
+    @include flex-center;
+}
+
+.contact-us-form__button {
+    margin-top: 3rem;
+}

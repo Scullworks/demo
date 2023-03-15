@@ -2,5 +2,7 @@
 @use 'base' as *;
 @use 'layout' as *;
 
-@use '@/components/About/About';
-@use '@/components/Header/Header';
+@use '@/components/about/About';
+@use '@/components/contact-us/ContactUs';
+@use '@/components/custom-input/Input';
+@use '@/components/header/Header';
