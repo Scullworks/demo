@@ -1,0 +1,21 @@
+@use '@/styles/abstracts/colors' as *;
+
+.input {
+    border-radius: 8px;
+    border: 1px solid $color-border;
+    font-family: inherit;
+    font-size: 1.6rem;
+    text-align: center;
+    outline-color: $color-border-outline;
+    margin-bottom: 2rem;
+    width: min(55rem, 80vw);
+    height: 5rem;
+}
+
+.input-error {
+    border-color: $color-error;
+}
+
+.input-error__label {
+    color: $color-error;
+}
