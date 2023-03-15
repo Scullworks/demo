@@ -112,7 +112,7 @@
     }
 
     p {
-        font-size: 1.6rem;
+        font-size: $font-size-base;
         width: 86%;
         margin-inline: auto;
         line-height: 1.8;
@@ -192,8 +192,6 @@
 }
 
 .about__button {
-    height: 5rem;
-    width: 20rem;
     margin-block: 8rem 5rem;
 
     @include laptop-small {
