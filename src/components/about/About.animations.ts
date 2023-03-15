@@ -21,9 +21,16 @@ export const aboutVariants: Variants = {
         opacity: 1,
         transition: {
             delayChildren: headerBenefitsIsInView ? 1 : 2,
-            staggerChildren: 0.5
+            staggerChildren: 0.4
         }
     })
+};
+
+const transitionOptions = {
+    transition: {
+        duration: 0.8,
+        ease: 'easeOut'
+    }
 };
 
 export const athletesVariants: Variants = {
@@ -32,10 +39,7 @@ export const athletesVariants: Variants = {
     },
     animate: {
         opacity: 1,
-        transition: {
-            duration: 0.8,
-            ease: 'easeOut'
-        }
+        ...transitionOptions
     }
 };
 
@@ -45,10 +49,7 @@ export const clubsVariants: Variants = {
     },
     animate: {
         opacity: 1,
-        transition: {
-            duration: 0.8,
-            ease: 'easeOut'
-        }
+        ...transitionOptions
     }
 };
 
@@ -58,7 +59,18 @@ export const coachesVariants: Variants = {
     },
     animate: {
         opacity: 1,
+        ...transitionOptions
+    }
+};
+
+export const buttonVariants: Variants = {
+    initial: {
+        opacity: 0
+    },
+    animate: {
+        opacity: 1,
         transition: {
+            delay: 0.7,
             duration: 0.8,
             ease: 'easeOut'
         }

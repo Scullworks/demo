@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 import headerBackground from '@/assets/header/background.png';
 import header from '@/assets/header/main.png';
 import { useAnimationStore } from '@/hooks/store/useAnimationStore';
-import content from '@/utils/home-content.json';
+import content from '@/utils/content/header.json';
 import { benefitsVariants, textVariants } from './Header.animations';
 
 function Header() {

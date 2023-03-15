@@ -6,14 +6,21 @@ import athletes from '@/assets/about/athletes.png';
 import clubs from '@/assets/about/clubs.png';
 import coaches from '@/assets/about/coaches.png';
 import { useAnimationStore } from '@/hooks/store/useAnimationStore';
-import content from '@/utils/about-content.json';
+import content from '@/utils/content/about.json';
 import {
     aboutVariants,
     athletesVariants,
+    buttonVariants,
     clubsVariants,
     coachesVariants,
     headingVariants
 } from './About.animations';
+
+const animations = {
+    initial: 'initial',
+    whileInView: 'animate',
+    viewport: { once: true }
+};
 
 function About() {
     const [isMediumMobile, setIsMediumMobile] = useState(false);
@@ -29,21 +36,17 @@ function About() {
         <section className="about">
             <motion.h2
                 className="about__heading"
-                initial="initial"
-                whileInView="animate"
                 custom={isMediumMobile ? true : headerBenefitsIsInView}
-                viewport={{ once: true }}
                 variants={headingVariants}
+                {...animations}
             >
                 Benefits for everyone
             </motion.h2>
             <motion.div
                 className="about__benefits"
-                initial="initial"
-                whileInView="animate"
                 custom={isMediumMobile ? true : headerBenefitsIsInView}
-                viewport={{ once: true }}
                 variants={aboutVariants}
+                {...animations}
             >
                 {/* Athletes Card */}
                 <motion.div
@@ -97,7 +100,9 @@ function About() {
                 </motion.div>
             </motion.div>
             <Link href="/">
-                <button className="about__button">Request a Demo</button>
+                <motion.button className="about__button" variants={buttonVariants} {...animations}>
+                    Request a Demo
+                </motion.button>
             </Link>
         </section>
     );
