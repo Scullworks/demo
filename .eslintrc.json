@@ -31,7 +31,6 @@
         "react/display-name": "error",
         "react/no-children-prop": "error",
         "react/destructuring-assignment": ["error", "always"],
-        "react/jsx-no-bind": "warn",
         "react/jsx-uses-vars": "error",
         "react/jsx-fragments": "error",
         "react/jsx-no-undef": "error",
