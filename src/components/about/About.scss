@@ -5,29 +5,23 @@
 .about {
     @include flex-center;
     background-color: $color-white;
-    height: 100vh;
     text-align: center;
+    padding-top: 3rem;
 
-    @include respond-to(1217px) {
-        height: auto;
-        margin-top: 15rem;
+    @include laptop-small {
         padding-top: 5rem;
     }
 
-    @include mobile-large {
-        margin-top: 5rem;
-    }
-
-    @include mobile-medium {
-        margin-top: 0;
+    @include tablet {
+        padding-top: 3rem;
     }
 }
 
 .about__heading {
     margin-bottom: 5rem;
+    padding-top: 5rem;
 
-    @include tablet {
-        padding-top: 5rem;
+    @include laptop-small {
     }
 }
 
@@ -196,13 +190,13 @@
 }
 
 .about__button {
-    margin-block: 8rem 5rem;
+    margin-block: 8rem;
 
     @include laptop-small {
-        margin-block: 5rem;
+        margin-block: 5rem 8rem;
     }
 
     @include tablet {
-        margin-block: 2rem 5rem;
+        margin-block: 2rem 8rem;
     }
 }

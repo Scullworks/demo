@@ -6,6 +6,10 @@
     background-color: $color-background-main;
     height: 100vh;
     width: 100vw;
+
+    @include laptop-small {
+        height: 90vh;
+    }
 }
 
 .contact-us__heading {
