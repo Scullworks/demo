@@ -89,6 +89,26 @@
     }
 }
 
+.navbar__responsive--exit {
+    @include flex-center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 90vh;
+    transform: translateX(100vw);
+    transition: all 0.5s;
+
+    & > .navbar__list {
+        display: none;
+    }
+
+    & > *:not(:last-child) {
+        margin-right: 0;
+        margin-bottom: 3rem;
+    }
+}
+
 @keyframes slideIn {
     from {
         transform: translateX(100vw);
@@ -96,17 +116,5 @@
 
     to {
         transform: translateX(0);
-    }
-}
-
-@keyframes slideOut {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-
-    to {
-        transform: translateX(100vw);
-        opacity: 0;
     }
 }

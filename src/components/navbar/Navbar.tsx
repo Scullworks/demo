@@ -17,9 +17,23 @@ function Navbar() {
         setShowMenuIcon(true);
     }
 
-    function toggleNavbar() {
+    function scrollToSection() {
         if (!isTabletOrSmaller) return;
-        navRef.current?.classList.toggle('navbar__responsive');
+        navRef.current?.classList.remove('navbar__responsive');
+        setShowMenuIcon(prevState => !prevState);
+    }
+
+    function showNavbar() {
+        if (!isTabletOrSmaller) return;
+        navRef.current?.classList.add('navbar__responsive');
+        navRef.current?.classList.remove('navbar__responsive--exit');
+        setShowMenuIcon(prevState => !prevState);
+    }
+
+    function hideNavbar() {
+        if (!isTabletOrSmaller) return;
+        navRef.current?.classList.remove('navbar__responsive');
+        navRef.current?.classList.add('navbar__responsive--exit');
         setShowMenuIcon(prevState => !prevState);
     }
 
@@ -47,7 +61,12 @@ function Navbar() {
                 </h3>
                 <ul className={'navbar__list'} ref={navRef}>
                     <li>
-                        <ScrollLink to="about" smooth={true} duration={500} onClick={toggleNavbar}>
+                        <ScrollLink
+                            to="about"
+                            smooth={true}
+                            duration={500}
+                            onClick={scrollToSection}
+                        >
                             About
                         </ScrollLink>
                     </li>
@@ -56,7 +75,7 @@ function Navbar() {
                             to="contact-us"
                             smooth={true}
                             duration={500}
-                            onClick={toggleNavbar}
+                            onClick={scrollToSection}
                         >
                             Contact Us
                         </ScrollLink>
@@ -67,11 +86,11 @@ function Navbar() {
                 </ul>
                 <>
                     {showMenuIcon ? (
-                        <IconButton className="navbar__menu" onClick={toggleNavbar} disableRipple>
+                        <IconButton className="navbar__menu" onClick={showNavbar} disableRipple>
                             <MenuIcon />
                         </IconButton>
                     ) : (
-                        <IconButton className="navbar__close" onClick={toggleNavbar} disableRipple>
+                        <IconButton className="navbar__close" onClick={hideNavbar} disableRipple>
                             <CloseIcon />
                         </IconButton>
                     )}
