@@ -1,15 +1,12 @@
-import { ThemeProvider } from '@mui/material';
-import { About, ContactUs, Header } from '@/components';
-import { theme } from '@/utils/mui/theme';
+import { About, ContactUs, Header, Navbar } from '@/components';
 
 function Home() {
     return (
         <>
-            <ThemeProvider theme={theme}>
-                <Header />
-                <About />
-                <ContactUs />
-            </ThemeProvider>
+            <Navbar />
+            <Header />
+            <About />
+            <ContactUs />
         </>
     );
 }

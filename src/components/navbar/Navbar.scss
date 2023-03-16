@@ -1,0 +1,112 @@
+@use '@/styles/abstracts/colors' as *;
+@use '@/styles/abstracts/mixins' as *;
+@use '@/styles/abstracts/variables' as *;
+
+.navbar,
+.navbar__list {
+    @include flex-center(row);
+    justify-content: space-between;
+    padding-inline: 5rem;
+    background-color: $color-background-main;
+}
+
+.navbar {
+    position: fixed;
+    width: 100vw;
+    z-index: 200;
+
+    .navbar__menu,
+    .navbar__close {
+        display: none;
+
+        @include tablet {
+            display: flex;
+        }
+    }
+}
+
+.navbar__heading {
+    cursor: pointer;
+}
+
+.navbar__list {
+    @include tablet {
+        display: none;
+    }
+
+    button {
+        transform: none;
+    }
+
+    & > *:not(:last-child) {
+        margin-right: 5rem;
+    }
+
+    & .navbar__responsive--exit {
+        animation: 5s slideOut;
+        animation-delay: 1s;
+    }
+}
+
+.navbar__login {
+    width: 10rem;
+}
+
+.navbar__menu,
+.navbar__close {
+    all: unset;
+    @include flex-center;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 100vmax;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+
+    &:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+.navbar__responsive {
+    @include flex-center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 90vh;
+    animation: 0.5s slideIn;
+
+    & > .navbar__list {
+        text-align: center;
+        height: max-content;
+        @include flex-center;
+    }
+
+    & > *:not(:last-child) {
+        margin-right: 0;
+        margin-bottom: 3rem;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100vw);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100vw);
+        opacity: 0;
+    }
+}
