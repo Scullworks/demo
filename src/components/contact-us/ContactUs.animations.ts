@@ -7,8 +7,15 @@ export const contactUsVariants: Variants = {
     animate: {
         opacity: 1,
         transition: {
-            delay: 0.6,
-            duration: 0.8
+            delay: 0.5,
+            duration: 0.5
         }
     }
+};
+
+export const animations = {
+    initial: 'initial',
+    whileInView: 'animate',
+    viewport: { once: true },
+    variants: contactUsVariants
 };

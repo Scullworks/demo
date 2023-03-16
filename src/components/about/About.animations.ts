@@ -7,8 +7,8 @@ export const headingVariants: Variants = {
     animate: (headerBenefitsIsInView: boolean) => ({
         opacity: 1,
         transition: {
-            duration: 0.8,
-            delay: headerBenefitsIsInView ? 0.3 : 1.7
+            duration: 0.5,
+            delay: headerBenefitsIsInView ? 0 : 1
         }
     })
 };
@@ -20,15 +20,15 @@ export const aboutVariants: Variants = {
     animate: (headerBenefitsIsInView: boolean) => ({
         opacity: 1,
         transition: {
-            delayChildren: headerBenefitsIsInView ? 1 : 2,
-            staggerChildren: 0.4
+            delayChildren: headerBenefitsIsInView ? 0.5 : 1.5,
+            staggerChildren: 0.5
         }
     })
 };
 
 const transitionOptions = {
     transition: {
-        duration: 0.8,
+        duration: 0.5,
         ease: 'easeOut'
     }
 };
@@ -67,12 +67,18 @@ export const buttonVariants: Variants = {
     initial: {
         opacity: 0
     },
-    animate: {
+    animate: (headerBenefitsIsInView: boolean) => ({
         opacity: 1,
         transition: {
-            delay: 0.7,
-            duration: 0.8,
+            delay: headerBenefitsIsInView ? 0.5 : 1,
+            duration: 0.5,
             ease: 'easeOut'
         }
-    }
+    })
+};
+
+export const animations = {
+    initial: 'initial',
+    whileInView: 'animate',
+    viewport: { once: true }
 };

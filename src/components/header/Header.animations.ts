@@ -9,7 +9,7 @@ export const textVariants: Variants = {
         y: 0,
         opacity: 1,
         transition: {
-            duration: 0.8
+            duration: 0.5
         }
     }
 };
@@ -21,8 +21,8 @@ export const benefitsVariants: Variants = {
     animate: {
         opacity: 1,
         transition: {
-            delay: 0.8,
-            duration: 0.8
+            delay: 0.5,
+            duration: 0.5
         }
     }
 };
