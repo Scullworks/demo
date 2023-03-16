@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { HookedTextField } from '@/components';
 import content from '@/utils/content/contact-us.json';
 import { contactUsSchema } from '@/utils/validations';
-import { contactUsVariants } from './ContactUs.animations';
+import { animations } from './ContactUs.animations';
 
 export interface ContactUsFormValues {
     readonly name: string;
@@ -28,16 +28,13 @@ function ContactUs() {
 
     return (
         <footer className="contact-us">
-            <h2 className="contact-us__heading">Get In Touch</h2>
-            <p className="contact-us__text">{content.subText}</p>
-            <motion.form
-                className="contact-us-form"
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true }}
-                variants={contactUsVariants}
-                onSubmit={onSubmit}
-            >
+            <motion.h2 className="contact-us__heading" {...animations}>
+                Get In Touch
+            </motion.h2>
+            <motion.p className="contact-us__text" {...animations}>
+                {content.subText}
+            </motion.p>
+            <motion.form className="contact-us-form" onSubmit={onSubmit} {...animations}>
                 <HookedTextField name="name" control={control} error={errors?.name?.message} />
                 <HookedTextField name="email" control={control} error={errors?.email?.message} />
                 <HookedTextField name="message" control={control} error={errors.message?.message} />

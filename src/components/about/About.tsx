@@ -9,6 +9,7 @@ import { useAnimationStore } from '@/hooks/store/useAnimationStore';
 import content from '@/utils/content/about.json';
 import {
     aboutVariants,
+    animations,
     athletesVariants,
     buttonVariants,
     clubsVariants,
@@ -16,27 +17,31 @@ import {
     headingVariants
 } from './About.animations';
 
-const animations = {
-    initial: 'initial',
-    whileInView: 'animate',
-    viewport: { once: true }
-};
-
 function About() {
-    const [isMediumMobile, setIsMediumMobile] = useState(false);
+    const [isMediumMobileOrSmaller, setIsMediumMobileOrSmaller] = useState(false);
     const headerBenefitsIsInView = useAnimationStore(state => state.headerBenefitsIsInView);
 
     useEffect(() => {
-        if (typeof window !== 'undefined' && window.innerWidth <= 375) {
-            setIsMediumMobile(true);
+        function checkWindowWidth() {
+            if (window.innerWidth <= 375) {
+                setIsMediumMobileOrSmaller(true);
+            } else {
+                setIsMediumMobileOrSmaller(false);
+            }
         }
-    }, [isMediumMobile]);
+
+        window.addEventListener('resize', checkWindowWidth);
+
+        return () => {
+            window.removeEventListener('resize', checkWindowWidth);
+        };
+    }, [isMediumMobileOrSmaller]);
 
     return (
-        <section className="about">
+        <main className="about">
             <motion.h2
                 className="about__heading"
-                custom={isMediumMobile ? true : headerBenefitsIsInView}
+                custom={isMediumMobileOrSmaller ? true : headerBenefitsIsInView}
                 variants={headingVariants}
                 {...animations}
             >
@@ -44,7 +49,7 @@ function About() {
             </motion.h2>
             <motion.div
                 className="about__benefits"
-                custom={isMediumMobile ? true : headerBenefitsIsInView}
+                custom={isMediumMobileOrSmaller ? true : headerBenefitsIsInView}
                 variants={aboutVariants}
                 {...animations}
             >
@@ -100,11 +105,16 @@ function About() {
                 </motion.div>
             </motion.div>
             <Link href="/">
-                <motion.button className="about__button" variants={buttonVariants} {...animations}>
+                <motion.button
+                    className="about__button"
+                    variants={buttonVariants}
+                    custom={isMediumMobileOrSmaller ? true : headerBenefitsIsInView}
+                    {...animations}
+                >
                     Request a Demo
                 </motion.button>
             </Link>
-        </section>
+        </main>
     );
 }
 

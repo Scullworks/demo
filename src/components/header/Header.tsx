@@ -40,6 +40,7 @@ function Header() {
                         className="header__image--background"
                         src={headerBackground}
                         alt="header background"
+                        priority
                     />
                     <motion.div
                         className="header__image-benefits"
