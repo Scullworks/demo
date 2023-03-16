@@ -15,7 +15,7 @@
     }
 
     @include mobile-large {
-        margin-top: 10rem;
+        margin-top: 5rem;
     }
 
     @include mobile-medium {
@@ -25,6 +25,10 @@
 
 .about__heading {
     margin-bottom: 5rem;
+
+    @include tablet {
+        padding-top: 5rem;
+    }
 }
 
 .about__benefits {
@@ -121,7 +125,7 @@
             width: 90%;
         }
 
-        @include mobile-large {
+        @include mobile-medium {
             width: 95%;
         }
 
