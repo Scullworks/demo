@@ -38,7 +38,7 @@ function ContactUs() {
                 <HookedTextField name="name" control={control} error={errors?.name?.message} />
                 <HookedTextField name="email" control={control} error={errors?.email?.message} />
                 <HookedTextField name="message" control={control} error={errors.message?.message} />
-                <button className="contact-us-form__button" type="submit">
+                <button className="contact-us-form__button button" type="submit">
                     Submit
                 </button>
             </motion.form>

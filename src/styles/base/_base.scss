@@ -16,6 +16,7 @@ html {
 
 body {
     @include flex-center;
+    background-color: $color-background-main;
 
     @include respond-to(290px) {
         overflow-x: hidden;

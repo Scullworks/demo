@@ -106,9 +106,8 @@ function About() {
             </motion.div>
             <Link href="/">
                 <motion.button
-                    className="about__button"
+                    className="about__button button"
                     variants={buttonVariants}
-                    custom={isMediumMobileOrSmaller ? true : headerBenefitsIsInView}
                     {...animations}
                 >
                     Request a Demo

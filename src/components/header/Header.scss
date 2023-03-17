@@ -6,14 +6,12 @@
 .header {
     @include flex-center(row);
     width: 100vw;
-    background-color: $color-background-main;
 }
 
 .header__container {
     @include flex-center(row);
     position: relative;
     margin-inline: 5rem;
-    padding-bottom: 17rem;
     width: min(100vw, 134rem);
     height: 100vh;
 
@@ -21,6 +19,7 @@
         @include flex-center;
         margin-top: 10rem;
         margin-inline: 0;
+        padding-bottom: 17rem;
         height: auto;
     }
 

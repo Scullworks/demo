@@ -2,7 +2,7 @@
 @use '@/styles/abstracts/mixins' as *;
 @use '@/styles/abstracts/variables' as *;
 
-button {
+.button {
     background-color: $color-button;
     color: $color-white;
     border: none;

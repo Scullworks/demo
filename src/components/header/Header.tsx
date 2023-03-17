@@ -30,8 +30,8 @@ function Header() {
                         Take rowing to <span>the next level</span>
                     </h1>
                     <p className="header__text">{content.header}</p>
-                    <Link href="/">
-                        <button className="header__button">Join Now</button>
+                    <Link href="/join">
+                        <button className="header__button button">Join Now</button>
                     </Link>
                 </motion.div>
                 <div className="header__images">
