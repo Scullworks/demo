@@ -67,14 +67,13 @@ export const buttonVariants: Variants = {
     initial: {
         opacity: 0
     },
-    animate: (headerBenefitsIsInView: boolean) => ({
+    animate: {
         opacity: 1,
         transition: {
-            delay: headerBenefitsIsInView ? 0.5 : 1,
             duration: 0.5,
             ease: 'easeOut'
         }
-    })
+    }
 };
 
 export const animations = {
