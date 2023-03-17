@@ -1,17 +1,20 @@
 import { TextField } from '@mui/material';
+import { HTMLInputTypeAttribute } from 'react';
 import { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 
 interface TextFieldRenderProps<T extends FieldValues> {
     readonly name: Path<T>;
     readonly error: string | undefined;
     readonly field: ControllerRenderProps<T, Path<T>>;
+    readonly type?: HTMLInputTypeAttribute;
 }
 
 function MuiTextField<T extends FieldValues>(props: TextFieldRenderProps<T>) {
     const {
         name,
         error,
-        field: { onChange, value }
+        field: { onChange, value },
+        type
     } = props;
 
     const isError = typeof error === 'string';
@@ -21,6 +24,7 @@ function MuiTextField<T extends FieldValues>(props: TextFieldRenderProps<T>) {
     return (
         <TextField
             variant="outlined"
+            type={type ?? 'text'}
             color="info"
             label={label}
             error={isError}
