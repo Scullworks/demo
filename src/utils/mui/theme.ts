@@ -18,6 +18,14 @@ export const theme: Theme = createTheme({
                     marginBottom: '2rem'
                 }
             }
+        },
+        MuiFormHelperText: {
+            styleOverrides: {
+                root: {
+                    fontSize: '1.4rem',
+                    marginTop: '0.5rem'
+                }
+            }
         }
     },
     typography: {
