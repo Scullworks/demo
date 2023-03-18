@@ -4,6 +4,7 @@
 @use 'pages' as *;
 
 @use '@/components/about/About';
+@use '@/components/auth-form/AuthForm';
 @use '@/components/contact-us/ContactUs';
 @use '@/components/custom-input/Input';
 @use '@/components/header/Header';
