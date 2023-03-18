@@ -1,8 +1,10 @@
 import { Close as CloseIcon, Menu as MenuIcon } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Link as ScrollLink } from 'react-scroll';
+import { pageVariants } from '@/utils/animations/pages';
 
 function Navbar() {
     const [showMenuIcon, setShowMenuIcon] = useState(true);
@@ -55,7 +57,7 @@ function Navbar() {
 
     return (
         <>
-            <nav className="navbar">
+            <motion.nav className="navbar" exit="exit" variants={pageVariants}>
                 <h3 className="navbar__heading" onClick={scrollToTop}>
                     ScullWorks
                 </h3>
@@ -80,8 +82,8 @@ function Navbar() {
                             Contact Us
                         </ScrollLink>
                     </li>
-                    <Link href="/signin">
-                        <button className="navbar__login">Login</button>
+                    <Link href="/login">
+                        <button className="navbar__login button">Login</button>
                     </Link>
                 </ul>
                 <>
@@ -95,7 +97,7 @@ function Navbar() {
                         </IconButton>
                     )}
                 </>
-            </nav>
+            </motion.nav>
         </>
     );
 }
