@@ -1,5 +1,5 @@
 import { createTheme, Theme } from '@mui/material';
-import { grey } from '@mui/material/colors';
+import { blue, grey } from '@mui/material/colors';
 
 export const theme: Theme = createTheme({
     components: {
@@ -26,6 +26,15 @@ export const theme: Theme = createTheme({
                     marginTop: '0.5rem'
                 }
             }
+        },
+        MuiAlert: {
+            styleOverrides: {
+                root: {
+                    fontFamily: 'inherit',
+                    fontWeight: 500,
+                    marginBottom: '3rem'
+                }
+            }
         }
     },
     typography: {
@@ -34,6 +43,9 @@ export const theme: Theme = createTheme({
         fontWeightRegular: '500'
     },
     palette: {
+        success: {
+            main: blue[600]
+        },
         info: {
             main: grey[600]
         }
