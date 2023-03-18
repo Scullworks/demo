@@ -1,0 +1,34 @@
+@use '@/styles/abstracts/mixins' as *;
+
+.auth-providers {
+    @include flex-center(row);
+    width: min(80vw, 55rem);
+    margin-block: 4rem;
+
+    @include mobile-large {
+        margin-block: 3rem;
+    }
+
+    span {
+        text-align: center;
+        font-size: clamp(1.4rem, 3vw + 0.1rem, 1.6rem);
+        margin-inline: 1.5rem;
+    }
+}
+
+.auth-providers__separator {
+    flex: 1;
+    border: 0.8px solid #888;
+}
+
+.auth-providers__images {
+    @include flex-center(row);
+
+    & > img {
+        cursor: pointer;
+    }
+
+    & > img:not(:last-child) {
+        margin-right: 2rem;
+    }
+}

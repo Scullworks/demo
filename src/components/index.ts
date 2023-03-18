@@ -1,5 +1,6 @@
 export { default as About } from './about/About';
 export { default as AuthForm } from './auth-form/AuthForm';
+export { default as AuthProviders } from './auth-providers/AuthProviders';
 export { default as Input } from './custom-input/Input';
 export { default as ContactUs } from './contact-us/ContactUs';
 export { default as Header } from './header/Header';
