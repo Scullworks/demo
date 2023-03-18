@@ -1,0 +1,27 @@
+@use '@/styles/abstracts/colors' as *;
+@use '@/styles/abstracts/mixins' as *;
+@use '@/styles/abstracts/variables' as *;
+
+.auth {
+    @include flex-center;
+    background-color: $color-background-main;
+    height: 100vh;
+    width: 100vw;
+}
+
+.auth__heading {
+    margin-bottom: 0;
+
+    @include mobile-large {
+        margin-bottom: 0.5rem;
+    }
+}
+
+.auth__text {
+    font-size: 1.6rem;
+}
+
+.auth__link {
+    font-weight: 600;
+    cursor: pointer;
+}
