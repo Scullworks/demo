@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { About, ContactUs, Header, Navbar } from '@/components';
-import { useAnimationStore } from '@/hooks/store/useAnimationStore';
+import { useAnimationStore } from '@/hooks/store';
 import { pageTransitions } from '@/utils/animations/pages';
 
 function Home() {

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import athletes from '@/assets/about/athletes.png';
 import clubs from '@/assets/about/clubs.png';
 import coaches from '@/assets/about/coaches.png';
-import { useAnimationStore } from '@/hooks/store/useAnimationStore';
+import { useAnimationStore } from '@/hooks/store';
 import content from '@/utils/content/about.json';
 import {
     aboutVariants,

@@ -1,7 +1,6 @@
 import { Step, StepLabel, Stepper } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useAuthStore } from '@/hooks/store/useAuthStore';
-import { useStepperStore } from '@/hooks/store/useStepperStore';
+import { useAuthStore, useStepperStore } from '@/hooks/store';
 
 const athleteSteps: Step[] = [
     { id: 1, label: 'Profile' },

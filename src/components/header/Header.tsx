@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import headerBackground from '@/assets/header/background.png';
 import header from '@/assets/header/main.png';
-import { useAnimationStore } from '@/hooks/store/useAnimationStore';
+import { useAnimationStore } from '@/hooks/store';
 import content from '@/utils/content/header.json';
 import { benefitsVariants, textVariants } from './Header.animations';
 

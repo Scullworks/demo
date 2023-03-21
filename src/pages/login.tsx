@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { AuthForm, AuthProviders } from '@/components';
-import { useAuthStore } from '@/hooks/store/useAuthStore';
+import { useAuthStore } from '@/hooks/store';
 
 function Login() {
     const user = useAuthStore(state => state.user);
