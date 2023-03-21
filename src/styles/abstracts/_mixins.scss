@@ -26,7 +26,7 @@
     }
 }
 
-@mixin no-pointer {
+@mixin with-pointer {
     @media (hover: hover) and (pointer: fine) {
         @content;
     }

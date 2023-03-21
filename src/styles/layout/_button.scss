@@ -15,7 +15,7 @@
     height: 5rem;
     cursor: pointer;
 
-    @include no-pointer {
+    @include with-pointer {
         &:hover {
             transform: translateY(-4px);
             box-shadow: $box-shadow-button-hover;
