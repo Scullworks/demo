@@ -1,0 +1,41 @@
+@use '@/styles/abstracts/colors' as *;
+@use '@/styles/abstracts/mixins' as *;
+@use '@/styles/abstracts/variables' as *;
+
+.stepper {
+    position: absolute;
+    bottom: 10rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(80vw, 55rem);
+
+    .MuiSvgIcon-root.Mui-completed,
+    .MuiSvgIcon-root.Mui-active {
+        color: $color-button;
+    }
+}
+
+.stepper-button__container {
+    @include flex-center(row);
+    justify-content: space-between;
+    width: min(80vw, 55rem);
+    margin-top: 4rem;
+}
+
+.stepper-button {
+    background-color: $color-button;
+    color: $color-white;
+    border: none;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: $font-size-base;
+    font-weight: 500;
+    width: 10rem;
+    height: 4.5rem;
+    cursor: pointer;
+
+    &:disabled {
+        background-color: rgba(0, 0, 0, 0.38);
+        cursor: not-allowed;
+    }
+}
