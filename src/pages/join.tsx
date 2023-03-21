@@ -1,23 +1,15 @@
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
-import { useRef } from 'react';
-import { useAuthStore } from '@/hooks/store';
+import { useAuthStore, UserType } from '@/hooks/store';
 import { pageTransitions } from '@/utils/animations/pages';
 
 function Join() {
-    const athleteRef = useRef<HTMLButtonElement | null>(null);
-    const clubRef = useRef<HTMLButtonElement | null>(null);
-    const coachRef = useRef<HTMLButtonElement | null>(null);
-
     const setUserType = useAuthStore(state => state.setUserType);
 
     const router = useRouter();
 
-    function onClick() {
-        if (athleteRef.current) setUserType('athlete');
-        if (clubRef.current) setUserType('club');
-        if (coachRef.current) setUserType('coach');
-
+    function onClick(userType: UserType) {
+        setUserType(userType);
         router.push('/register');
     }
 
@@ -25,13 +17,13 @@ function Join() {
         <motion.div className="join" {...pageTransitions}>
             <h1 className="join__heading">Who Are You?</h1>
             <div className="join__options">
-                <button className="button" ref={athleteRef} onClick={onClick}>
+                <button className="button" onClick={() => onClick('athlete')}>
                     Athlete
                 </button>
-                <button className="button" ref={clubRef} onClick={onClick}>
+                <button className="button" onClick={() => onClick('club')}>
                     Club
                 </button>
-                <button className="button" ref={coachRef} onClick={onClick}>
+                <button className="button" onClick={() => onClick('coach')}>
                     Coach
                 </button>
             </div>
