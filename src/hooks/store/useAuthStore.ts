@@ -1,16 +1,12 @@
 import { User } from 'firebase/auth';
 import { create } from 'zustand';
 
-export interface AccessTokenUser extends User {
-    readonly accessToken: string;
-}
-
 export type UserType = 'athlete' | 'club' | 'coach';
 
 interface AuthState {
-    readonly user: AccessTokenUser | null;
+    readonly user: User | null;
     readonly userType: UserType | null;
-    readonly setUser: (user: AccessTokenUser | null) => void;
+    readonly setUser: (user: User | null) => void;
     readonly setUserType: (userType: UserType) => void;
 }
 

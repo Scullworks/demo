@@ -9,14 +9,14 @@ import {
     User
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { AccessTokenUser, UserType } from '@/hooks/store/useAuthStore';
+import { UserType } from '@/hooks/store/useAuthStore';
 import { EXISTING_EMAIL, USER_NOT_FOUND, WRONG_PASSWORD } from '@/utils/errors/firebase';
 import { auth, database } from './setup';
 
 type AuthProvider = GoogleAuthProvider | FacebookAuthProvider | TwitterAuthProvider;
 
 export interface AuthResponse {
-    readonly user: AccessTokenUser | null;
+    readonly user: User | null;
     readonly error: string | null;
 }
 
@@ -36,13 +36,7 @@ export async function registerWithEmailAndPassword(
     try {
         const { user } = await createUserWithEmailAndPassword(auth, email, password);
         createUserDoc(user, email, userType);
-        const accessTokenUser = user as AccessTokenUser;
-        localStorage.setItem('token', accessTokenUser.accessToken);
-
-        return {
-            user: accessTokenUser,
-            error: null
-        };
+        return { user, error: null };
     } catch (error) {
         console.error('Sign Up With Email and Password Error: ', error.message);
 
@@ -63,13 +57,7 @@ export async function registerWithEmailAndPassword(
 export async function loginWithEmailAndPassword(email: string, password: string) {
     try {
         const { user } = await signInWithEmailAndPassword(auth, email, password);
-        const accessTokenUser = user as AccessTokenUser;
-        localStorage.setItem('token', accessTokenUser.accessToken);
-
-        return {
-            user: accessTokenUser,
-            error: null
-        };
+        return { user, error: null };
     } catch (error) {
         console.error('Sign In With Email and Password Error: ', error.message);
 
@@ -99,18 +87,13 @@ export async function loginWithEmailAndPassword(email: string, password: string)
 async function loginWithProvider(provider: AuthProvider, userType?: UserType) {
     try {
         const { user } = await signInWithPopup(auth, provider);
-        const accessTokenUser = user as AccessTokenUser;
-        localStorage.setItem('token', accessTokenUser.accessToken);
 
         if (userType) {
             const email = user.email as string;
             await createUserDoc(user, email, userType);
         }
 
-        return {
-            user: accessTokenUser,
-            error: null
-        };
+        return { user, error: null };
     } catch (error) {
         console.error(error.message);
 
