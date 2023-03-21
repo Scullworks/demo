@@ -1,0 +1,7 @@
+@use '@/styles/abstracts/mixins' as *;
+
+.loading {
+    @include flex-center;
+    width: 100vw;
+    height: 100vh;
+}

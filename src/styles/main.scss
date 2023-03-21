@@ -5,6 +5,7 @@
 
 @use '@/components/about/About';
 @use '@/components/auth-form/AuthForm';
+@use '@/components/auth-state-provider/AuthStateProvider';
 @use '@/components/auth-providers/AuthProviders';
 @use '@/components/contact-us/ContactUs';
 @use '@/components/custom-input/Input';
