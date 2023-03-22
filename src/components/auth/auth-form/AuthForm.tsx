@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AlertDialog, HookedTextField, Severity, SnackbarAlert } from '@/components';
+import { useStoredUserType } from '@/hooks';
 import { useAuthStore, UserType } from '@/hooks/store/useAuthStore';
 import { loginWithEmailAndPassword, registerWithEmailAndPassword } from '@/services/firebase/auth';
 import { authSchema } from '@/utils/validations';
@@ -24,6 +25,8 @@ function AuthForm({ type }: AuthFormProps) {
 
     const userType = useAuthStore(state => state.userType);
     const setUser = useAuthStore(state => state.setUser);
+
+    const { storedUserType } = useStoredUserType();
 
     const router = useRouter();
 
@@ -81,8 +84,8 @@ function AuthForm({ type }: AuthFormProps) {
     });
 
     useEffect(() => {
-        if (type === 'register' && !userType) setShowDialog(true);
-    }, [type, userType, router]);
+        if (type === 'register' && !userType && !storedUserType) setShowDialog(true);
+    }, [type, userType, storedUserType, router]);
 
     const onSubmit = type === 'login' ? onLoginSubmit : onRegisterSubmit;
     const buttonText = type === 'login' ? 'Login' : 'Register';
