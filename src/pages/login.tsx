@@ -27,7 +27,7 @@ function Login() {
         <div className="auth">
             <h1 className="auth__heading">Welcome Back</h1>
             <p className="auth__text">
-                Don&lsquo;t have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Link className="auth__link" href="/register">
                     Register
                 </Link>
