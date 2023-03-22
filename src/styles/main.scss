@@ -3,12 +3,12 @@
 @use 'layout' as *;
 @use 'pages' as *;
 
-@use '@/components/about/About';
-@use '@/components/auth-form/AuthForm';
-@use '@/components/auth-state-provider/AuthStateProvider';
-@use '@/components/auth-providers/AuthProviders';
-@use '@/components/contact-us/ContactUs';
-@use '@/components/custom-input/Input';
-@use '@/components/header/Header';
-@use '@/components/navbar/Navbar';
-@use '@/components/progress-stepper/ProgressStepper';
+@use '@/components/auth/auth-form/AuthForm';
+@use '@/components/auth/auth-providers/AuthProviders';
+@use '@/components/common/auth-state-provider/AuthStateProvider';
+@use '@/components/common/custom-input/Input';
+@use '@/components/home/about/About';
+@use '@/components/home/contact-us/ContactUs';
+@use '@/components/home/header/Header';
+@use '@/components/home/navbar/Navbar';
+@use '@/components/onboarding/progress-stepper/ProgressStepper';
