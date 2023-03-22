@@ -1,4 +1,5 @@
 export { default as About } from './about/About';
+export { default as AlertDialog } from './alert-dialog/AlertDialog';
 export { default as AuthForm } from './auth-form/AuthForm';
 export { default as AuthStateProvider } from './auth-state-provider/AuthStateProvider';
 export { default as AuthProviders } from './auth-providers/AuthProviders';

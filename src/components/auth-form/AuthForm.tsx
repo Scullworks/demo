@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { HookedTextField, Severity, SnackbarAlert } from '@/components';
+import { AlertDialog, HookedTextField, Severity, SnackbarAlert } from '@/components';
 import { useAuthStore, UserType } from '@/hooks/store/useAuthStore';
 import { loginWithEmailAndPassword, registerWithEmailAndPassword } from '@/services/firebase/auth';
 import { authSchema } from '@/utils/validations';
@@ -19,6 +19,7 @@ export interface AuthFormProps {
 function AuthForm({ type }: AuthFormProps) {
     const [alert, setAlert] = useState('');
     const [showAlert, setShowAlert] = useState(false);
+    const [showDialog, setShowDialog] = useState(false);
     const [severity, setSeverity] = useState<Severity>('error');
 
     const userType = useAuthStore(state => state.userType);
@@ -70,6 +71,7 @@ function AuthForm({ type }: AuthFormProps) {
             setSeverity('success');
             setAlert('Account created successfully');
             setShowAlert(true);
+            router.push(`/onboarding/${userType}/profile`);
         }
 
         if (error) {
@@ -79,8 +81,7 @@ function AuthForm({ type }: AuthFormProps) {
     });
 
     useEffect(() => {
-        // TODO: Revisit the implementation of this functionality
-        if (type === 'register' && !userType) router.push('/join');
+        if (type === 'register' && !userType) setShowDialog(true);
     }, [type, userType, router]);
 
     const onSubmit = type === 'login' ? onLoginSubmit : onRegisterSubmit;
@@ -104,6 +105,7 @@ function AuthForm({ type }: AuthFormProps) {
                 open={showAlert}
                 setOpen={setShowAlert}
             />
+            <AlertDialog openDialog={showDialog} setOpenDialog={setShowDialog} />
         </form>
     );
 }

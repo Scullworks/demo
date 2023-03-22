@@ -35,6 +35,29 @@ export const theme: Theme = createTheme({
                     marginBottom: '3rem'
                 }
             }
+        },
+        MuiDialogContentText: {
+            styleOverrides: {
+                root: {
+                    textAlign: 'center'
+                }
+            }
+        },
+        MuiDialogActions: {
+            styleOverrides: {
+                root: {
+                    justifyContent: 'space-around',
+                    width: '80%',
+                    marginInline: 'auto'
+                }
+            }
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    color: 'rgb(255, 179, 109)'
+                }
+            }
         }
     },
     typography: {
