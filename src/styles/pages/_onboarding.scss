@@ -1,0 +1,6 @@
+@use '@/styles/abstracts/mixins' as *;
+
+.onboarding {
+    @include flex-center;
+    margin-top: 5rem;
+}

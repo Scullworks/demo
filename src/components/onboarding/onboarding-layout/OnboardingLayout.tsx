@@ -1,7 +1,9 @@
+import { motion } from 'framer-motion';
 import { ReactNode, useEffect, useState } from 'react';
 import { AlertDialog, AuthStateProvider, ProgressStepper } from '@/components';
 import { useStoredUserType } from '@/hooks';
 import { useAuthStore, UserType } from '@/hooks/store';
+import { pageTransitions } from '@/utils/animations/pages';
 
 interface OnboardingLayoutProps {
     readonly children: ReactNode;
@@ -24,7 +26,9 @@ function OnboardingLayout({ children }: OnboardingLayoutProps) {
         <AuthStateProvider>
             {userType ? (
                 <>
-                    {children}
+                    <motion.div className="onboarding" {...pageTransitions}>
+                        {children}
+                    </motion.div>
                     <ProgressStepper />
                 </>
             ) : (
