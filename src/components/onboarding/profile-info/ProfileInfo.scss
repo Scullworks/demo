@@ -1,0 +1,35 @@
+@use '@/styles/abstracts/colors' as *;
+@use '@/styles/abstracts/mixins' as *;
+
+.profile-info {
+    @include flex-center;
+
+    // Circle Button
+    .MuiButtonBase-root {
+        border-radius: 50%;
+        width: 15rem;
+        height: 15rem;
+        background-color: $color-button;
+        color: $color-white;
+        box-shadow: none;
+        margin-bottom: 5rem;
+    }
+
+    // Camera Icon
+    .MuiSvgIcon-root {
+        font-size: 5rem;
+    }
+}
+
+.profile-info__image {
+    width: 15rem;
+    width: 15rem;
+    border-radius: 70%;
+    object-fit: cover;
+    margin-bottom: 5rem;
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+}
