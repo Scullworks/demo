@@ -81,3 +81,9 @@
         @content;
     }
 }
+
+@mixin respond-to-min($width) {
+    @media (min-width: $width) {
+        @content;
+    }
+}
