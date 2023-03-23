@@ -2,18 +2,11 @@ import { useMemo, useState } from 'react';
 import { Service } from './store';
 
 export function useSelectedServices() {
-    const [scullingSelected, setScullingSelected] = useState(false);
-    const [ergSelected, setErgSelected] = useState(false);
-    const [coachingSelected, setCoachingSelected] = useState(false);
-    const [sweepRowSelected, setSweepRowSelected] = useState(false);
-    const [eightSweepSelected, setEightSweepSelected] = useState(false);
-    const [rentalSelected, setRentalSelected] = useState(false);
     const [services, setServices] = useState<Service[]>([]);
 
     const selectedServices = useMemo(() => services, [services]);
 
-    function onScullingSelect() {
-        setScullingSelected(prevState => !prevState);
+    function selectSculling() {
         setServices(prevState =>
             prevState.includes('Sculling')
                 ? prevState.filter(existing => existing !== 'Sculling')
@@ -21,8 +14,7 @@ export function useSelectedServices() {
         );
     }
 
-    function onErgSelect() {
-        setErgSelected(prevState => !prevState);
+    function selectErg() {
         setServices(prevState =>
             prevState.includes('ERG Workout')
                 ? prevState.filter(existing => existing !== 'ERG Workout')
@@ -30,8 +22,7 @@ export function useSelectedServices() {
         );
     }
 
-    function onCoachingSelect() {
-        setCoachingSelected(prevState => !prevState);
+    function selectCoaching() {
         setServices(prevState =>
             prevState.includes('Private Coaching')
                 ? prevState.filter(existing => existing !== 'Private Coaching')
@@ -39,8 +30,7 @@ export function useSelectedServices() {
         );
     }
 
-    function onSweepRowSelect() {
-        setSweepRowSelected(prevState => !prevState);
+    function selectSweepRow() {
         setServices(prevState =>
             prevState.includes('Sweep Rowing')
                 ? prevState.filter(existing => existing !== 'Sweep Rowing')
@@ -48,8 +38,7 @@ export function useSelectedServices() {
         );
     }
 
-    function onEightSweepSelect() {
-        setEightSweepSelected(prevState => !prevState);
+    function selectEightSweep() {
         setServices(prevState =>
             prevState.includes('8x8 Sweep')
                 ? prevState.filter(existing => existing !== '8x8 Sweep')
@@ -57,8 +46,7 @@ export function useSelectedServices() {
         );
     }
 
-    function onRentalSelect() {
-        setRentalSelected(prevState => !prevState);
+    function selectRental() {
         setServices(prevState =>
             prevState.includes('Gear Rental')
                 ? prevState.filter(existing => existing !== 'Gear Rental')
@@ -67,18 +55,13 @@ export function useSelectedServices() {
     }
 
     return {
-        scullingSelected,
-        ergSelected,
-        coachingSelected,
-        sweepRowSelected,
-        eightSweepSelected,
-        rentalSelected,
         selectedServices,
-        onScullingSelect,
-        onErgSelect,
-        onCoachingSelect,
-        onSweepRowSelect,
-        onEightSweepSelect,
-        onRentalSelect
+        setServices,
+        selectSculling,
+        selectErg,
+        selectCoaching,
+        selectSweepRow,
+        selectEightSweep,
+        selectRental
     };
 }

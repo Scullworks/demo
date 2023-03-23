@@ -10,18 +10,16 @@
 }
 
 .onboarding-club__opening-hours {
-    @include respond-to-min($breakpoint-mobile-large) {
-        @include flex-center(row);
-        justify-content: space-between;
-        width: min(80vw, 55rem);
+    @include flex-center(row);
+    justify-content: space-between;
+    width: min(80vw, 55rem);
 
-        .MuiFormControl-root {
-            width: 48%;
-        }
+    .MuiFormControl-root {
+        width: 48%;
+    }
 
-        .MuiInputBase-root {
-            width: 100%;
-        }
+    .MuiInputBase-root {
+        width: 100%;
     }
 }
 

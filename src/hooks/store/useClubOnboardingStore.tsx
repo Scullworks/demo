@@ -14,12 +14,10 @@ export interface OnboardingState {
     readonly name: string | null;
     readonly email: string | null;
     readonly phoneNumber: number | null;
-    readonly services: Service[];
     readonly setImageUrl: (imageUrl: string) => void;
     readonly setName: (name: string) => void;
     readonly setEmail: (email: string) => void;
     readonly setPhoneNumber: (phoneNumber: number) => void;
-    readonly updateServices: (services: Service[]) => void;
 }
 
 interface ClubOnboardingState extends OnboardingState {
@@ -27,10 +25,12 @@ interface ClubOnboardingState extends OnboardingState {
     readonly closingTime: string | null;
     readonly cancellationPolicy: string | null;
     readonly address: string | null;
+    readonly services: Service[];
     readonly setOpeningTime: (openingTime: string) => void;
     readonly setClosingTime: (closingTime: string) => void;
     readonly setCancellationPolicy: (cancellationPolicy: string) => void;
     readonly setAddress: (address: string) => void;
+    readonly updateServices: (services: Service[]) => void;
 }
 
 export const useClubOnboardingStore = create<ClubOnboardingState>()(
