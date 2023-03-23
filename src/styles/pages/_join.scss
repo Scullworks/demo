@@ -28,10 +28,11 @@
 
         @include with-pointer {
             &:hover {
-                transform: translateY(-2px);
+                transform: translateY(0);
                 background-color: $color-button;
                 color: $color-white;
                 border: none;
+                box-shadow: none;
             }
         }
     }
