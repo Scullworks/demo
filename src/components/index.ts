@@ -3,6 +3,7 @@ export { default as AuthProviders } from './auth/auth-providers/AuthProviders';
 export { default as AuthStateProvider } from './common/auth-state-provider/AuthStateProvider';
 export { default as Input } from './common/custom-input/Input';
 export { default as HookedTextField } from './common/hooked-text-field/HookedTextField';
+export { default as HookedTimeField } from './common/hooked-time-field/HookedTimeField';
 export { default as SnackbarAlert } from './common/snackbar-alert/SnackbarAlert';
 export { default as About } from './home/about/About';
 export { default as ContactUs } from './home/contact-us/ContactUs';
