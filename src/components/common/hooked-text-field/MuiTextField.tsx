@@ -8,6 +8,7 @@ interface MuiTextFieldProps<T extends FieldValues> {
     readonly error: string | undefined;
     readonly field: ControllerRenderProps<T, Path<T>>;
     readonly type?: HTMLInputTypeAttribute;
+    readonly placeholder?: string;
 }
 
 function MuiTextField<T extends FieldValues>(props: MuiTextFieldProps<T>) {
@@ -15,13 +16,14 @@ function MuiTextField<T extends FieldValues>(props: MuiTextFieldProps<T>) {
         name,
         error,
         field: { onChange, value },
-        type
+        type,
+        placeholder
     } = props;
 
     const [textFieldType, setTextFieldType] = useState<HTMLInputTypeAttribute>('text');
     const [showPassword, setShowPassword] = useState(false);
 
-    const label = name.charAt(0).toUpperCase() + name.slice(1);
+    const label = placeholder ?? name.charAt(0).toUpperCase() + name.slice(1);
     const isError = typeof error === 'string';
     const isMultiLine = name === 'message';
 

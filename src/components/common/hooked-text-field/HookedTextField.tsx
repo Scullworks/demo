@@ -9,17 +9,24 @@ interface HookedTextFieldProps<T extends FieldValues> extends InputProps {
     readonly control: Control<T>;
     readonly error: string | undefined;
     readonly type?: HTMLInputTypeAttribute;
+    readonly placeholder?: string;
 }
 
 function HookedTextField<T extends FieldValues>(props: HookedTextFieldProps<T>) {
-    const { name, control, error, type } = props;
+    const { name, control, error, type, placeholder } = props;
 
     return (
         <Controller
             name={name}
             control={control}
             render={({ field }) => (
-                <MuiTextField name={name} error={error} field={field} type={type} />
+                <MuiTextField
+                    name={name}
+                    error={error}
+                    field={field}
+                    type={type}
+                    placeholder={placeholder}
+                />
             )}
         />
     );
