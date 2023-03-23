@@ -1,9 +1,12 @@
 @use '@/styles/abstracts/breakpoints' as *;
+@use '@/styles/abstracts/colors' as *;
 @use '@/styles/abstracts/mixins' as *;
 
 .onboarding {
     @include flex-center;
+    justify-content: flex-start;
     margin-top: 5rem;
+    height: 91vh;
 }
 
 .onboarding-club__opening-hours {
@@ -22,6 +25,81 @@
     }
 }
 
+// Club Onboarding
 .onboarding-club__form {
     @include flex-center;
+}
+
+.onboarding-club__services {
+    gap: 4rem;
+    display: grid;
+    grid-template-areas:
+        'sculling erg coaching'
+        'sweep-row eight-sweep rental';
+
+    @include tablet {
+        grid-template-areas:
+            'sculling erg'
+            'coaching sweep-row'
+            'eight-sweep rental';
+    }
+
+    @include respond-to(500px) {
+        gap: 2rem;
+    }
+}
+
+.onboarding-club__services > button {
+    font-weight: 500;
+    height: 6rem;
+    border: 0.5px solid $color-black;
+    background-color: transparent;
+    color: $color-black;
+
+    @include with-pointer {
+        &:hover {
+            transform: translateY(0);
+            background-color: $color-button;
+            color: $color-white;
+            border: none;
+            box-shadow: none;
+        }
+    }
+
+    @include respond-to(500px) {
+        width: 15rem;
+        font-size: 14px;
+    }
+
+    // Grid Area
+    :first-of-type {
+        grid-area: sculling;
+    }
+
+    :nth-of-type(2) {
+        grid-area: erg;
+    }
+
+    :nth-of-type(3) {
+        grid-area: coaching;
+    }
+
+    :nth-of-type(4) {
+        grid-area: sweep-row;
+    }
+
+    :nth-of-type(5) {
+        grid-area: eight-sweep;
+    }
+
+    :last-of-type {
+        grid-area: rental;
+    }
+}
+
+.onboarding-club__services > button.selected {
+    background-color: $color-button;
+    color: $color-white;
+    border: none;
+    box-shadow: none;
 }
