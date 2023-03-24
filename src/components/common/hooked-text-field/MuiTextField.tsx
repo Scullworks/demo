@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material';
-import { HTMLInputTypeAttribute, useEffect, useState } from 'react';
+import { HTMLInputTypeAttribute, ReactNode, useEffect, useState } from 'react';
 import { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 import MuiInputAdornment from './MuiInputAdornment';
 
@@ -9,6 +9,8 @@ interface MuiTextFieldProps<T extends FieldValues> {
     readonly field: ControllerRenderProps<T, Path<T>>;
     readonly type?: HTMLInputTypeAttribute;
     readonly placeholder?: string;
+    readonly select?: boolean;
+    readonly children?: ReactNode;
 }
 
 function MuiTextField<T extends FieldValues>(props: MuiTextFieldProps<T>) {
@@ -17,7 +19,9 @@ function MuiTextField<T extends FieldValues>(props: MuiTextFieldProps<T>) {
         error,
         field: { onChange, value },
         type,
-        placeholder
+        placeholder,
+        select,
+        children
     } = props;
 
     const [textFieldType, setTextFieldType] = useState<HTMLInputTypeAttribute>('text');
@@ -45,6 +49,7 @@ function MuiTextField<T extends FieldValues>(props: MuiTextFieldProps<T>) {
             rows={isMultiLine ? 8 : undefined}
             value={value}
             onChange={onChange}
+            select={select}
             InputProps={{
                 endAdornment: (
                     <MuiInputAdornment
@@ -54,7 +59,9 @@ function MuiTextField<T extends FieldValues>(props: MuiTextFieldProps<T>) {
                     />
                 )
             }}
-        />
+        >
+            {children}
+        </TextField>
     );
 }
 
