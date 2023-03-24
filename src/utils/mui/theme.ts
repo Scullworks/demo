@@ -58,6 +58,13 @@ export const theme: Theme = createTheme({
                     color: 'rgb(255, 179, 109)'
                 }
             }
+        },
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: 'rgb(245, 253, 254)'
+                }
+            }
         }
     },
     typography: {
