@@ -9,6 +9,8 @@ export type Service =
     | '8x8 Sweep'
     | 'Gear Rental';
 
+export type BoatSize = '8+' | '4+' | '4-' | '4x' | '2+' | '2-' | '2x' | '1x';
+
 export interface OnboardingState {
     readonly imageUrl: string | null;
     readonly name: string | null;
@@ -26,11 +28,17 @@ interface ClubOnboardingState extends OnboardingState {
     readonly cancellationPolicy: string | null;
     readonly address: string | null;
     readonly services: Service[];
+    readonly boatSize: BoatSize | null;
+    readonly boatMake: string | null;
+    readonly boatName: string | null;
     readonly setOpeningTime: (openingTime: string) => void;
     readonly setClosingTime: (closingTime: string) => void;
     readonly setCancellationPolicy: (cancellationPolicy: string) => void;
     readonly setAddress: (address: string) => void;
     readonly updateServices: (services: Service[]) => void;
+    readonly setBoatSize: (boatSize: BoatSize) => void;
+    readonly setBoatMake: (boatMake: string) => void;
+    readonly setBoatName: (boatName: string) => void;
 }
 
 export const useClubOnboardingStore = create<ClubOnboardingState>()(
@@ -45,6 +53,9 @@ export const useClubOnboardingStore = create<ClubOnboardingState>()(
             cancellationPolicy: null,
             address: null,
             services: [],
+            boatSize: null,
+            boatMake: null,
+            boatName: null,
             setImageUrl: imageUrl => set(() => ({ imageUrl })),
             setName: name => set(() => ({ name })),
             setEmail: email => set(() => ({ email })),
@@ -53,8 +64,11 @@ export const useClubOnboardingStore = create<ClubOnboardingState>()(
             setClosingTime: closingTime => set(() => ({ closingTime })),
             setCancellationPolicy: cancellationPolicy => set(() => ({ cancellationPolicy })),
             setAddress: address => set(() => ({ address })),
-            updateServices: services => set(() => ({ services }))
+            updateServices: services => set(() => ({ services })),
+            setBoatSize: boatSize => set(() => ({ boatSize })),
+            setBoatMake: boatMake => set(() => ({ boatMake })),
+            setBoatName: boatName => set(() => ({ boatName }))
         }),
-        { name: 'onboarding' }
+        { name: 'club-onboarding' }
     )
 );
