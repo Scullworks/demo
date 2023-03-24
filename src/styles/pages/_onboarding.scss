@@ -1,11 +1,13 @@
 @use '@/styles/abstracts/breakpoints' as *;
 @use '@/styles/abstracts/colors' as *;
 @use '@/styles/abstracts/mixins' as *;
+@use '@/styles/abstracts/variables' as *;
 
 .onboarding {
     @include flex-center;
     justify-content: flex-start;
     margin-top: 5rem;
+    width: 100vw;
     height: 91vh;
 }
 
@@ -100,4 +102,39 @@
     color: $color-white;
     border: none;
     box-shadow: none;
+}
+
+.onboarding-club__boats-button {
+    background-color: $color-button;
+    color: $color-white;
+    border: none;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: $font-size-base;
+    font-weight: 500;
+    width: 10rem;
+    height: 4.5rem;
+    margin-top: 1rem;
+    cursor: pointer;
+
+    @include mobile-large {
+        height: 4rem;
+    }
+}
+
+.onboarding-club__boats-names {
+    @include flex-center(row);
+    width: min(80vw, 55rem);
+    margin-top: 3rem;
+
+    p {
+        font-size: 1.4rem;
+        border: 0.5px solid $color-black;
+        border-radius: 5px;
+        padding: 5px 10px;
+
+        &:not(:last-of-type) {
+            margin-right: 1rem;
+        }
+    }
 }

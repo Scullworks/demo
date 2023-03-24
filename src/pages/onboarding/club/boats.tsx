@@ -1,13 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { MenuItem } from '@mui/material';
-import { FormEvent, useCallback, useEffect, useMemo } from 'react';
+import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { HookedTextField, OnboardingLayout } from '@/components';
-import { BoatSize, useClubOnboardingStore, useStepperStore } from '@/hooks/store';
+import { HookedTextField, OnboardingLayout, SnackbarAlert } from '@/components';
+import { Boat, BoatSize, useClubOnboardingStore, useStepperStore } from '@/hooks/store';
 import { boatSchema } from '@/utils/validations';
 
 interface BoatValues {
-    readonly boatSize: BoatSize;
+    readonly boatSize: BoatSize | string;
     readonly boatMake: string;
     readonly boatName: string;
 }
@@ -29,10 +29,10 @@ const boatSizes: BoatSizeOption[] = [
 ];
 
 function Boats() {
-    const setBoatSize = useClubOnboardingStore(state => state.setBoatSize);
-    const setBoatMake = useClubOnboardingStore(state => state.setBoatMake);
-    const setBoatName = useClubOnboardingStore(state => state.setBoatName);
+    const [showAlert, setShowAlert] = useState(false);
 
+    const boats = useClubOnboardingStore(state => state.boats);
+    const addBoat = useClubOnboardingStore(state => state.addBoat);
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
@@ -44,33 +44,46 @@ function Boats() {
     } = useForm<BoatValues>({
         resolver: yupResolver(boatSchema),
         defaultValues: {
-            boatSize: undefined,
+            boatSize: '',
             boatMake: '',
             boatName: ''
         }
     });
 
     const errorCount = useMemo(() => Object.keys(errors).length, [errors]);
+    const boatsCount = useMemo(() => Object.keys(boats).length, [boats]);
 
-    const submitDetails = useCallback(
+    const addBoatToStore = useCallback(
         () =>
             handleSubmit(data => {
-                setBoatSize(data.boatSize);
-                setBoatMake(data.boatMake);
-                setBoatName(data.boatName);
+                const { boatSize, boatMake, boatName } = data;
 
-                if (!errorCount) {
-                    // TODO: Create a club document and add everything to firebase
-                    // TODO: Delete persisted club onboarding JSON in local storage
-                    // TODO: If all goes well, push to club dashboard
-                }
+                const userAddedBoat = boatSize !== null && boatMake !== null && boatSize !== null;
+                const boat: Boat = {
+                    size: boatSize as BoatSize,
+                    make: boatMake,
+                    name: boatName
+                };
+
+                if (!errorCount && userAddedBoat) addBoat(boat);
             }),
-        [errorCount, handleSubmit, setBoatMake, setBoatName, setBoatSize]
+        [handleSubmit, errorCount, addBoat]
     );
+
+    const submitDetails = useCallback(() => {
+        if (boatsCount) {
+            // TODO: Create a club document and add everything to firebase
+            // TODO: Delete persisted club onboarding JSON in local storage
+            // TODO: If all goes well, push to club dashboard
+        } else {
+            setTriggerSubmit(false);
+            setShowAlert(true);
+        }
+    }, [boatsCount, setTriggerSubmit]);
 
     function onSubmit(event: FormEvent) {
         event.preventDefault();
-        submitDetails()();
+        submitDetails();
     }
 
     useEffect(() => {
@@ -79,8 +92,8 @@ function Boats() {
 
     useEffect(() => {
         if (triggerSubmit) {
-            submitDetails()();
             setTriggerSubmit(false);
+            submitDetails();
         }
     }, [triggerSubmit, setTriggerSubmit, submitDetails]);
 
@@ -112,6 +125,28 @@ function Boats() {
                     placeholder="Boat Name"
                     control={control}
                     error={errors.boatName?.message}
+                />
+                <button
+                    className="onboarding-club__boats-button"
+                    type="button"
+                    onClick={() => addBoatToStore()()}
+                >
+                    Add Boat
+                </button>
+
+                {/* Boats */}
+                <div className="onboarding-club__boats-names">
+                    {boats.map(boat => (
+                        <p key={boat.name}>{boat.name}</p>
+                    ))}
+                </div>
+
+                {/* Alert */}
+                <SnackbarAlert
+                    text="Please add at least one boat"
+                    severity="error"
+                    open={showAlert}
+                    setOpen={setShowAlert}
                 />
             </form>
         </OnboardingLayout>
