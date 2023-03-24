@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { ChangeEvent, FormEvent, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { HookedTextField } from '@/components';
-import { useAuthStore, useClubOnboardingStore, useStepperStore } from '@/hooks/store';
+import { useAuthStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
 import { profileSchema } from '@/utils/validations';
 
 export interface ProfileValues {
@@ -16,9 +16,9 @@ export interface ProfileValues {
 function ProfileInfo() {
     const userType = useAuthStore(state => state.userType);
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
-    const imageUrl = useClubOnboardingStore(state => state.imageUrl);
-    const setName = useClubOnboardingStore(state => state.setName);
-    const setImageUrl = useClubOnboardingStore(state => state.setImageUrl);
+    const imageUrl = useCommonOnboardingStore(state => state.imageUrl);
+    const setName = useCommonOnboardingStore(state => state.setName);
+    const setImageUrl = useCommonOnboardingStore(state => state.setImageUrl);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
     const nextStep = useStepperStore(state => state.nextStep);

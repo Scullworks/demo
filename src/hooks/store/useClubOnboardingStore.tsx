@@ -17,18 +17,7 @@ export interface Boat {
     readonly name: string;
 }
 
-export interface OnboardingState {
-    readonly imageUrl: string | null;
-    readonly name: string | null;
-    readonly email: string | null;
-    readonly phoneNumber: number | null;
-    readonly setImageUrl: (imageUrl: string) => void;
-    readonly setName: (name: string) => void;
-    readonly setEmail: (email: string) => void;
-    readonly setPhoneNumber: (phoneNumber: number) => void;
-}
-
-interface ClubOnboardingState extends OnboardingState {
+interface ClubOnboardingState {
     readonly openingTime: string | null;
     readonly closingTime: string | null;
     readonly cancellationPolicy: string | null;
@@ -46,10 +35,6 @@ interface ClubOnboardingState extends OnboardingState {
 export const useClubOnboardingStore = create<ClubOnboardingState>()(
     persist(
         set => ({
-            imageUrl: null,
-            name: null,
-            email: null,
-            phoneNumber: null,
             openingTime: null,
             closingTime: null,
             cancellationPolicy: null,
@@ -59,10 +44,6 @@ export const useClubOnboardingStore = create<ClubOnboardingState>()(
             boatSize: null,
             boatMake: null,
             boatName: null,
-            setImageUrl: imageUrl => set(() => ({ imageUrl })),
-            setName: name => set(() => ({ name })),
-            setEmail: email => set(() => ({ email })),
-            setPhoneNumber: phoneNumber => set(() => ({ phoneNumber })),
             setOpeningTime: openingTime => set(() => ({ openingTime })),
             setClosingTime: closingTime => set(() => ({ closingTime })),
             setCancellationPolicy: cancellationPolicy => set(() => ({ cancellationPolicy })),

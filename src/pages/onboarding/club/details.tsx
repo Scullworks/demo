@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { HookedTextField, HookedTimeField, OnboardingLayout } from '@/components';
-import { useClubOnboardingStore, useStepperStore } from '@/hooks/store';
+import { useClubOnboardingStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
 import { operationSchema } from '@/utils/validations';
 
 interface OperationValues {
@@ -24,7 +24,7 @@ function Details() {
     const setClosingTime = useClubOnboardingStore(state => state.setClosingTime);
     const setCancellationPolicy = useClubOnboardingStore(state => state.setCancellationPolicy);
     const setAddress = useClubOnboardingStore(state => state.setAddress);
-    const setPhoneNumber = useClubOnboardingStore(state => state.setPhoneNumber);
+    const setPhoneNumber = useCommonOnboardingStore(state => state.setPhoneNumber);
 
     const router = useRouter();
 
