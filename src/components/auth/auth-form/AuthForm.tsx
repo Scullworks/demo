@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AlertDialog, HookedTextField, Severity, SnackbarAlert } from '@/components';
-import { useStoredUserType } from '@/hooks';
-import { useAuthStore, UserType } from '@/hooks/store/useAuthStore';
+import { useStoredUserType } from '@/hooks/common';
+import { useAuthStore, UserType } from '@/hooks/store';
 import { loginWithEmailAndPassword, registerWithEmailAndPassword } from '@/services/firebase/auth';
 import { authSchema } from '@/utils/validations';
 
