@@ -1,8 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { FormEvent, useCallback, useEffect, useMemo } from 'react';
+import { FormEvent, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { HookedTextField, HookedTimeField, OnboardingLayout } from '@/components';
+import {
+    AddressAutocomplete,
+    Autocomplete,
+    AutocompleteOption,
+    HookedTextField,
+    HookedTimeField,
+    OnboardingLayout
+} from '@/components';
 import { useClubOnboardingStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
 import { operationSchema } from '@/utils/validations';
 
@@ -14,12 +22,27 @@ interface OperationValues {
     readonly phoneNumber: number;
 }
 
+const cancellationOptions: AutocompleteOption[] = [
+    { id: '8caa6a7b-0f2e-42e5-a81d-fe1531520af3', name: '24 hours notice' },
+    { id: 'eb1d0c12-a290-4291-a16b-2de28bbe2940', name: '2 days notice' },
+    { id: 'a2275a00-e866-4ad9-8f7f-fc7d74b25cef', name: '3 days notice' },
+    { id: '886c3cc3-c198-4eac-a534-16c881227eec', name: '4 days notice' },
+    { id: '70541e3f-0ba3-429f-9f7e-1cc15639f19f', name: '5 days notice' },
+    { id: 'ac17e7c1-e20b-4ff8-a082-39ae8b31e20e', name: '6 days notice' },
+    { id: 'b024ec97-ae1a-4fe5-b082-695b75f0b1b5', name: '1 week notice' }
+];
+
 function Details() {
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
     const nextStep = useStepperStore(state => state.nextStep);
 
+    const openingTime = useClubOnboardingStore(state => state.openingTime);
+    const closingTime = useClubOnboardingStore(state => state.closingTime);
+    const cancellationPolicy = useClubOnboardingStore(state => state.cancellationPolicy);
+    const address = useClubOnboardingStore(state => state.address);
+    const phoneNumber = useCommonOnboardingStore(state => state.phoneNumber);
     const setOpeningTime = useClubOnboardingStore(state => state.setOpeningTime);
     const setClosingTime = useClubOnboardingStore(state => state.setClosingTime);
     const setCancellationPolicy = useClubOnboardingStore(state => state.setCancellationPolicy);
@@ -30,38 +53,38 @@ function Details() {
 
     const {
         control,
+        clearErrors,
         handleSubmit,
-        formState: { errors }
+        register,
+        formState: { errors, isValid }
     } = useForm<OperationValues>({
         resolver: yupResolver(operationSchema),
         defaultValues: {
-            openingTime: undefined,
-            closingTime: undefined,
-            cancellationPolicy: '',
-            address: '',
-            phoneNumber: undefined
+            openingTime: (dayjs(openingTime) as unknown as string) ?? undefined,
+            closingTime: (dayjs(closingTime) as unknown as string) ?? undefined,
+            cancellationPolicy: cancellationPolicy ?? '',
+            address: address ?? '',
+            phoneNumber: phoneNumber ?? undefined
         }
     });
-
-    const errorCount = useMemo(() => Object.keys(errors).length, [errors]);
 
     const submitDetails = useCallback(
         () =>
             handleSubmit(data => {
-                setOpeningTime(data.openingTime);
-                setClosingTime(data.closingTime);
+                setOpeningTime(dayjs(data.openingTime));
+                setClosingTime(dayjs(data.closingTime));
                 setCancellationPolicy(data.cancellationPolicy);
                 setAddress(data.address);
                 setPhoneNumber(data.phoneNumber);
 
-                if (!errorCount) {
+                if (isValid) {
                     router.push('/onboarding/club/services');
                     nextStep();
                 }
             }),
         [
             handleSubmit,
-            errorCount,
+            isValid,
             nextStep,
             router,
             setAddress,
@@ -106,13 +129,19 @@ function Details() {
                         error={errors.closingTime?.message}
                     />
                 </div>
-                <HookedTextField
+                <Autocomplete
+                    label="Cancellation Policy"
                     name="cancellationPolicy"
-                    control={control}
+                    register={register}
+                    clearErrors={clearErrors}
+                    options={cancellationOptions}
                     error={errors.cancellationPolicy?.message}
-                    placeholder="Cancellation Policy"
                 />
-                <HookedTextField name="address" control={control} error={errors.address?.message} />
+                <AddressAutocomplete
+                    name="address"
+                    register={register}
+                    error={errors?.address?.message}
+                />
                 <HookedTextField
                     name="phoneNumber"
                     control={control}
