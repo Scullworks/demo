@@ -10,7 +10,7 @@ export { default as About } from './home/about/About';
 export { default as ContactUs } from './home/contact-us/ContactUs';
 export { default as Header } from './home/header/Header';
 export { default as Navbar } from './home/navbar/Navbar';
-export { default as AddressAutocomplete } from './onboarding/address-autocomplete/AddressAutoComplete';
+export { default as AddressAutocomplete } from './onboarding/address-autocomplete/AddressAutocomplete';
 export { default as AlertDialog } from './onboarding/alert-dialog/AlertDialog';
 export { default as OnboardingLayout } from './onboarding/onboarding-layout/OnboardingLayout';
 export { default as ProfileInfo } from './onboarding/profile-info/ProfileInfo';
@@ -18,3 +18,4 @@ export { default as ProgressStepper } from './onboarding/progress-stepper/Progre
 
 export * from './common/autocomplete/AutoComplete';
 export * from './common/snackbar-alert/SnackbarAlert';
+export * from './onboarding/address-autocomplete/AddressAutocomplete';

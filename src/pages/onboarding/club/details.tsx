@@ -19,7 +19,15 @@ const cancellationOptions: AutocompleteOption[] = [
 ];
 
 function ClubDetails() {
-    const { onSubmit, control, errors, register, clearErrors } = useClubDetails();
+    const {
+        addressPlaceType,
+        cancellationPolicy,
+        onSubmit,
+        control,
+        errors,
+        register,
+        clearErrors
+    } = useClubDetails();
 
     return (
         <OnboardingLayout>
@@ -42,6 +50,7 @@ function ClubDetails() {
                 <Autocomplete
                     label="Cancellation Policy"
                     name="cancellationPolicy"
+                    defaultValue={cancellationPolicy ?? ''}
                     register={register}
                     clearErrors={clearErrors}
                     options={cancellationOptions}
@@ -49,6 +58,7 @@ function ClubDetails() {
                 />
                 <AddressAutocomplete
                     name="address"
+                    defaultValue={addressPlaceType ?? null}
                     register={register}
                     error={errors?.address?.message}
                 />

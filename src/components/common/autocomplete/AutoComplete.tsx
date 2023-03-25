@@ -10,6 +10,7 @@ export interface AutocompleteOption {
 interface AutocompleteProps<T extends FieldValues> extends Omit<ComponentProps<'input'>, 'name'> {
     readonly label: string;
     readonly name: Path<T>;
+    readonly defaultValue: string;
     readonly register: UseFormRegister<T>;
     readonly clearErrors: UseFormClearErrors<T>;
     readonly options: AutocompleteOption[];
@@ -17,13 +18,13 @@ interface AutocompleteProps<T extends FieldValues> extends Omit<ComponentProps<'
 }
 
 function Autocomplete<T extends FieldValues>(props: AutocompleteProps<T>) {
-    const { label, name, register, clearErrors, options, error } = props;
+    const { label, name, defaultValue, register, clearErrors, options, error } = props;
 
     const isError = typeof error === 'string';
 
     return (
         <MuiAutocomplete
-            disablePortal
+            defaultValue={defaultValue}
             options={options.map(club => club.name)}
             onChange={() => clearErrors(name)}
             renderInput={params => (

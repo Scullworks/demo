@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { PlaceType } from '@/components';
 import { useClubOnboardingStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
 import { operationSchema } from '@/utils/validations';
 
@@ -28,8 +29,9 @@ export function useClubDetails() {
     const setOpeningTime = useClubOnboardingStore(state => state.setOpeningTime);
     const setClosingTime = useClubOnboardingStore(state => state.setClosingTime);
     const setCancellationPolicy = useClubOnboardingStore(state => state.setCancellationPolicy);
-    const setAddress = useClubOnboardingStore(state => state.setAddress);
     const setPhoneNumber = useCommonOnboardingStore(state => state.setPhoneNumber);
+
+    const addressPlaceType = JSON.parse(address as string) as PlaceType;
 
     const router = useRouter();
 
@@ -53,12 +55,11 @@ export function useClubDetails() {
     const submitDetails = useCallback(
         () =>
             handleSubmit(data => {
-                const { openingTime, closingTime, cancellationPolicy, address, phoneNumber } = data;
+                const { openingTime, closingTime, cancellationPolicy, phoneNumber } = data;
 
                 setOpeningTime(dayjs(openingTime));
                 setClosingTime(dayjs(closingTime));
                 setCancellationPolicy(cancellationPolicy);
-                setAddress(address);
                 setPhoneNumber(phoneNumber);
 
                 if (isValid) {
@@ -71,7 +72,6 @@ export function useClubDetails() {
             isValid,
             nextStep,
             router,
-            setAddress,
             setCancellationPolicy,
             setClosingTime,
             setOpeningTime,
@@ -96,6 +96,8 @@ export function useClubDetails() {
     }, [triggerSubmit, setTriggerSubmit, submitDetails]);
 
     return {
+        addressPlaceType,
+        cancellationPolicy,
         onSubmit,
         control,
         errors,

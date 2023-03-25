@@ -10,6 +10,7 @@ import parse from 'autosuggest-highlight/parse';
 import { ComponentProps, useEffect, useMemo, useRef, useState } from 'react';
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
+import { useClubOnboardingStore } from '@/hooks/store';
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
@@ -31,30 +32,35 @@ interface MainTextMatchedSubstrings {
     offset: number;
     length: number;
 }
+
 interface StructuredFormatting {
     main_text: string;
     secondary_text: string;
     main_text_matched_substrings?: readonly MainTextMatchedSubstrings[];
 }
-interface PlaceType {
+
+export interface PlaceType {
     description: string;
     structured_formatting: StructuredFormatting;
 }
 
 interface AddressAutocompleteProps<T extends FieldValues>
-    extends Omit<ComponentProps<'input'>, 'name'> {
+    extends Omit<ComponentProps<'input'>, 'name' | 'defaultValue'> {
+    readonly defaultValue?: PlaceType | null;
     readonly name: Path<T>;
     readonly register: UseFormRegister<T>;
     readonly error: string | undefined;
 }
 
 function AddressAutocomplete<T extends FieldValues>(props: AddressAutocompleteProps<T>) {
-    const { name, register, error } = props;
+    const { defaultValue, name, register, error } = props;
 
-    const [value, setValue] = useState<PlaceType | null>(null);
+    const [value, setValue] = useState<PlaceType | null>(defaultValue ?? null);
     const [inputValue, setInputValue] = useState('');
     const [options, setOptions] = useState<readonly PlaceType[]>([]);
     const loaded = useRef(false);
+
+    const setAddress = useClubOnboardingStore(state => state.setAddress);
 
     if (typeof window !== 'undefined' && !loaded.current) {
         if (!document.querySelector('#google-maps')) {
@@ -135,6 +141,7 @@ function AddressAutocomplete<T extends FieldValues>(props: AddressAutocompletePr
             onChange={(_event: any, newValue: PlaceType | null) => {
                 setOptions(newValue ? [newValue, ...options] : options);
                 setValue(newValue);
+                setAddress(JSON.stringify(newValue));
             }}
             onInputChange={(_event, newInputValue) => {
                 setInputValue(newInputValue);
