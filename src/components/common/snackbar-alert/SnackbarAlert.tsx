@@ -24,12 +24,13 @@ export type Severity = 'success' | 'error';
 interface SnackbarAlertProps {
     readonly text: string | null;
     readonly severity: Severity;
+    readonly hideCloseButton?: boolean;
     readonly open: boolean;
     readonly setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 function SnackbarAlert(props: SnackbarAlertProps) {
-    const { text, open, setOpen, severity } = props;
+    const { text, severity, hideCloseButton, open, setOpen } = props;
     const [transition, setTransition] = useState<ComponentType<TransitionProps> | undefined>(
         undefined
     );
@@ -47,12 +48,16 @@ function SnackbarAlert(props: SnackbarAlertProps) {
         <div>
             <Snackbar
                 open={open}
-                autoHideDuration={5000}
+                autoHideDuration={hideCloseButton ? 2500 : 5000}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                 onClose={onClose}
                 TransitionComponent={transition}
             >
-                <Alert onClose={onClose} severity={severity} color={severity}>
+                <Alert
+                    onClose={hideCloseButton ? undefined : onClose}
+                    severity={severity}
+                    color={severity}
+                >
                     {text}
                 </Alert>
             </Snackbar>

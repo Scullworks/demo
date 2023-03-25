@@ -56,14 +56,15 @@ function Services() {
                 >
                     Gear Rental
                 </button>
-
-                <SnackbarAlert
-                    text="Please select at least one service"
-                    severity="error"
-                    open={showAlert}
-                    setOpen={setShowAlert}
-                />
             </div>
+
+            <SnackbarAlert
+                text="Please select at least one service"
+                severity="error"
+                hideCloseButton
+                open={showAlert}
+                setOpen={setShowAlert}
+            />
         </OnboardingLayout>
     );
 }
