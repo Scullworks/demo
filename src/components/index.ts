@@ -1,6 +1,7 @@
 export { default as AuthForm } from './auth/auth-form/AuthForm';
 export { default as AuthProviders } from './auth/auth-providers/AuthProviders';
 export { default as AuthStateProvider } from './common/auth-state-provider/AuthStateProvider';
+export { default as Autocomplete } from './common/autocomplete/AutoComplete';
 export { default as Input } from './common/custom-input/Input';
 export { default as HookedTextField } from './common/hooked-text-field/HookedTextField';
 export { default as HookedTimeField } from './common/hooked-time-field/HookedTimeField';
@@ -15,4 +16,5 @@ export { default as OnboardingLayout } from './onboarding/onboarding-layout/Onbo
 export { default as ProfileInfo } from './onboarding/profile-info/ProfileInfo';
 export { default as ProgressStepper } from './onboarding/progress-stepper/ProgressStepper';
 
+export * from './common/autocomplete/AutoComplete';
 export * from './common/snackbar-alert/SnackbarAlert';
