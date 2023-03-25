@@ -1,8 +1,3 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
-import { FormEvent, useCallback, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import {
     AddressAutocomplete,
     Autocomplete,
@@ -11,16 +6,7 @@ import {
     HookedTimeField,
     OnboardingLayout
 } from '@/components';
-import { useClubOnboardingStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
-import { operationSchema } from '@/utils/validations';
-
-interface OperationValues {
-    readonly openingTime: string;
-    readonly closingTime: string;
-    readonly cancellationPolicy: string;
-    readonly address: string;
-    readonly phoneNumber: number;
-}
+import { useClubDetails } from '@/hooks/pages';
 
 const cancellationOptions: AutocompleteOption[] = [
     { id: '8caa6a7b-0f2e-42e5-a81d-fe1531520af3', name: '24 hours notice' },
@@ -32,84 +18,8 @@ const cancellationOptions: AutocompleteOption[] = [
     { id: 'b024ec97-ae1a-4fe5-b082-695b75f0b1b5', name: '1 week notice' }
 ];
 
-function Details() {
-    const triggerSubmit = useStepperStore(state => state.triggerSubmit);
-    const setActiveStep = useStepperStore(state => state.setActiveStep);
-    const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
-    const nextStep = useStepperStore(state => state.nextStep);
-
-    const openingTime = useClubOnboardingStore(state => state.openingTime);
-    const closingTime = useClubOnboardingStore(state => state.closingTime);
-    const cancellationPolicy = useClubOnboardingStore(state => state.cancellationPolicy);
-    const address = useClubOnboardingStore(state => state.address);
-    const phoneNumber = useCommonOnboardingStore(state => state.phoneNumber);
-    const setOpeningTime = useClubOnboardingStore(state => state.setOpeningTime);
-    const setClosingTime = useClubOnboardingStore(state => state.setClosingTime);
-    const setCancellationPolicy = useClubOnboardingStore(state => state.setCancellationPolicy);
-    const setAddress = useClubOnboardingStore(state => state.setAddress);
-    const setPhoneNumber = useCommonOnboardingStore(state => state.setPhoneNumber);
-
-    const router = useRouter();
-
-    const {
-        control,
-        clearErrors,
-        handleSubmit,
-        register,
-        formState: { errors, isValid }
-    } = useForm<OperationValues>({
-        resolver: yupResolver(operationSchema),
-        defaultValues: {
-            openingTime: (dayjs(openingTime) as unknown as string) ?? undefined,
-            closingTime: (dayjs(closingTime) as unknown as string) ?? undefined,
-            cancellationPolicy: cancellationPolicy ?? '',
-            address: address ?? '',
-            phoneNumber: phoneNumber ?? undefined
-        }
-    });
-
-    const submitDetails = useCallback(
-        () =>
-            handleSubmit(data => {
-                setOpeningTime(dayjs(data.openingTime));
-                setClosingTime(dayjs(data.closingTime));
-                setCancellationPolicy(data.cancellationPolicy);
-                setAddress(data.address);
-                setPhoneNumber(data.phoneNumber);
-
-                if (isValid) {
-                    router.push('/onboarding/club/services');
-                    nextStep();
-                }
-            }),
-        [
-            handleSubmit,
-            isValid,
-            nextStep,
-            router,
-            setAddress,
-            setCancellationPolicy,
-            setClosingTime,
-            setOpeningTime,
-            setPhoneNumber
-        ]
-    );
-
-    function onSubmit(event: FormEvent) {
-        event.preventDefault();
-        submitDetails()();
-    }
-
-    useEffect(() => {
-        setActiveStep(1);
-    }, [setActiveStep]);
-
-    useEffect(() => {
-        if (triggerSubmit) {
-            submitDetails()();
-            setTriggerSubmit(false);
-        }
-    }, [triggerSubmit, setTriggerSubmit, submitDetails]);
+function ClubDetails() {
+    const { onSubmit, control, errors, register, clearErrors } = useClubDetails();
 
     return (
         <OnboardingLayout>
@@ -154,4 +64,4 @@ function Details() {
     );
 }
 
-export default Details;
+export default ClubDetails;
