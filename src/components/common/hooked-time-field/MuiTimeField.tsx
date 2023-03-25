@@ -1,5 +1,5 @@
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 
@@ -20,7 +20,7 @@ function MuiTimeField<T extends FieldValues>(props: MuiTimeFieldProps<T>) {
     const isError = typeof error === 'string';
 
     return (
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
             <TimeField
                 variant="outlined"
                 color="info"

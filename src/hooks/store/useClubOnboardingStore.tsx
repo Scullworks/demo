@@ -1,3 +1,4 @@
+import { Dayjs } from 'dayjs';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -18,14 +19,14 @@ export interface Boat {
 }
 
 interface ClubOnboardingState {
-    readonly openingTime: string | null;
-    readonly closingTime: string | null;
+    readonly openingTime: Dayjs | null;
+    readonly closingTime: Dayjs | null;
     readonly cancellationPolicy: string | null;
     readonly address: string | null;
     readonly services: Service[];
     readonly boats: Boat[];
-    readonly setOpeningTime: (openingTime: string) => void;
-    readonly setClosingTime: (closingTime: string) => void;
+    readonly setOpeningTime: (openingTime: Dayjs) => void;
+    readonly setClosingTime: (closingTime: Dayjs) => void;
     readonly setCancellationPolicy: (cancellationPolicy: string) => void;
     readonly setAddress: (address: string) => void;
     readonly updateServices: (services: Service[]) => void;
