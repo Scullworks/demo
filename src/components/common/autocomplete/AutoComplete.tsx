@@ -2,9 +2,9 @@ import { Autocomplete as MuiAutocomplete, TextField } from '@mui/material';
 import { ComponentProps } from 'react';
 import { FieldValues, Path, UseFormClearErrors, UseFormRegister } from 'react-hook-form';
 
-export interface AutocompleteOption {
+export interface Option {
     readonly id: string;
-    readonly name: string;
+    readonly value: string;
 }
 
 interface AutocompleteProps<T extends FieldValues> extends Omit<ComponentProps<'input'>, 'name'> {
@@ -13,7 +13,7 @@ interface AutocompleteProps<T extends FieldValues> extends Omit<ComponentProps<'
     readonly defaultValue: string;
     readonly register: UseFormRegister<T>;
     readonly clearErrors: UseFormClearErrors<T>;
-    readonly options: AutocompleteOption[];
+    readonly options: Option[];
     readonly error: string | undefined;
 }
 
@@ -25,7 +25,7 @@ function Autocomplete<T extends FieldValues>(props: AutocompleteProps<T>) {
     return (
         <MuiAutocomplete
             defaultValue={defaultValue}
-            options={options.map(club => club.name)}
+            options={options.map(option => option.value)}
             onChange={() => clearErrors(name)}
             renderInput={params => (
                 <TextField

@@ -1,22 +1,16 @@
 import { MenuItem } from '@mui/material';
-import { HookedTextField, OnboardingLayout, SnackbarAlert } from '@/components';
+import { HookedTextField, OnboardingLayout, Option, SnackbarAlert } from '@/components';
 import { useBoats } from '@/hooks/pages';
-import { BoatSize } from '@/hooks/store';
 
-interface BoatSizeOption {
-    readonly id: number;
-    readonly value: BoatSize;
-}
-
-const boatSizes: BoatSizeOption[] = [
-    { id: 1, value: '8+' },
-    { id: 2, value: '4+' },
-    { id: 3, value: '4-' },
-    { id: 4, value: '4x' },
-    { id: 5, value: '2+' },
-    { id: 6, value: '2-' },
-    { id: 7, value: '2x' },
-    { id: 8, value: '1x' }
+const boatSizes: Option[] = [
+    { id: 'fc0b6c32-1435-44ee-892c-413491845e48', value: '8+' },
+    { id: '8619e88f-7f06-4c87-9cc3-0249d256d7b0', value: '4+' },
+    { id: '04ef6fd1-dd74-4c9e-ba8e-e2f6ad954dc3', value: '4-' },
+    { id: '4285b556-50ca-4642-b73a-80250f6cea88', value: '4x' },
+    { id: 'b69c0852-adec-437b-9f80-6af39df2d3df', value: '2+' },
+    { id: '0e6b5282-c0c1-4443-a535-3eb98c564c0d', value: '2-' },
+    { id: '7c916ee3-bfe4-4a14-af1e-39028c80cae3', value: '2x' },
+    { id: '9e96f607-3ac4-41cc-a0ac-7169b989022b', value: '1x' }
 ];
 
 function Boats() {

@@ -3,11 +3,6 @@ import { persist } from 'zustand/middleware';
 
 export type CoachMembership = 'Coach' | 'Guest Coach';
 
-export interface ClubName {
-    readonly id: string;
-    readonly name: string;
-}
-
 interface CoachOnboardingState {
     readonly phoneNumber: number | null;
     readonly club: string | null;
