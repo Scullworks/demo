@@ -19,6 +19,5 @@ export const clubSteps: Step[] = [
 
 export const coachSteps: Step[] = [
     { id: 1, label: 'Profile' },
-    { id: 2, label: 'Details' },
-    { id: 3, label: 'Club' }
+    { id: 2, label: 'Details' }
 ];
