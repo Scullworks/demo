@@ -6,8 +6,7 @@ export interface Step {
 export const athleteSteps: Step[] = [
     { id: 1, label: 'Profile' },
     { id: 2, label: 'Details' },
-    { id: 3, label: 'Membership' },
-    { id: 4, label: 'Preferences' }
+    { id: 3, label: 'Membership' }
 ];
 
 export const clubSteps: Step[] = [
