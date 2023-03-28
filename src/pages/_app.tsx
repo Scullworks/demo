@@ -1,4 +1,6 @@
 import { ThemeProvider } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { AnimatePresence } from 'framer-motion';
 import { theme } from '@/utils/mui/theme';
 import type { AppProps } from 'next/app';
@@ -12,7 +14,9 @@ export default function App({ Component, pageProps, router }: AppProps) {
     return (
         <ThemeProvider theme={theme}>
             <AnimatePresence mode="wait" onExitComplete={scrollToTop}>
-                <Component {...pageProps} key={router.asPath} />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Component {...pageProps} key={router.asPath} />
+                </LocalizationProvider>
             </AnimatePresence>
         </ThemeProvider>
     );
