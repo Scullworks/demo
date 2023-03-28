@@ -19,8 +19,8 @@ function Boats() {
 
     return (
         <OnboardingLayout>
-            <h1>Your club&apos;s boats</h1>
-            <form className="onboarding-club__form" onSubmit={onSubmit}>
+            <h1>Add the boats available at your club</h1>
+            <form className="onboarding__form" onSubmit={onSubmit}>
                 <HookedTextField
                     name="boatSize"
                     placeholder="Boat Size"

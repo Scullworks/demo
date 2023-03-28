@@ -15,6 +15,11 @@
     }
 }
 
+.onboarding__form {
+    @include flex-center;
+}
+
+// Club Onboarding
 .onboarding-club__opening-hours {
     @include flex-center(row);
     justify-content: space-between;
@@ -27,11 +32,6 @@
     .MuiInputBase-root {
         width: 100%;
     }
-}
-
-// Club Onboarding
-.onboarding-club__form {
-    @include flex-center;
 }
 
 .onboarding-club__services {

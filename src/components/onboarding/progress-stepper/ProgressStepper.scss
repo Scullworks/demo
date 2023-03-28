@@ -4,7 +4,7 @@
 
 .stepper {
     position: absolute;
-    bottom: 8rem;
+    bottom: 5rem;
     left: 50%;
     transform: translateX(-50%);
     width: min(80vw, 55rem);
@@ -12,10 +12,6 @@
     .MuiSvgIcon-root.Mui-completed,
     .MuiSvgIcon-root.Mui-active {
         color: $color-button;
-    }
-
-    @include mobile-large {
-        bottom: 5rem;
     }
 }
 

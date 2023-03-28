@@ -31,8 +31,8 @@ function ClubDetails() {
 
     return (
         <OnboardingLayout>
-            <h1>Your club&apos;s operating hours and policies</h1>
-            <form className="onboarding-club__form" onSubmit={onSubmit}>
+            <h1>Your operating hours and policies</h1>
+            <form className="onboarding__form" onSubmit={onSubmit}>
                 <div className="onboarding-club__opening-hours">
                     <HookedTimeField
                         name="openingTime"
