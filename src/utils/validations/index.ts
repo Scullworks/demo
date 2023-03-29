@@ -1,4 +1,5 @@
 export * from './athlete-details.schema';
+export * from './athlete-membership.schema';
 export * from './auth.schema';
 export * from './boat.schema';
 export * from './coach-details.schema';
