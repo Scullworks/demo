@@ -1,3 +1,4 @@
+export * from './useAthleteDetails';
 export * from './useBoats';
 export * from './useCoachDetails';
 export * from './useClubDetails';
