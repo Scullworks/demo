@@ -2,9 +2,9 @@ import { Autocomplete as MuiAutocomplete, TextField } from '@mui/material';
 import { ComponentProps } from 'react';
 import { FieldValues, Path, UseFormClearErrors, UseFormRegister } from 'react-hook-form';
 
-export interface Option {
+export interface Option<T = string> {
     readonly id: string;
-    readonly value: string;
+    readonly value: T;
 }
 
 interface AutocompleteProps<T extends FieldValues> extends Omit<ComponentProps<'input'>, 'name'> {

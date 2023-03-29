@@ -1,14 +1,9 @@
 import { MenuItem } from '@mui/material';
-import { Autocomplete, HookedTextField, OnboardingLayout } from '@/components';
+import { Autocomplete, HookedTextField, OnboardingLayout, Option } from '@/components';
 import { useCoachDetails } from '@/hooks/pages';
 import { CoachMembership } from '@/hooks/store';
 
-interface CoachMembershipOption {
-    readonly id: string;
-    readonly value: CoachMembership;
-}
-
-const coachMembershipOptions: CoachMembershipOption[] = [
+const coachMembershipOptions: Option<CoachMembership>[] = [
     { id: '3f269ba5-c4ab-453f-b00b-90239cb81ad7', value: 'Coach' },
     { id: '48755830-29b5-4255-9d75-a58dffaea420', value: 'Guest Coach' }
 ];
