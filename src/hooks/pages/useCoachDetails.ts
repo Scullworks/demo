@@ -2,13 +2,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Option } from '@/components';
-import { CoachMembership, useCoachOnboardingStore, useStepperStore } from '@/hooks/store';
+import { CoachMembershipType, useCoachOnboardingStore, useStepperStore } from '@/hooks/store';
 import { coachDetailsSchema } from '@/utils/validations';
 
 interface CoachDetailsValues {
     readonly phoneNumber: number;
     readonly club: string;
-    readonly membership: CoachMembership | string;
+    readonly membershipType: CoachMembershipType | string;
 }
 
 export function useCoachDetails() {
@@ -16,10 +16,10 @@ export function useCoachDetails() {
 
     const phoneNumber = useCoachOnboardingStore(state => state.phoneNumber);
     const club = useCoachOnboardingStore(state => state.club);
-    const membership = useCoachOnboardingStore(state => state.membership);
+    const membershipType = useCoachOnboardingStore(state => state.membershipType);
     const setPhoneNumber = useCoachOnboardingStore(state => state.setPhoneNumber);
     const setClub = useCoachOnboardingStore(state => state.setClub);
-    const setMembership = useCoachOnboardingStore(state => state.setMembership);
+    const setMembershipType = useCoachOnboardingStore(state => state.setMembershipType);
 
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
@@ -36,18 +36,18 @@ export function useCoachDetails() {
         defaultValues: {
             phoneNumber: phoneNumber ?? undefined,
             club: club ?? '',
-            membership: membership ?? ''
+            membershipType: membershipType ?? ''
         }
     });
 
     const submitDetails = useCallback(
         () =>
             handleSubmit(data => {
-                const { phoneNumber, club, membership } = data;
+                const { phoneNumber, club, membershipType } = data;
 
                 setPhoneNumber(phoneNumber);
                 setClub(club);
-                setMembership(membership as CoachMembership);
+                setMembershipType(membershipType as CoachMembershipType);
 
                 if (isValid) {
                     // TODO: Create a coach document and add everything to firebase
@@ -55,7 +55,7 @@ export function useCoachDetails() {
                     // TODO: If all goes well, push to coach dashboard
                 }
             }),
-        [handleSubmit, isValid, setClub, setMembership, setPhoneNumber]
+        [handleSubmit, isValid, setClub, setMembershipType, setPhoneNumber]
     );
 
     function onSubmit(event: FormEvent) {

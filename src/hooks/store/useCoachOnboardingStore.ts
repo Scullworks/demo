@@ -1,15 +1,15 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type CoachMembership = 'Coach' | 'Guest Coach';
+export type CoachMembershipType = 'Coach' | 'Guest Coach';
 
 interface CoachOnboardingState {
     readonly phoneNumber: number | null;
     readonly club: string | null;
-    readonly membership: CoachMembership | null;
+    readonly membershipType: CoachMembershipType | null;
     readonly setPhoneNumber: (phoneNumber: number) => void;
     readonly setClub: (club: string) => void;
-    readonly setMembership: (membership: CoachMembership) => void;
+    readonly setMembershipType: (membershipType: CoachMembershipType) => void;
 }
 
 export const useCoachOnboardingStore = create<CoachOnboardingState>()(
@@ -17,10 +17,10 @@ export const useCoachOnboardingStore = create<CoachOnboardingState>()(
         set => ({
             phoneNumber: null,
             club: null,
-            membership: null,
+            membershipType: null,
             setPhoneNumber: phoneNumber => set(() => ({ phoneNumber })),
             setClub: club => set(() => ({ club })),
-            setMembership: membership => set(() => ({ membership }))
+            setMembershipType: membershipType => set(() => ({ membershipType }))
         }),
         { name: 'coach-onboarding' }
     )
