@@ -16,11 +16,6 @@ interface OperationValues {
 }
 
 export function useClubDetails() {
-    const triggerSubmit = useStepperStore(state => state.triggerSubmit);
-    const setActiveStep = useStepperStore(state => state.setActiveStep);
-    const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
-    const nextStep = useStepperStore(state => state.nextStep);
-
     const openingTime = useClubOnboardingStore(state => state.openingTime);
     const closingTime = useClubOnboardingStore(state => state.closingTime);
     const cancellationPolicy = useClubOnboardingStore(state => state.cancellationPolicy);
@@ -31,13 +26,17 @@ export function useClubDetails() {
     const setCancellationPolicy = useClubOnboardingStore(state => state.setCancellationPolicy);
     const setPhoneNumber = useCommonOnboardingStore(state => state.setPhoneNumber);
 
+    const triggerSubmit = useStepperStore(state => state.triggerSubmit);
+    const setActiveStep = useStepperStore(state => state.setActiveStep);
+    const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
+    const nextStep = useStepperStore(state => state.nextStep);
+
     const addressPlaceType = JSON.parse(address as string) as PlaceType;
 
     const router = useRouter();
 
     const {
         control,
-        clearErrors,
         handleSubmit,
         register,
         formState: { errors, isValid }
@@ -97,11 +96,9 @@ export function useClubDetails() {
 
     return {
         addressPlaceType,
-        cancellationPolicy,
         onSubmit,
         control,
         errors,
-        register,
-        clearErrors
+        register
     };
 }

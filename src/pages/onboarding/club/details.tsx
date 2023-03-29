@@ -1,6 +1,6 @@
+import { MenuItem } from '@mui/material';
 import {
     AddressAutocomplete,
-    Autocomplete,
     Option,
     HookedTextField,
     HookedTimeField,
@@ -19,15 +19,7 @@ const cancellationOptions: Option[] = [
 ];
 
 function ClubDetails() {
-    const {
-        addressPlaceType,
-        cancellationPolicy,
-        onSubmit,
-        control,
-        errors,
-        register,
-        clearErrors
-    } = useClubDetails();
+    const { addressPlaceType, onSubmit, control, errors, register } = useClubDetails();
 
     return (
         <OnboardingLayout>
@@ -47,15 +39,19 @@ function ClubDetails() {
                         error={errors.closingTime?.message}
                     />
                 </div>
-                <Autocomplete
-                    label="Cancellation Policy"
+                <HookedTextField
                     name="cancellationPolicy"
-                    defaultValue={cancellationPolicy ?? ''}
-                    register={register}
-                    clearErrors={clearErrors}
-                    options={cancellationOptions}
+                    control={control}
                     error={errors.cancellationPolicy?.message}
-                />
+                    placeholder="Cancellation Policy"
+                    select
+                >
+                    {cancellationOptions.map(option => (
+                        <MenuItem key={option.id} value={option.value}>
+                            {option.value}
+                        </MenuItem>
+                    ))}
+                </HookedTextField>
                 <AddressAutocomplete
                     name="address"
                     defaultValue={addressPlaceType ?? null}
