@@ -12,6 +12,8 @@ interface BoatValues {
 
 export function useBoats() {
     const [showAlert, setShowAlert] = useState(false);
+    const [isMobilePhone, setIsMobilePhone] = useState(false);
+    const [boatCountText, setBoatCountText] = useState('');
 
     const boats = useClubOnboardingStore(state => state.boats);
     const addBoat = useClubOnboardingStore(state => state.addBoat);
@@ -32,7 +34,7 @@ export function useBoats() {
         }
     });
 
-    const boatsCount = useMemo(() => Object.keys(boats).length, [boats]);
+    const boatCount = useMemo(() => Object.keys(boats).length, [boats]);
 
     const addBoatToStore = useCallback(
         () =>
@@ -52,7 +54,7 @@ export function useBoats() {
     );
 
     const submitDetails = useCallback(() => {
-        if (boatsCount) {
+        if (boatCount) {
             // TODO: Create a club document and add everything to firebase
             // TODO: Delete persisted club onboarding JSON in local storage
             // TODO: If all goes well, push to club dashboard
@@ -60,7 +62,7 @@ export function useBoats() {
             setTriggerSubmit(false);
             setShowAlert(true);
         }
-    }, [boatsCount, setTriggerSubmit]);
+    }, [boatCount, setTriggerSubmit]);
 
     function onSubmit(event: FormEvent) {
         event.preventDefault();
@@ -78,13 +80,38 @@ export function useBoats() {
         }
     }, [triggerSubmit, setTriggerSubmit, submitDetails]);
 
+    useEffect(() => {
+        function checkWindowWidth() {
+            if (window.innerWidth <= 500) {
+                setIsMobilePhone(true);
+            } else {
+                setIsMobilePhone(false);
+            }
+        }
+
+        window.addEventListener('resize', checkWindowWidth);
+
+        return () => {
+            window.removeEventListener('resize', checkWindowWidth);
+        };
+    }, [isMobilePhone]);
+
+    useEffect(() => {
+        if (!isMobilePhone) return;
+        if (!boatCount) setBoatCountText('No boats added');
+        if (boatCount === 1) setBoatCountText('1 boat added');
+        if (boatCount > 1) setBoatCountText(`${boatCount} boats added`);
+    }, [isMobilePhone, boatCount]);
+
     return {
-        onSubmit,
+        boats,
+        boatCountText,
+        showAlert,
+        isMobilePhone,
         control,
         errors,
+        onSubmit,
         addBoatToStore,
-        boats,
-        showAlert,
         setShowAlert
     };
 }

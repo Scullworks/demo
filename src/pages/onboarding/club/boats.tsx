@@ -14,8 +14,17 @@ const boatSizes: Option[] = [
 ];
 
 function Boats() {
-    const { onSubmit, control, errors, addBoatToStore, boats, showAlert, setShowAlert } =
-        useBoats();
+    const {
+        boats,
+        boatCountText,
+        showAlert,
+        isMobilePhone,
+        control,
+        errors,
+        onSubmit,
+        addBoatToStore,
+        setShowAlert
+    } = useBoats();
 
     return (
         <OnboardingLayout>
@@ -55,11 +64,15 @@ function Boats() {
                 </button>
 
                 {/* Boats */}
-                <div className="onboarding-club__boats-names">
-                    {boats.map(boat => (
-                        <p key={boat.name}>{boat.name}</p>
-                    ))}
-                </div>
+                {isMobilePhone ? (
+                    <p className="onboarding-club__boats-added">{boatCountText}</p>
+                ) : (
+                    <div className="onboarding-club__boats-names">
+                        {boats.map(boat => (
+                            <p key={boat.name}>{boat.name}</p>
+                        ))}
+                    </div>
+                )}
             </form>
 
             <SnackbarAlert
