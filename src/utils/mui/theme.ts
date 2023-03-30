@@ -55,7 +55,10 @@ export const theme: Theme = createTheme({
         MuiButton: {
             styleOverrides: {
                 root: {
-                    color: 'rgb(255, 179, 109)'
+                    color: 'rgb(255, 179, 109)',
+                    '&:hover': {
+                        backgroundColor: 'rgb(255, 179, 109)'
+                    }
                 }
             }
         },

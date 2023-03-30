@@ -4,4 +4,10 @@
     @include flex-center;
     width: 100vw;
     height: 100vh;
+
+    p {
+        margin-top: 5rem;
+        font-weight: 600;
+        color: rgb(85, 85, 85);
+    }
 }

@@ -8,10 +8,14 @@
     justify-content: flex-start;
     margin-top: 5rem;
     width: 100vw;
-    height: 91vh;
+    height: 100vh;
 
     h1 {
         padding-inline: 2rem;
+    }
+
+    .MuiSnackbar-root {
+        margin-bottom: 4.5rem;
     }
 }
 
