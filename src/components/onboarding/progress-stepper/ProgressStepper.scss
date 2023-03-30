@@ -13,6 +13,14 @@
     .MuiSvgIcon-root.Mui-active {
         color: $color-button;
     }
+
+    .MuiMobileStepper-dotActive {
+        background-color: $color-button;
+    }
+
+    .MuiMobileStepper-root {
+        background-color: transparent;
+    }
 }
 
 .stepper-button__container {
