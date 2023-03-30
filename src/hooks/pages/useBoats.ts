@@ -1,10 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useLocalStorage } from '@/hooks/common';
+import { useAddClubData } from '@/hooks/firebase';
 import { Boat, BoatSize, useClubOnboardingStore, useStepperStore } from '@/hooks/store';
+import { createClubAccount } from '@/services/firebase';
 import { boatSchema } from '@/utils/validations';
 
-interface BoatValues {
+export interface BoatValues {
     readonly boatSize: BoatSize | string;
     readonly boatMake: string;
     readonly boatName: string;
@@ -14,12 +18,18 @@ export function useBoats() {
     const [showAlert, setShowAlert] = useState(false);
     const [isMobilePhone, setIsMobilePhone] = useState(false);
     const [boatCountText, setBoatCountText] = useState('');
+    const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
     const boats = useClubOnboardingStore(state => state.boats);
     const addBoat = useClubOnboardingStore(state => state.addBoat);
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
+
+    const { clubData, imageUrl } = useAddClubData();
+    const { clearOnboardingStores } = useLocalStorage();
+
+    const router = useRouter();
 
     const {
         control,
@@ -53,21 +63,29 @@ export function useBoats() {
         [handleSubmit, isValid, addBoat]
     );
 
-    const submitDetails = useCallback(() => {
+    const submitDetails = useCallback(async () => {
         if (boatCount) {
-            // TODO: Create a club document and add everything to firebase
-            // TODO: Delete persisted club onboarding JSON in local storage
-            // TODO: If all goes well, push to club dashboard
+            setIsCreatingAccount(true);
+            const { success, error } = await createClubAccount(clubData, boats, imageUrl);
+            if (error) setIsCreatingAccount(false);
+            if (success) {
+                clearOnboardingStores();
+                router.push('/dashboard/club');
+            }
         } else {
             setTriggerSubmit(false);
             setShowAlert(true);
         }
-    }, [boatCount, setTriggerSubmit]);
-
-    function onSubmit(event: FormEvent) {
-        event.preventDefault();
-        submitDetails();
-    }
+    }, [
+        boatCount,
+        boats,
+        clubData,
+        imageUrl,
+        clearOnboardingStores,
+        setIsCreatingAccount,
+        setTriggerSubmit,
+        router
+    ]);
 
     useEffect(() => {
         setActiveStep(3);
@@ -78,7 +96,7 @@ export function useBoats() {
             setTriggerSubmit(false);
             submitDetails();
         }
-    }, [triggerSubmit, setTriggerSubmit, submitDetails]);
+    }, [setTriggerSubmit, submitDetails, triggerSubmit]);
 
     useEffect(() => {
         function checkWindowWidth() {
@@ -104,13 +122,13 @@ export function useBoats() {
     }, [isMobilePhone, boatCount]);
 
     return {
+        isCreatingAccount,
         boats,
         boatCountText,
         showAlert,
         isMobilePhone,
         control,
         errors,
-        onSubmit,
         addBoatToStore,
         setShowAlert
     };
