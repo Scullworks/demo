@@ -1,21 +1,8 @@
 import { Dayjs } from 'dayjs';
-import { FieldValue, serverTimestamp } from 'firebase/firestore';
+import { serverTimestamp } from 'firebase/firestore';
 import { useState } from 'react';
 import { useAuthStore, useClubOnboardingStore, useCommonOnboardingStore } from '@/hooks/store';
-
-export interface FirebaseClub {
-    readonly uid: string | undefined;
-    readonly name: string | null;
-    readonly email: string | undefined;
-    readonly phoneNumber: number | null;
-    readonly address: string | null;
-    readonly cancellationPolicy: string | null;
-    readonly closingTime: string | null;
-    readonly openingTime: string | null;
-    readonly services: string[];
-    readonly createdAt: FieldValue;
-    readonly updatedAt: FieldValue;
-}
+import { FirebaseClub } from '@/models';
 
 export function useAddClubData() {
     const [isCreatingAccount, setIsCreatingAccount] = useState(false);
