@@ -68,6 +68,13 @@ export const theme: Theme = createTheme({
                     backgroundColor: 'rgb(245, 253, 254)'
                 }
             }
+        },
+        MuiAutocomplete: {
+            styleOverrides: {
+                option: {
+                    paddingBlock: '1.2rem'
+                }
+            }
         }
     },
     typography: {
