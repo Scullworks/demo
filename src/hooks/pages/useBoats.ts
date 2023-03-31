@@ -5,7 +5,8 @@ import { useForm } from 'react-hook-form';
 import { useLocalStorage } from '@/hooks/common';
 import { useAddClubData } from '@/hooks/firebase';
 import { Boat, BoatSize, useClubOnboardingStore, useStepperStore } from '@/hooks/store';
-import { createClubAccount } from '@/services/firebase';
+import { FirebaseClub } from '@/models';
+import { createAccount } from '@/services/firebase';
 import { boatSchema } from '@/utils/validations';
 
 export interface BoatValues {
@@ -66,7 +67,14 @@ export function useBoats() {
     const submitDetails = useCallback(async () => {
         if (boatCount) {
             setIsCreatingAccount(true);
-            const { success, error } = await createClubAccount(clubData, boats, imageUrl);
+
+            const { success, error } = await createAccount<FirebaseClub>(
+                'clubs',
+                clubData,
+                imageUrl,
+                boats
+            );
+
             if (error) setIsCreatingAccount(false);
             if (success) {
                 clearOnboardingStores();
