@@ -1,9 +1,9 @@
 import { MenuItem } from '@mui/material';
 import { BaseSyntheticEvent, Dispatch, SetStateAction } from 'react';
 import { Control, FieldErrors } from 'react-hook-form';
-import { HookedTextField, Option, SnackbarAlert } from '@/components';
+import { HookedTextField, SnackbarAlert } from '@/components';
 import { BoatValues } from '@/hooks/pages';
-import { Boat } from '@/hooks/store';
+import { Boat, Option } from '@/models';
 
 const boatSizes: Option[] = [
     { id: 'fc0b6c32-1435-44ee-892c-413491845e48', value: '8+' },

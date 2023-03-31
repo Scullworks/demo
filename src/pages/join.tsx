@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
-import { useAuthStore, UserType } from '@/hooks/store';
+import { useAuthStore } from '@/hooks/store';
+import { UserType } from '@/models';
 import { pageTransitions } from '@/utils/animations/pages';
 
 function Join() {

@@ -1,12 +1,12 @@
 import { MenuItem } from '@mui/material';
 import {
     AddressAutocomplete,
-    Option,
     HookedTextField,
     HookedTimeField,
     OnboardingLayout
 } from '@/components';
 import { useClubDetails } from '@/hooks/pages';
+import { Option } from '@/models';
 
 const cancellationOptions: Option[] = [
     { id: '8caa6a7b-0f2e-42e5-a81d-fe1531520af3', value: '24 hours notice' },

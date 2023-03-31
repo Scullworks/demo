@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AlertDialog, HookedTextField, Severity, SnackbarAlert } from '@/components';
 import { useStoredUserType } from '@/hooks/common';
-import { useAuthStore, UserType } from '@/hooks/store';
+import { useAuthStore } from '@/hooks/store';
+import { UserType } from '@/models';
 import { loginWithEmailAndPassword, registerWithEmailAndPassword } from '@/services/firebase/auth';
 import { authSchema } from '@/utils/validations';
 
@@ -71,7 +72,6 @@ function AuthForm({ type }: AuthFormProps) {
 
         if (user) {
             setUser(user);
-            setSeverity('success');
             setAlert('Account created successfully');
             setShowAlert(true);
             router.push(`/onboarding/${userType}/profile`);

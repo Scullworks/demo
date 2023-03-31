@@ -1,13 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Option } from '@/components';
-import {
-    AthleteMembershipType,
-    PositionPreference,
-    useAthleteOnboardingStore,
-    useStepperStore
-} from '@/hooks/store';
+import { useAthleteOnboardingStore, useStepperStore } from '@/hooks/store';
+import { AthleteMembershipType, Option, PositionPreference } from '@/models';
 import { athleteMembershipSchema } from '@/utils/validations';
 
 interface AthleteMembershipValues {

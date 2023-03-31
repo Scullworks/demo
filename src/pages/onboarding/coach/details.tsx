@@ -1,8 +1,8 @@
 import { MenuItem } from '@mui/material';
 import { PropagateLoader } from 'react-spinners';
-import { Autocomplete, HookedTextField, OnboardingLayout, Option } from '@/components';
+import { Autocomplete, HookedTextField, OnboardingLayout } from '@/components';
 import { useCoachDetails } from '@/hooks/pages';
-import { CoachMembershipType } from '@/models';
+import { CoachMembershipType, Option } from '@/models';
 import { getClubsFromFirebase } from '@/services/firebase';
 
 const coachMembershipOptions: Option<CoachMembershipType>[] = [

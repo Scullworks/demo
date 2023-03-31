@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Service } from '@/hooks/store';
+import { Service } from '@/models';
 
 export function useSelectedServices() {
     const [services, setServices] = useState<Service[]>([]);

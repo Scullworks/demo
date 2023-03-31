@@ -1,8 +1,9 @@
 import { addDoc, collection } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { Boat } from '@/hooks/store';
-import { FirebaseDoc, FirebaseClubDoc } from '@/models';
+import { FirebaseDoc, FirebaseClubDoc, Boat } from '@/models';
 import { database, storage } from './setup';
+
+type CollectionName = 'clubs' | 'athletes' | 'coaches';
 
 interface AddDocResponse {
     readonly success: boolean;
@@ -10,7 +11,7 @@ interface AddDocResponse {
 }
 
 export async function createAccount<T extends FirebaseDoc | FirebaseClubDoc>(
-    collectionName: 'clubs' | 'athletes' | 'coaches',
+    collectionName: CollectionName,
     data: T,
     imageUrl: string | null,
     boats?: Boat[]

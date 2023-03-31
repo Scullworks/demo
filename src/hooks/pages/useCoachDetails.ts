@@ -2,10 +2,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Option } from '@/components';
 import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
-import { CoachMembershipType, FirebaseClubDoc, FirebaseCoach } from '@/models';
+import { CoachMembershipType, FirebaseClubDoc, FirebaseCoach, Option } from '@/models';
 import { createAccount } from '@/services/firebase';
 import { coachDetailsSchema } from '@/utils/validations';
 

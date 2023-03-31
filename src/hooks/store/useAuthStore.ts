@@ -1,7 +1,6 @@
 import { User } from 'firebase/auth';
 import { create } from 'zustand';
-
-export type UserType = 'athlete' | 'club' | 'coach';
+import { UserType } from '@/models';
 
 interface AuthState {
     readonly user: User | null;

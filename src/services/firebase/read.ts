@@ -1,5 +1,5 @@
 import { collection, getDocs } from 'firebase/firestore';
-import { Option } from '@/components';
+import { Option } from '@/models';
 import { database } from './setup';
 
 interface GetClubsResponse {

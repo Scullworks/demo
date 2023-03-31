@@ -18,6 +18,5 @@ export { default as OnboardingLayout } from './onboarding/onboarding-layout/Onbo
 export { default as ProfileInfo } from './onboarding/profile-info/ProfileInfo';
 export { default as ProgressStepper } from './onboarding/progress-stepper/ProgressStepper';
 
-export * from './common/autocomplete/Autocomplete';
 export * from './common/snackbar-alert/SnackbarAlert';
 export * from './onboarding/address-autocomplete/AddressAutocomplete';

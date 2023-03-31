@@ -9,7 +9,7 @@ import {
     User
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { UserType } from '@/hooks/store/useAuthStore';
+import { UserType } from '@/models';
 import { EXISTING_EMAIL, USER_NOT_FOUND, WRONG_PASSWORD } from '@/utils/errors/firebase';
 import { auth, database } from './setup';
 

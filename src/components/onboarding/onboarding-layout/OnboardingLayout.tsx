@@ -2,7 +2,8 @@ import { motion } from 'framer-motion';
 import { ReactNode, useEffect, useState } from 'react';
 import { AlertDialog, AuthStateProvider, ProgressStepper } from '@/components';
 import { useStoredUserType } from '@/hooks/common';
-import { useAuthStore, UserType } from '@/hooks/store';
+import { useAuthStore } from '@/hooks/store';
+import { UserType } from '@/models';
 import { pageTransitions } from '@/utils/animations/pages';
 
 interface OnboardingLayoutProps {

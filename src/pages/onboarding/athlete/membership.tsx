@@ -1,7 +1,7 @@
 import { MenuItem } from '@mui/material';
-import { Autocomplete, HookedTextField, OnboardingLayout, Option } from '@/components';
+import { Autocomplete, HookedTextField, OnboardingLayout } from '@/components';
 import { useAthleteMembership } from '@/hooks/pages';
-import { AthleteMembershipType, PositionPreference } from '@/hooks/store';
+import { AthleteMembershipType, Option, PositionPreference } from '@/models';
 
 const athleteMembershipOptions: Option<AthleteMembershipType>[] = [
     { id: 'a9a30fbe-488e-41d6-ac5a-9ea6be3457c2', value: 'Member' },

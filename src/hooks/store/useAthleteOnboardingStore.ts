@@ -1,9 +1,7 @@
 import { Dayjs } from 'dayjs';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-export type AthleteMembershipType = 'Member' | 'Guest Rower' | 'Gear Rental Only';
-export type PositionPreference = 'Port' | 'Biswpetual' | 'Starboard';
+import { AthleteMembershipType, PositionPreference } from '@/models';
 
 interface AthleteOnboardingState {
     readonly phoneNumber: number | null;

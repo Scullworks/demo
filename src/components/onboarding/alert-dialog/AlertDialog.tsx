@@ -9,7 +9,8 @@ import {
 } from '@mui/material';
 import { TransitionProps as MuiTransitionProps } from '@mui/material/transitions';
 import { Dispatch, forwardRef, ReactElement, Ref, SetStateAction } from 'react';
-import { useAuthStore, UserType } from '@/hooks/store';
+import { useAuthStore } from '@/hooks/store';
+import { UserType } from '@/models';
 
 interface TransitionProps extends MuiTransitionProps {
     children: ReactElement;
