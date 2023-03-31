@@ -32,6 +32,8 @@ export function useClubDetails() {
     const nextStep = useStepperStore(state => state.nextStep);
 
     const addressPlaceType = JSON.parse(address as string) as PlaceType;
+    const persistedOpeningTime = openingTime ? (dayjs(openingTime) as unknown as string) : null;
+    const persistedClosingTime = closingTime ? (dayjs(closingTime) as unknown as string) : null;
 
     const router = useRouter();
 
@@ -43,11 +45,11 @@ export function useClubDetails() {
     } = useForm<OperationValues>({
         resolver: yupResolver(operationSchema),
         defaultValues: {
-            openingTime: (dayjs(openingTime) as unknown as string) ?? undefined,
-            closingTime: (dayjs(closingTime) as unknown as string) ?? undefined,
+            openingTime: persistedOpeningTime ?? undefined,
+            closingTime: persistedClosingTime ?? undefined,
             cancellationPolicy: cancellationPolicy ?? '',
             address: address ?? '',
-            phoneNumber: phoneNumber ?? undefined
+            phoneNumber: phoneNumber ?? ('' as unknown as number)
         }
     });
 
