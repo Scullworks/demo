@@ -1,15 +1,38 @@
 import { MenuItem } from '@mui/material';
+import { PropagateLoader } from 'react-spinners';
 import { Autocomplete, HookedTextField, OnboardingLayout, Option } from '@/components';
 import { useCoachDetails } from '@/hooks/pages';
-import { CoachMembershipType } from '@/hooks/store';
+import { CoachMembershipType } from '@/models';
+import { getClubsFromFirebase } from '@/services/firebase';
 
 const coachMembershipOptions: Option<CoachMembershipType>[] = [
     { id: '3f269ba5-c4ab-453f-b00b-90239cb81ad7', value: 'Coach' },
     { id: '48755830-29b5-4255-9d75-a58dffaea420', value: 'Guest Coach' }
 ];
 
-function CoachDetails() {
-    const { onSubmit, control, errors, club, register, clearErrors, clubs } = useCoachDetails();
+interface CoachDetailsProps {
+    readonly clubs: Option[] | null;
+}
+
+function CoachDetails({ clubs }: CoachDetailsProps) {
+    const {
+        // eslint-disable-next-line prettier/prettier
+        isCreatingAccount,
+        onSubmit,
+        control,
+        errors,
+        register,
+        clearErrors
+    } = useCoachDetails({ clubs });
+
+    if (isCreatingAccount) {
+        return (
+            <div className="loading">
+                <PropagateLoader color="rgb(255, 179, 109)" />
+                <p>Please wait while we create your account</p>
+            </div>
+        );
+    }
 
     return (
         <OnboardingLayout>
@@ -23,18 +46,19 @@ function CoachDetails() {
                     type="number"
                 />
                 <Autocomplete
-                    label="Your Club"
                     name="club"
-                    defaultValue={club ?? ''}
+                    label="Your Club"
+                    defaultValue=""
                     register={register}
                     clearErrors={clearErrors}
-                    options={clubs}
+                    options={clubs ?? ([] as Option[])}
                     error={errors.club?.message}
                 />
                 <HookedTextField
                     name="membershipType"
                     control={control}
                     error={errors.membershipType?.message}
+                    placeholder="Membership Type"
                     select
                 >
                     {coachMembershipOptions.map(option => (
@@ -49,3 +73,13 @@ function CoachDetails() {
 }
 
 export default CoachDetails;
+
+export async function getServerSideProps() {
+    const { clubs } = await getClubsFromFirebase();
+
+    return {
+        props: {
+            clubs
+        }
+    };
+}

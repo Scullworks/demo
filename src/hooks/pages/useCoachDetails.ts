@@ -1,8 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Option } from '@/components';
-import { CoachMembershipType, useCoachOnboardingStore, useStepperStore } from '@/hooks/store';
+import { useLocalStorage } from '@/hooks/common';
+import { useAuthStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
+import { CoachMembershipType, FirebaseClubDoc, FirebaseCoach } from '@/models';
+import { createAccount } from '@/services/firebase';
 import { coachDetailsSchema } from '@/utils/validations';
 
 interface CoachDetailsValues {
@@ -11,19 +15,23 @@ interface CoachDetailsValues {
     readonly membershipType: CoachMembershipType | string;
 }
 
-export function useCoachDetails() {
-    const [clubs] = useState<Option[]>([]);
+interface CoachDetailsProps {
+    readonly clubs: Option[] | null;
+}
 
-    const phoneNumber = useCoachOnboardingStore(state => state.phoneNumber);
-    const club = useCoachOnboardingStore(state => state.club);
-    const membershipType = useCoachOnboardingStore(state => state.membershipType);
-    const setPhoneNumber = useCoachOnboardingStore(state => state.setPhoneNumber);
-    const setClub = useCoachOnboardingStore(state => state.setClub);
-    const setMembershipType = useCoachOnboardingStore(state => state.setMembershipType);
+export function useCoachDetails({ clubs }: CoachDetailsProps) {
+    const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
+    const user = useAuthStore(state => state.user);
+    const name = useCommonOnboardingStore(state => state.name);
+    const imageUrl = useCommonOnboardingStore(state => state.imageUrl);
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
+
+    const { clearOnboardingStores } = useLocalStorage();
+
+    const router = useRouter();
 
     const {
         control,
@@ -34,38 +42,62 @@ export function useCoachDetails() {
     } = useForm<CoachDetailsValues>({
         resolver: yupResolver(coachDetailsSchema),
         defaultValues: {
-            phoneNumber: phoneNumber ?? undefined,
-            club: club ?? '',
-            membershipType: membershipType ?? ''
+            phoneNumber: undefined,
+            club: '',
+            membershipType: ''
         }
     });
 
     const submitDetails = useCallback(
         () =>
-            handleSubmit(data => {
+            handleSubmit(async data => {
                 const { phoneNumber, club, membershipType } = data;
 
-                setPhoneNumber(phoneNumber);
-                setClub(club);
-                setMembershipType(membershipType as CoachMembershipType);
+                const selectedClub = clubs?.find(c => c.value === club) as Option;
+
+                const coachData: FirebaseCoach = {
+                    uid: user?.uid as string,
+                    name,
+                    email: user?.email as string,
+                    phoneNumber,
+                    club: { id: selectedClub.id, name: selectedClub.value },
+                    membershipType
+                };
 
                 if (isValid) {
-                    // TODO: Create a coach document and add everything to firebase
-                    // TODO: Delete persisted coach onboarding JSON in local storage
-                    // TODO: If all goes well, push to coach dashboard
+                    setIsCreatingAccount(true);
+
+                    const { success, error } = await createAccount<FirebaseClubDoc>(
+                        'coaches',
+                        coachData,
+                        imageUrl
+                    );
+
+                    if (error) setIsCreatingAccount(false);
+
+                    if (success) {
+                        clearOnboardingStores();
+                        router.push('/dashboard/coach');
+                    }
                 }
             }),
-        [handleSubmit, isValid, setClub, setMembershipType, setPhoneNumber]
+        [
+            clearOnboardingStores,
+            clubs,
+            handleSubmit,
+            imageUrl,
+            isValid,
+            name,
+            router,
+            user?.email,
+            user?.uid
+        ]
     );
 
     function onSubmit(event: FormEvent) {
         event.preventDefault();
         submitDetails()();
     }
-
-    useEffect(() => {
-        // TODO: Get all clubs from firebase and update setClubs
-    }, []);
 
     useEffect(() => {
         setActiveStep(1);
@@ -79,10 +111,10 @@ export function useCoachDetails() {
     }, [triggerSubmit, setTriggerSubmit, submitDetails]);
 
     return {
+        isCreatingAccount,
         onSubmit,
         control,
         errors,
-        club,
         register,
         clearErrors,
         clubs
