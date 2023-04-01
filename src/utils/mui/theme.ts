@@ -57,7 +57,7 @@ export const theme: Theme = createTheme({
                 root: {
                     color: 'rgb(255, 179, 109)',
                     '&:hover': {
-                        backgroundColor: 'rgb(255, 179, 109)'
+                        backgroundColor: 'transparent'
                     }
                 }
             }
