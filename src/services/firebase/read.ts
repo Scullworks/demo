@@ -1,5 +1,5 @@
-import { collection, getDocs } from 'firebase/firestore';
-import { Option } from '@/models';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { FirebaseUserDoc, Option } from '@/models';
 import { database } from './setup';
 
 interface GetClubsResponse {
@@ -7,11 +7,17 @@ interface GetClubsResponse {
     readonly error: boolean;
 }
 
+interface GetUserResponse {
+    readonly userDoc: FirebaseUserDoc | null;
+    readonly error: boolean;
+}
+
 export async function getClubsFromFirebase(): Promise<GetClubsResponse> {
     try {
         let clubs: Option[] = [];
 
-        const snapshot = await getDocs(collection(database, 'clubs'));
+        const collectionRef = collection(database, 'clubs');
+        const snapshot = await getDocs(collectionRef);
         snapshot.forEach(doc => {
             clubs = [...clubs, { id: doc.id, value: doc.data().name }];
         });
@@ -21,10 +27,30 @@ export async function getClubsFromFirebase(): Promise<GetClubsResponse> {
             error: false
         };
     } catch (error) {
-        console.error('Get Clubs Error: ', error);
+        console.error('Get Clubs Error: ', error.message);
 
         return {
             clubs: null,
+            error: true
+        };
+    }
+}
+
+export async function getUserFromFirebase(uid: string): Promise<GetUserResponse> {
+    try {
+        const docRef = doc(database, 'users', uid);
+        const userSnap = await getDoc(docRef);
+        const userDoc = userSnap.data() as FirebaseUserDoc;
+
+        return {
+            userDoc,
+            error: false
+        };
+    } catch (error) {
+        console.error('Get User Error: ', error.message);
+
+        return {
+            userDoc: null,
             error: true
         };
     }

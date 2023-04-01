@@ -1,4 +1,5 @@
 import { FieldValue } from 'firebase/firestore';
+import { UserType } from './user';
 
 interface Club {
     readonly id: string;
@@ -40,4 +41,10 @@ export interface FirebaseAthlete extends FirebaseClubDoc {
     readonly positionPreference: string;
     readonly createdAt: FieldValue;
     readonly updatedAt: FieldValue;
+}
+
+export interface FirebaseUserDoc {
+    readonly uid: string;
+    readonly email: string;
+    readonly type: UserType;
 }

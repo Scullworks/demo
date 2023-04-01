@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { ReactNode, useEffect, useState } from 'react';
 import { PropagateLoader } from 'react-spinners';
 import { useAuthStore } from '@/hooks/store/useAuthStore';
-import { auth } from '@/services/firebase/setup';
+import { auth } from '@/services/firebase';
 
 interface AuthStateProviderProps {
     readonly children: ReactNode;

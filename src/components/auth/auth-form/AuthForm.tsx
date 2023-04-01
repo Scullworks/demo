@@ -6,6 +6,7 @@ import { AlertDialog, HookedTextField, Severity, SnackbarAlert } from '@/compone
 import { useStoredUserType } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store';
 import { UserType } from '@/models';
+import { getUserFromFirebase } from '@/services/firebase';
 import { loginWithEmailAndPassword, registerWithEmailAndPassword } from '@/services/firebase/auth';
 import { authSchema } from '@/utils/validations';
 
@@ -52,8 +53,9 @@ function AuthForm({ type }: AuthFormProps) {
             setSeverity('success');
             setAlert('You have successfully logged in');
             setShowAlert(true);
-            // TODO: Find user in Firestore's users collection, to figure out user type
-            // TODO: Navigate to appropriate dashboard
+
+            const { userDoc } = await getUserFromFirebase(user.uid);
+            router.push(`/dashboard/${userDoc?.type}`);
         }
 
         if (error) {
