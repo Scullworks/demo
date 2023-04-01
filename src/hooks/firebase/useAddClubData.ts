@@ -1,12 +1,9 @@
 import { Dayjs } from 'dayjs';
 import { serverTimestamp } from 'firebase/firestore';
-import { useState } from 'react';
 import { useAuthStore, useClubOnboardingStore, useCommonOnboardingStore } from '@/hooks/store';
 import { FirebaseClub } from '@/models';
 
 export function useAddClubData() {
-    const [isCreatingAccount, setIsCreatingAccount] = useState(false);
-
     const user = useAuthStore(state => state.user);
     const name = useCommonOnboardingStore(state => state.name);
     const phoneNumber = useCommonOnboardingStore(state => state.phoneNumber);
@@ -36,8 +33,6 @@ export function useAddClubData() {
 
     return {
         clubData,
-        imageUrl,
-        isCreatingAccount,
-        setIsCreatingAccount
+        imageUrl
     };
 }
