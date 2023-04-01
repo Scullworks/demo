@@ -64,7 +64,7 @@ export function useClubDetails() {
                 setPhoneNumber(phoneNumber);
 
                 if (isValid) {
-                    router.push('/onboarding/club/services');
+                    router.push('services');
                     nextStep();
                 }
             }),

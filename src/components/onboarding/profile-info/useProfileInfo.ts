@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 import { ChangeEvent, FormEvent, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAuthStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
+import { useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
 import { profileSchema } from '@/utils/validations';
 
 interface ProfileValues {
@@ -10,7 +10,6 @@ interface ProfileValues {
 }
 
 export function useProfileInfo() {
-    const userType = useAuthStore(state => state.userType);
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const name = useCommonOnboardingStore(state => state.name);
     const imageUrl = useCommonOnboardingStore(state => state.imageUrl);
@@ -39,11 +38,11 @@ export function useProfileInfo() {
                 setName(data.name);
 
                 if (isValid) {
-                    router.push(`/onboarding/${userType}/details`);
+                    router.push('details');
                     nextStep();
                 }
             }),
-        [handleSubmit, isValid, nextStep, router, setName, userType]
+        [handleSubmit, isValid, nextStep, router, setName]
     );
 
     function onImageInputChange(event: ChangeEvent<HTMLInputElement>) {

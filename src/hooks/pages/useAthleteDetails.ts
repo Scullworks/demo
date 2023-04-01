@@ -61,7 +61,7 @@ export function useAthleteDetails() {
                 setEmergencyNumber(emergencyNumber);
 
                 if (isValid) {
-                    router.push('/onboarding/athlete/membership');
+                    router.push('membership');
                     nextStep();
                 }
             }),

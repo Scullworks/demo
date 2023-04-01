@@ -45,7 +45,7 @@ export function useServices() {
         if (triggerSubmit && selectedServices.length) {
             setTriggerSubmit(false);
             updateServices(selectedServices);
-            router.push('/onboarding/club/boats');
+            router.push('boats');
         }
 
         if (triggerSubmit && !selectedServices.length) {
