@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -60,7 +61,9 @@ export function useCoachDetails({ clubs }: CoachDetailsProps) {
                     email: user?.email as string,
                     phoneNumber,
                     club: { id: selectedClub.id, name: selectedClub.value },
-                    membershipType
+                    membershipType,
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp()
                 };
 
                 if (isValid) {
@@ -115,7 +118,6 @@ export function useCoachDetails({ clubs }: CoachDetailsProps) {
         control,
         errors,
         register,
-        clearErrors,
-        clubs
+        clearErrors
     };
 }

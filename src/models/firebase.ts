@@ -28,4 +28,6 @@ export interface FirebaseClub extends FirebaseDoc {
 
 export interface FirebaseCoach extends FirebaseClubDoc {
     readonly membershipType: string;
+    readonly createdAt: FieldValue;
+    readonly updatedAt: FieldValue;
 }
