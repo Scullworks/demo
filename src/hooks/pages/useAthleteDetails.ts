@@ -3,7 +3,11 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAthleteOnboardingStore, useStepperStore } from '@/hooks/store';
+import {
+    useAthleteOnboardingStore,
+    useCommonOnboardingStore,
+    useStepperStore
+} from '@/hooks/store';
 import { athleteDetailsSchema } from '@/utils/validations';
 
 interface AthleteDetailsValues {
@@ -14,11 +18,11 @@ interface AthleteDetailsValues {
 }
 
 export function useAthleteDetails() {
-    const phoneNumber = useAthleteOnboardingStore(state => state.phoneNumber);
+    const phoneNumber = useCommonOnboardingStore(state => state.phoneNumber);
     const dateOfBirth = useAthleteOnboardingStore(state => state.dateOfBirth);
     const emergencyName = useAthleteOnboardingStore(state => state.emergencyName);
     const emergencyNumber = useAthleteOnboardingStore(state => state.emergencyNumber);
-    const setPhoneNumber = useAthleteOnboardingStore(state => state.setPhoneNumber);
+    const setPhoneNumber = useCommonOnboardingStore(state => state.setPhoneNumber);
     const setDateOfBirth = useAthleteOnboardingStore(state => state.setDateOfBirth);
     const setEmergencyName = useAthleteOnboardingStore(state => state.setEmergencyName);
     const setEmergencyNumber = useAthleteOnboardingStore(state => state.setEmergencyNumber);

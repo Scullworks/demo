@@ -4,14 +4,12 @@ import { persist } from 'zustand/middleware';
 import { AthleteMembershipType, PositionPreference } from '@/models';
 
 interface AthleteOnboardingState {
-    readonly phoneNumber: number | null;
     readonly dateOfBirth: Dayjs | null;
     readonly emergencyName: string | null;
     readonly emergencyNumber: number | null;
     readonly club: string | null;
     readonly membershipType: AthleteMembershipType | null;
     readonly positionPreference: PositionPreference | null;
-    readonly setPhoneNumber: (phoneNumber: number) => void;
     readonly setDateOfBirth: (dateOfBirth: Dayjs) => void;
     readonly setEmergencyName: (emergencyName: string) => void;
     readonly setEmergencyNumber: (emergencyNumber: number) => void;
@@ -23,14 +21,12 @@ interface AthleteOnboardingState {
 export const useAthleteOnboardingStore = create<AthleteOnboardingState>()(
     persist(
         set => ({
-            phoneNumber: null,
             dateOfBirth: null,
             emergencyName: null,
             emergencyNumber: null,
             club: null,
             membershipType: null,
             positionPreference: null,
-            setPhoneNumber: phoneNumber => set(() => ({ phoneNumber })),
             setDateOfBirth: dateOfBirth => set(() => ({ dateOfBirth })),
             setEmergencyName: emergencyName => set(() => ({ emergencyName })),
             setEmergencyNumber: emergencyNumber => set(() => ({ emergencyNumber })),
