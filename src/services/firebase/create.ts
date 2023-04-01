@@ -1,5 +1,6 @@
 import { addDoc, collection } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { v4 as uuid } from 'uuid';
 import { FirebaseDoc, FirebaseClubDoc, Boat } from '@/models';
 import { database, storage } from './setup';
 
@@ -17,22 +18,25 @@ export async function createAccount<T extends FirebaseDoc | FirebaseClubDoc>(
     boats?: Boat[]
 ): Promise<AddDocResponse> {
     try {
-        let imageRef = null;
+        let profileImageRef = null;
+        let profileImage = null;
 
         // Upload image
         if (imageUrl) {
-            const storageRef = ref(storage, data?.name as string);
+            profileImage = uuid();
+            const storageRef = ref(storage, profileImage);
             const base64Response = await fetch(imageUrl);
             const blob = await base64Response.blob();
             await uploadBytes(storageRef, blob);
-            imageRef = await getDownloadURL(storageRef);
+            profileImageRef = await getDownloadURL(storageRef);
         }
 
         // Add club data
         if (collectionName === 'clubs') {
             const { path } = await addDoc(collection(database, 'clubs'), {
                 ...data,
-                profileImage: imageRef
+                profileImage,
+                profileImageRef
             });
 
             // Add to club's boats subcollection
@@ -41,7 +45,11 @@ export async function createAccount<T extends FirebaseDoc | FirebaseClubDoc>(
 
         // Add to athletes' and coaches' subcollections for the appropriate club
         if ('club' in data) {
-            await addDoc(collection(database, 'clubs', data.club.id, collectionName), data);
+            await addDoc(collection(database, 'clubs', data.club.id, collectionName), {
+                ...data,
+                profileImage,
+                profileImageRef
+            });
         }
 
         return {
