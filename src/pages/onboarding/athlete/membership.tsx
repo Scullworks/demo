@@ -1,7 +1,9 @@
 import { MenuItem } from '@mui/material';
+import { PropagateLoader } from 'react-spinners';
 import { Autocomplete, HookedTextField, OnboardingLayout } from '@/components';
 import { useAthleteMembership } from '@/hooks/pages';
 import { AthleteMembershipType, Option, PositionPreference } from '@/models';
+import { getClubsFromFirebase } from '@/services/firebase';
 
 const athleteMembershipOptions: Option<AthleteMembershipType>[] = [
     { id: 'a9a30fbe-488e-41d6-ac5a-9ea6be3457c2', value: 'Member' },
@@ -15,9 +17,29 @@ const positionPreferenceOptions: Option<PositionPreference>[] = [
     { id: '935dafa4-c5e9-414d-a88c-49900c2a6b00', value: 'Starboard' }
 ];
 
-function AthleteMembership() {
-    const { onSubmit, control, errors, club, register, clearErrors, clubs } =
-        useAthleteMembership();
+interface AthleteDetailsProps {
+    readonly clubs: Option[] | null;
+}
+
+function AthleteMembership({ clubs }: AthleteDetailsProps) {
+    const {
+        // eslint-disable-next-line prettier/prettier
+        isCreatingAccount,
+        onSubmit,
+        control,
+        errors,
+        register,
+        clearErrors
+    } = useAthleteMembership({ clubs });
+
+    if (isCreatingAccount) {
+        return (
+            <div className="loading">
+                <PropagateLoader color="rgb(255, 179, 109)" />
+                <p>Please wait while we create your account</p>
+            </div>
+        );
+    }
 
     return (
         <OnboardingLayout>
@@ -26,10 +48,10 @@ function AthleteMembership() {
                 <Autocomplete
                     label="Your Club"
                     name="club"
-                    defaultValue={club ?? ''}
+                    defaultValue=""
                     register={register}
                     clearErrors={clearErrors}
-                    options={clubs}
+                    options={clubs ?? ([] as Option[])}
                     error={errors.club?.message}
                 />
                 <HookedTextField
@@ -64,3 +86,13 @@ function AthleteMembership() {
 }
 
 export default AthleteMembership;
+
+export async function getServerSideProps() {
+    const { clubs } = await getClubsFromFirebase();
+
+    return {
+        props: {
+            clubs
+        }
+    };
+}

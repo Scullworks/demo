@@ -31,3 +31,13 @@ export interface FirebaseCoach extends FirebaseClubDoc {
     readonly createdAt: FieldValue;
     readonly updatedAt: FieldValue;
 }
+
+export interface FirebaseAthlete extends FirebaseClubDoc {
+    readonly dateOfBirth: string | null;
+    readonly emergencyName: string | null;
+    readonly emergencyNumber: number | null;
+    readonly membershipType: string;
+    readonly positionPreference: string;
+    readonly createdAt: FieldValue;
+    readonly updatedAt: FieldValue;
+}

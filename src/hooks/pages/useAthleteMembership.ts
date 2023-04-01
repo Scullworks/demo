@@ -1,8 +1,18 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useLocalStorage } from '@/hooks/common';
+import { useAddAthleteData } from '@/hooks/firebase';
 import { useAthleteOnboardingStore, useStepperStore } from '@/hooks/store';
-import { AthleteMembershipType, Option, PositionPreference } from '@/models';
+import {
+    AthleteMembershipType,
+    FirebaseAthlete,
+    FirebaseClubDoc,
+    Option,
+    PositionPreference
+} from '@/models';
+import { createAccount } from '@/services/firebase';
 import { athleteMembershipSchema } from '@/utils/validations';
 
 interface AthleteMembershipValues {
@@ -11,8 +21,12 @@ interface AthleteMembershipValues {
     readonly positionPreference: string;
 }
 
-export function useAthleteMembership() {
-    const [clubs] = useState<Option[]>([]);
+interface AthleteDetailsProps {
+    readonly clubs: Option[] | null;
+}
+
+export function useAthleteMembership({ clubs }: AthleteDetailsProps) {
+    const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
     const club = useAthleteOnboardingStore(state => state.club);
     const membershipType = useAthleteOnboardingStore(state => state.membershipType);
@@ -24,6 +38,11 @@ export function useAthleteMembership() {
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
+
+    const { partialAthleteData, imageUrl } = useAddAthleteData();
+    const { clearOnboardingStores } = useLocalStorage();
+
+    const router = useRouter();
 
     const {
         control,
@@ -42,30 +61,57 @@ export function useAthleteMembership() {
 
     const submitDetails = useCallback(
         () =>
-            handleSubmit(data => {
+            handleSubmit(async data => {
                 const { club, membershipType, positionPreference } = data;
+
+                const selectedClub = clubs?.find(c => c.value === club) as Option;
+
+                const athleteData: FirebaseAthlete = {
+                    ...partialAthleteData,
+                    club: { id: selectedClub.id, name: selectedClub.value },
+                    membershipType,
+                    positionPreference
+                };
 
                 setClub(club);
                 setMembershipType(membershipType as AthleteMembershipType);
                 setPositionPreference(positionPreference as PositionPreference);
 
                 if (isValid) {
-                    // TODO: Create a athlete document and add everything to firebase
-                    // TODO: Delete persisted athlete onboarding JSON in local storage
-                    // TODO: If all goes well, push to athlete dashboard
+                    setIsCreatingAccount(true);
+
+                    const { success, error } = await createAccount<FirebaseClubDoc>(
+                        'athletes',
+                        athleteData,
+                        imageUrl
+                    );
+
+                    if (error) setIsCreatingAccount(false);
+
+                    if (success) {
+                        clearOnboardingStores();
+                        router.push('/dashboard/athlete');
+                    }
                 }
             }),
-        [handleSubmit, isValid, setClub, setMembershipType, setPositionPreference]
+        [
+            clearOnboardingStores,
+            clubs,
+            handleSubmit,
+            imageUrl,
+            isValid,
+            partialAthleteData,
+            router,
+            setClub,
+            setMembershipType,
+            setPositionPreference
+        ]
     );
 
     function onSubmit(event: FormEvent) {
         event.preventDefault();
         submitDetails()();
     }
-
-    useEffect(() => {
-        // TODO: Get all clubs from firebase and update setClubs
-    }, []);
 
     useEffect(() => {
         setActiveStep(2);
@@ -79,12 +125,11 @@ export function useAthleteMembership() {
     }, [triggerSubmit, setTriggerSubmit, submitDetails]);
 
     return {
+        isCreatingAccount,
         onSubmit,
         control,
         errors,
-        club,
         register,
-        clearErrors,
-        clubs
+        clearErrors
     };
 }
