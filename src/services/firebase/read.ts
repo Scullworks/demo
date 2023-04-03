@@ -1,5 +1,11 @@
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
-import { FirebaseUserDoc, Option } from '@/models';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import {
+    CollectionName,
+    FirebaseUserDoc,
+    GetDocDataResponse,
+    Option,
+    ResponseData
+} from '@/models';
 import { database } from './setup';
 
 interface GetClubsResponse {
@@ -36,6 +42,7 @@ export async function getClubsFromFirebase(): Promise<GetClubsResponse> {
     }
 }
 
+// Provides the user's type, so that we can redirect to the appropriate dashboard
 export async function getUserFromFirebase(uid: string): Promise<GetUserResponse> {
     try {
         const docRef = doc(database, 'users', uid);
@@ -54,4 +61,16 @@ export async function getUserFromFirebase(uid: string): Promise<GetUserResponse>
             error: true
         };
     }
+}
+
+export async function getDocDataFromFirebase<T extends ResponseData>(
+    uid: string | undefined,
+    collectionName: CollectionName
+): Promise<GetDocDataResponse<T>> {
+    let data = null;
+    const collectionRef = collection(database, collectionName);
+    const docQuery = query(collectionRef, where('uid', '==', uid));
+    const querySnapshot = await getDocs(docQuery);
+    querySnapshot.forEach(doc => (data = doc.data()));
+    return data as unknown as T;
 }

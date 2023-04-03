@@ -1,6 +1,8 @@
 import { FieldValue } from 'firebase/firestore';
 import { UserType } from './user';
 
+export type CollectionName = 'clubs' | 'athletes' | 'coaches';
+
 interface Club {
     readonly id: string;
     readonly name: string;
@@ -48,3 +50,19 @@ export interface FirebaseUserDoc {
     readonly email: string;
     readonly type: UserType;
 }
+
+interface ProfileImage {
+    readonly profileImage: string | null;
+    readonly profileImageRef: string | null;
+}
+
+export type FirebaseClubWithImage = FirebaseClub & ProfileImage;
+export type FirebaseCoachWithImage = FirebaseCoach & ProfileImage;
+export type FirebaseAthleteWithImage = FirebaseAthlete & ProfileImage;
+
+export type ResponseData =
+    | FirebaseClubWithImage
+    | FirebaseCoachWithImage
+    | FirebaseAthleteWithImage;
+
+export type GetDocDataResponse<T extends ResponseData> = T;

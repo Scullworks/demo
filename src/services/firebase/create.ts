@@ -1,10 +1,8 @@
 import { addDoc, collection } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { v4 as uuid } from 'uuid';
-import { FirebaseDoc, FirebaseClubDoc, Boat } from '@/models';
+import { FirebaseDoc, FirebaseClubDoc, Boat, CollectionName } from '@/models';
 import { database, storage } from './setup';
-
-type CollectionName = 'clubs' | 'athletes' | 'coaches';
 
 interface AddDocResponse {
     readonly success: boolean;
