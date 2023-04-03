@@ -29,3 +29,4 @@ export * from './onboarding/address-autocomplete/AddressAutocomplete';
 
 // Profile Pages
 export { default as Avatar } from './profile/avatar/Avatar';
+export { default as ProfileMenu } from './profile/menu/ProfileMenu';
