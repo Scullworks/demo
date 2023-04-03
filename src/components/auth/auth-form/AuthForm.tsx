@@ -74,6 +74,7 @@ function AuthForm({ type }: AuthFormProps) {
 
         if (user) {
             setUser(user);
+            setSeverity('success');
             setAlert('Account created successfully');
             setShowAlert(true);
             router.push(`/onboarding/${userType}/profile`);

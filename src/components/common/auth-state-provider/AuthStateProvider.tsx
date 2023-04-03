@@ -23,6 +23,7 @@ function AuthStateProvider({ children }: AuthStateProviderProps) {
                 setCurrentUser(user);
                 setIsLoading(false);
             } else {
+                setCurrentUser(null);
                 localStorage.setItem('path', router.asPath);
                 router.replace('/login');
             }
