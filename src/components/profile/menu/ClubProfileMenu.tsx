@@ -10,11 +10,11 @@ import boatIcon from '@/assets/profile/boat.svg';
 import { Avatar } from '@/components';
 import { FirebaseClubWithImage } from '@/models';
 
-interface ProfileMenuProps {
+interface ClubProfileMenuProps {
     readonly club: FirebaseClubWithImage;
 }
 
-function ProfileMenu({ club }: ProfileMenuProps) {
+function ClubProfileMenu({ club }: ClubProfileMenuProps) {
     const { profileImageRef, name } = club;
 
     const router = useRouter();
@@ -22,11 +22,11 @@ function ProfileMenu({ club }: ProfileMenuProps) {
     const currentRoute = router.pathname;
     const className = 'profile-menu__link';
     const dashboardClassName = currentRoute === '/profile/club' ? 'active' : className;
-    const membersClassName = currentRoute === '/profile/members' ? 'active' : className;
-    const paymentsClassName = currentRoute === '/profile/payments' ? 'active' : className;
-    const sessionsClassName = currentRoute === '/profile/sessions' ? 'active' : className;
-    const boatsClassName = currentRoute === '/profile/boats' ? 'active' : className;
-    const servicesClassName = currentRoute === '/profile/services' ? 'active' : className;
+    const membersClassName = currentRoute === '/profile/club/members' ? 'active' : className;
+    const paymentsClassName = currentRoute === '/profile/club/payments' ? 'active' : className;
+    const sessionsClassName = currentRoute === '/profile/club/sessions' ? 'active' : className;
+    const boatsClassName = currentRoute === '/profile/club/boats' ? 'active' : className;
+    const servicesClassName = currentRoute === '/profile/club/services' ? 'active' : className;
 
     return (
         <aside className="profile-menu">
@@ -41,27 +41,27 @@ function ProfileMenu({ club }: ProfileMenuProps) {
 
             {/* Button Links */}
             <div className="profile-menu__links">
-                <Link className={dashboardClassName} href="club">
+                <Link className={dashboardClassName} href="/profile/club">
                     <HomeIcon />
                     Dashboard
                 </Link>
-                <Link className={membersClassName} href="members">
+                <Link className={membersClassName} href="/profile/club/members">
                     <PeopleIcon />
                     Members
                 </Link>
-                <Link className={paymentsClassName} href="payments">
+                <Link className={paymentsClassName} href="/profile/club/payments">
                     <PaymentIcon />
                     Payments
                 </Link>
-                <Link className={sessionsClassName} href="sessions">
+                <Link className={sessionsClassName} href="/profile/club/sessions">
                     <RowingIcon />
                     Sessions
                 </Link>
-                <Link className={boatsClassName} href="boats">
+                <Link className={boatsClassName} href="/profile/club/boats">
                     <Image src={boatIcon} alt="boat" width={24} />
                     Boats
                 </Link>
-                <Link className={servicesClassName} href="services">
+                <Link className={servicesClassName} href="/profile/club/services">
                     <FormatListBulletedIcon />
                     Services
                 </Link>
@@ -70,4 +70,4 @@ function ProfileMenu({ club }: ProfileMenuProps) {
     );
 }
 
-export default ProfileMenu;
+export default ClubProfileMenu;
