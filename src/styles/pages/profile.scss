@@ -1,0 +1,59 @@
+@use '@/styles/abstracts/colors' as *;
+@use '@/styles/abstracts/mixins' as *;
+
+.profile {
+    @include flex-center(row);
+    height: 100vh;
+    width: 100vw;
+}
+
+.profile-menu,
+.profile-menu__user {
+    @include flex-center;
+}
+
+.profile-menu {
+    justify-content: space-between;
+    height: 90%;
+    width: 20%;
+    border-right: 1px solid rgb(221, 221, 221);
+
+    h3 {
+        margin-top: 0;
+    }
+}
+
+.profile-menu__user {
+    h3 {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 0;
+        margin-block: 2rem;
+        color: rgb(34, 34, 34);
+    }
+
+    p {
+        font-size: 1.5rem;
+    }
+}
+
+.profile-menu__link,
+.active {
+    @include flex-center(row);
+    justify-content: flex-start;
+    margin-bottom: 4rem;
+
+    .MuiSvgIcon-root,
+    img {
+        margin-right: 1rem;
+    }
+}
+
+.active {
+    font-weight: 600;
+}
+.profile-main {
+    height: 100%;
+    flex: 1;
+}
