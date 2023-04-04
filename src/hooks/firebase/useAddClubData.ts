@@ -28,7 +28,11 @@ export function useAddClubData() {
         openingTime: openingTime?.toString(),
         services,
         createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
+        updatedAt: serverTimestamp(),
+        stripe: {
+            id: null,
+            connected: false
+        }
     };
 
     return {

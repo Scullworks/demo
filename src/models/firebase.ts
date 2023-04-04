@@ -15,8 +15,9 @@ export interface FirebaseDoc {
     readonly phoneNumber: number | null;
 }
 
-export interface FirebaseClubDoc extends FirebaseDoc {
-    club: Club;
+interface FirebaseStripe {
+    readonly id: string | null;
+    readonly connected: boolean;
 }
 
 export interface FirebaseClub extends FirebaseDoc {
@@ -27,6 +28,11 @@ export interface FirebaseClub extends FirebaseDoc {
     readonly services: string[];
     readonly createdAt: FieldValue;
     readonly updatedAt: FieldValue;
+    readonly stripe: FirebaseStripe;
+}
+
+export interface FirebaseClubDoc extends FirebaseDoc {
+    club: Club;
 }
 
 export interface FirebaseCoach extends FirebaseClubDoc {
@@ -52,6 +58,7 @@ export interface FirebaseUserDoc {
 }
 
 interface ProfileImage {
+    readonly id: string;
     readonly profileImage: string | null;
     readonly profileImageRef: string | null;
 }

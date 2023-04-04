@@ -71,6 +71,6 @@ export async function getDocDataFromFirebase<T extends ResponseData>(
     const collectionRef = collection(database, collectionName);
     const docQuery = query(collectionRef, where('uid', '==', uid));
     const querySnapshot = await getDocs(docQuery);
-    querySnapshot.forEach(doc => (data = doc.data()));
+    querySnapshot.forEach(doc => (data = { ...doc.data(), id: doc.id }));
     return data as unknown as T;
 }
