@@ -2,7 +2,8 @@
 @use '@/styles/abstracts/mixins' as *;
 @use '@/styles/abstracts/variables' as *;
 
-.button {
+.button,
+.button__static {
     background-color: $color-button;
     color: $color-white;
     border: none;
@@ -14,7 +15,9 @@
     width: 20rem;
     height: 5rem;
     cursor: pointer;
+}
 
+.button {
     @include with-pointer {
         &:hover {
             transform: translateY(-4px);
