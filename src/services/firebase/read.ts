@@ -3,22 +3,14 @@ import {
     CollectionName,
     FirebaseUserDoc,
     GetDocDataResponse,
+    NestedCollectionName,
     Option,
-    ResponseData
+    ResponseData,
+    FirebaseSession
 } from '@/models';
 import { database } from './setup';
 
-interface GetClubsResponse {
-    readonly clubs: Option[] | null;
-    readonly error: boolean;
-}
-
-interface GetUserResponse {
-    readonly userDoc: FirebaseUserDoc | null;
-    readonly error: boolean;
-}
-
-export async function getClubsFromFirebase(): Promise<GetClubsResponse> {
+export async function getClubsFromFirebase() {
     try {
         let clubs: Option[] = [];
 
@@ -42,8 +34,63 @@ export async function getClubsFromFirebase(): Promise<GetClubsResponse> {
     }
 }
 
+export async function getNestedClubOptions(
+    clubId: string | undefined,
+    collectionName: NestedCollectionName
+) {
+    try {
+        let options: Option[] = [];
+
+        if (clubId) {
+            const collectionRef = collection(database, 'clubs', clubId, collectionName);
+            const snapshot = await getDocs(collectionRef);
+            snapshot.forEach(doc => {
+                options = [...options, { id: doc.id, value: doc.data().name }];
+            });
+        }
+
+        return {
+            options,
+            error: false
+        };
+    } catch (error) {
+        console.error('Get Clubs Error: ', error.message);
+
+        return {
+            options: null,
+            error: true
+        };
+    }
+}
+
+export async function getSessionsFromFirebase(clubId: string | undefined) {
+    try {
+        let sessions: FirebaseSession[] = [];
+
+        if (clubId) {
+            const collectionRef = collection(database, 'clubs', clubId, 'sessions');
+            const snapshot = await getDocs(collectionRef);
+            snapshot.forEach(doc => {
+                sessions = [...sessions, { id: doc.id, ...doc.data() }] as FirebaseSession[];
+            });
+        }
+
+        return {
+            sessions,
+            error: false
+        };
+    } catch (error) {
+        console.error('Get Sessions Error: ', error.message);
+
+        return {
+            sessions: null,
+            error: true
+        };
+    }
+}
+
 // Provides the user's type, so that we can redirect to the appropriate dashboard
-export async function getUserFromFirebase(uid: string): Promise<GetUserResponse> {
+export async function getUserFromFirebase(uid: string) {
     try {
         const docRef = doc(database, 'users', uid);
         const userSnap = await getDoc(docRef);

@@ -2,10 +2,16 @@ import { FieldValue } from 'firebase/firestore';
 import { UserType } from './user';
 
 export type CollectionName = 'clubs' | 'athletes' | 'coaches';
+export type NestedCollectionName = 'athletes' | 'coaches' | 'sessions' | 'boats';
 
 interface Club {
     readonly id: string;
     readonly name: string;
+}
+
+interface Option {
+    readonly id: string | undefined;
+    readonly name: string | undefined;
 }
 
 export interface FirebaseDoc {
@@ -55,6 +61,21 @@ export interface FirebaseUserDoc {
     readonly uid: string;
     readonly email: string;
     readonly type: UserType;
+}
+
+export interface ProfileSession {
+    readonly price: number;
+    readonly guestPrice: number | null;
+    readonly type: string;
+    readonly coach: Option | null;
+    readonly date: string;
+    readonly start: string;
+    readonly end: string;
+    readonly boat: Option | null;
+}
+
+export interface FirebaseSession extends ProfileSession {
+    readonly id: string;
 }
 
 interface ProfileImage {
