@@ -7,6 +7,7 @@ import { axiosInstance } from '@/services/stripe/utils';
 
 export function useClubPayments() {
     const [isLoading, setIsLoading] = useState(false);
+    const [isRedirecting, setIsRedirecting] = useState(false);
 
     const { club } = useClubDataQuery();
     const queryClient = useQueryClient();
@@ -14,7 +15,7 @@ export function useClubPayments() {
     async function onConnectClick() {
         if (!club?.name || !club?.email) return;
 
-        setIsLoading(true);
+        setIsRedirecting(true);
 
         const { name, email } = club;
         // Get connected account id and redirect url
@@ -30,6 +31,8 @@ export function useClubPayments() {
     }
 
     useEffect(() => {
+        const controller = new AbortController();
+
         async function checkAccountStatus() {
             setIsLoading(true);
 
@@ -42,7 +45,9 @@ export function useClubPayments() {
 
             const {
                 data: { detailsSubmitted }
-            } = await axiosInstance.get(`accounts/${club?.stripe.id}`);
+            } = await axiosInstance.get(`accounts/${club?.stripe.id}`, {
+                signal: controller.signal
+            });
 
             if (detailsSubmitted) {
                 await updateFirebaseDoc('clubs', club.id, { 'stripe.connected': true });
@@ -53,10 +58,15 @@ export function useClubPayments() {
         }
 
         checkAccountStatus();
+
+        return () => {
+            controller.abort();
+        };
     }, [club?.id, club?.stripe.id, club?.stripe.connected, queryClient]);
 
     return {
         isLoading,
+        isRedirecting,
         club,
         onConnectClick
     };

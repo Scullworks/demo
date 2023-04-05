@@ -3,14 +3,14 @@ import { ClubProfileLayout } from '@/components';
 import { useClubPayments } from '@/hooks/pages';
 
 function ClubPayments() {
-    const { isLoading, club, onConnectClick } = useClubPayments();
+    const { isLoading, isRedirecting, club, onConnectClick } = useClubPayments();
 
-    if (isLoading) {
+    if (isLoading || isRedirecting) {
         return (
             <ClubProfileLayout club={club}>
                 <div className="loading__profile">
                     <PulseLoader color="rgb(255, 179, 109)" />
-                    <p>Redirecting you to Stripe</p>
+                    {isRedirecting && <p>Redirecting you to Stripe</p>}
                 </div>
             </ClubProfileLayout>
         );
