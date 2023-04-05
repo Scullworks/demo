@@ -90,7 +90,7 @@ export function useAthleteMembership({ clubs }: AthleteDetailsProps) {
 
                     if (success) {
                         clearOnboardingStores();
-                        router.push('/dashboard/athlete');
+                        router.push('/profile/athlete');
                     }
                 }
             }),

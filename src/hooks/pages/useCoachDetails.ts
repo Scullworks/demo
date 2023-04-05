@@ -79,7 +79,7 @@ export function useCoachDetails({ clubs }: CoachDetailsProps) {
 
                     if (success) {
                         clearOnboardingStores();
-                        router.push('/dashboard/coach');
+                        router.push('/profile/coach');
                     }
                 }
             }),

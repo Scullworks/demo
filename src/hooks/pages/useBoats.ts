@@ -78,7 +78,7 @@ export function useBoats() {
             if (error) setIsCreatingAccount(false);
             if (success) {
                 clearOnboardingStores();
-                router.push('/dashboard/club');
+                router.push('/profile/club');
             }
         } else {
             setTriggerSubmit(false);

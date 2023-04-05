@@ -55,7 +55,7 @@ function AuthForm({ type }: AuthFormProps) {
             setShowAlert(true);
 
             const { userDoc } = await getUserFromFirebase(user.uid);
-            router.push(`/dashboard/${userDoc?.type}`);
+            router.push(`/profile/${userDoc?.type}`);
         }
 
         if (error) {
