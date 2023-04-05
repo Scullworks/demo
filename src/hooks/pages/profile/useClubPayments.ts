@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
-import { useClubDataQuery } from '@/hooks/pages';
+import { useClubDataQuery } from '@/hooks/queries';
 import { updateFirebaseDoc } from '@/services/firebase';
 import { connectToStripe } from '@/services/stripe';
 import { axiosInstance } from '@/services/stripe/utils';

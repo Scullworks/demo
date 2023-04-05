@@ -1,4 +1,4 @@
-import { PulseLoader } from 'react-spinners';
+import { PropagateLoader } from 'react-spinners';
 import { ClubProfileLayout } from '@/components';
 import { useClubPayments } from '@/hooks/pages';
 
@@ -9,7 +9,7 @@ function ClubPayments() {
         return (
             <ClubProfileLayout club={club}>
                 <div className="loading__profile">
-                    <PulseLoader color="rgb(255, 179, 109)" />
+                    <PropagateLoader color="rgb(255, 179, 109)" />
                     {isRedirecting && <p>Redirecting you to Stripe</p>}
                 </div>
             </ClubProfileLayout>
