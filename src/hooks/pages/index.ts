@@ -6,3 +6,4 @@ export * from './useClubDetails';
 export * from './useSelectedServices';
 export * from './useServices';
 export * from './profile/useClubDataQuery';
+export * from './profile/useClubPayments';
