@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { stripe } from '@/utils/stripe';
+import { stripe } from '@/services/stripe/utils';
 
 interface CreateAccountLinkRequest extends NextApiRequest {
     ['body']: {

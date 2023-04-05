@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { StripeClub } from '@/models';
-import { stripe } from '@/utils/stripe';
+import { stripe } from '@/services/stripe/utils';
 
 interface CreateAccountRequest extends NextApiRequest {
     ['body']: StripeClub;
