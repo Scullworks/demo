@@ -1,6 +1,8 @@
+import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
 import { AuthStateProvider, ClubProfileMenu } from '@/components';
 import { FirebaseClubWithImage } from '@/models';
+import { pageTransitions } from '@/utils/animations/pages';
 
 interface ClubProfileLayoutProps {
     readonly club: FirebaseClubWithImage | undefined;
@@ -15,7 +17,9 @@ function ClubProfileLayout(props: ClubProfileLayoutProps) {
             {club && (
                 <div className="profile">
                     <ClubProfileMenu club={club} />
-                    <div className="profile-main">{children}</div>
+                    <motion.div className="profile-main" {...pageTransitions}>
+                        {children}
+                    </motion.div>
                 </div>
             )}
         </AuthStateProvider>
