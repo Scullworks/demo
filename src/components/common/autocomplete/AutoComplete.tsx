@@ -6,7 +6,7 @@ import { Option } from '@/models';
 interface AutocompleteProps<T extends FieldValues> extends Omit<ComponentProps<'input'>, 'name'> {
     readonly label: string;
     readonly name: Path<T>;
-    readonly defaultValue: string;
+    readonly defaultValue?: string;
     readonly register: UseFormRegister<T>;
     readonly clearErrors: UseFormClearErrors<T>;
     readonly options: Option[];

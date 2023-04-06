@@ -1,6 +1,7 @@
 import { TextField } from '@mui/material';
 import { HTMLInputTypeAttribute, ReactNode, useEffect, useState } from 'react';
 import { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
+import { useFeeProcessingStore } from '@/hooks/store';
 import MuiInputAdornment from './MuiInputAdornment';
 
 interface MuiTextFieldProps<T extends FieldValues> {
@@ -11,6 +12,7 @@ interface MuiTextFieldProps<T extends FieldValues> {
     readonly placeholder?: string;
     readonly select?: boolean;
     readonly children?: ReactNode;
+    readonly startAdornment?: ReactNode;
 }
 
 function MuiTextField<T extends FieldValues>(props: MuiTextFieldProps<T>) {
@@ -21,11 +23,16 @@ function MuiTextField<T extends FieldValues>(props: MuiTextFieldProps<T>) {
         type,
         placeholder,
         select,
-        children
+        children,
+        startAdornment
     } = props;
 
     const [textFieldType, setTextFieldType] = useState<HTMLInputTypeAttribute>('text');
     const [showPassword, setShowPassword] = useState(false);
+
+    const setMemberPrice = useFeeProcessingStore(state => state.setMemberPrice);
+    const setGuestPrice = useFeeProcessingStore(state => state.setGuestPrice);
+    const setFeeProcessingOption = useFeeProcessingStore(state => state.setFeeProcessingOption);
 
     const label = placeholder ?? name.charAt(0).toUpperCase() + name.slice(1);
     const isError = typeof error === 'string';
@@ -36,6 +43,12 @@ function MuiTextField<T extends FieldValues>(props: MuiTextFieldProps<T>) {
         if (type === 'password' && !showPassword) setTextFieldType('password');
         if (type !== 'password') setTextFieldType(type ?? 'text');
     }, [type, showPassword, setTextFieldType]);
+
+    useEffect(() => {
+        if (name === 'sessionPrice') setMemberPrice(parseInt(value) + 0.3);
+        if (name === 'sessionGuestPrice') setGuestPrice(parseInt(value) + 0.3);
+        if (name === 'sessionFeeProcessing') setFeeProcessingOption(value);
+    }, [name, setGuestPrice, setMemberPrice, setFeeProcessingOption, value]);
 
     return (
         <TextField
@@ -51,6 +64,7 @@ function MuiTextField<T extends FieldValues>(props: MuiTextFieldProps<T>) {
             onChange={onChange}
             select={select}
             InputProps={{
+                startAdornment,
                 endAdornment: (
                     <MuiInputAdornment
                         name={name}

@@ -11,11 +11,12 @@ interface HookedTextFieldProps<T extends FieldValues> extends InputProps {
     readonly type?: HTMLInputTypeAttribute;
     readonly placeholder?: string;
     readonly select?: boolean;
+    readonly startAdornment?: ReactNode;
     readonly children?: ReactNode;
 }
 
 function HookedTextField<T extends FieldValues>(props: HookedTextFieldProps<T>) {
-    const { name, control, error, type, placeholder, select, children } = props;
+    const { name, control, error, type, placeholder, select, startAdornment, children } = props;
 
     return (
         <Controller
@@ -29,6 +30,7 @@ function HookedTextField<T extends FieldValues>(props: HookedTextFieldProps<T>) 
                     type={type}
                     placeholder={placeholder}
                     select={select}
+                    startAdornment={startAdornment}
                 >
                     {children}
                 </MuiTextField>
