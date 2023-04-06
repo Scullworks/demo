@@ -6,4 +6,5 @@ export * from './useClubDetails';
 export * from './useSelectedServices';
 export * from './useServices';
 export * from './profile/useClubPayments';
+export * from './profile/useCreateSession';
 export * from './profile/useFeeProcessing';
