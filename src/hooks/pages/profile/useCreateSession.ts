@@ -1,10 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useQueryClient } from 'react-query';
 import { v4 as uuid } from 'uuid';
 import { useClubDataQuery, useNestedOptionsQuery } from '@/hooks/queries';
 import { useFeeProcessingStore } from '@/hooks/store';
-import { ProfileSession } from '@/models';
+import { Option, ProfileSession } from '@/models';
 import { createSession } from '@/services/firebase';
 import { checkIsTodayOrGreater, formatTime } from '@/utils/dates';
 import { createSessionSchema } from '@/utils/validations';
@@ -33,6 +34,8 @@ export function useCreateSession() {
     const { options: boats } = useNestedOptionsQuery(club?.id, 'boats', shouldFetch);
 
     const clubServices = club?.services.map(service => ({ id: uuid(), value: service }));
+
+    const queryClient = useQueryClient();
 
     const {
         control,
@@ -68,8 +71,8 @@ export function useCreateSession() {
                     sessionBoat
                 } = data;
 
-                const selectedCoach = coaches?.find(coach => coach.value === sessionCoach) ?? null;
-                const selectedBoat = boats?.find(boat => boat.value === sessionBoat) ?? null;
+                const selectedCoach = selectedOption(sessionCoach, coaches);
+                const selectedBoat = selectedOption(sessionBoat, boats);
 
                 const sessionData: ProfileSession = {
                     price: memberPriceToCharge,
@@ -78,18 +81,8 @@ export function useCreateSession() {
                     date: sessionDate,
                     start: formatTime(sessionStart),
                     end: formatTime(sessionEnd),
-                    coach: selectedCoach
-                        ? {
-                              id: selectedCoach?.id,
-                              name: selectedCoach?.value
-                          }
-                        : null,
+                    coach: selectedCoach,
                     boat: selectedBoat
-                        ? {
-                              id: selectedBoat?.id,
-                              name: selectedBoat?.value
-                          }
-                        : null
                 };
 
                 const { isError } = checkIsTodayOrGreater(sessionDate, true);
@@ -100,6 +93,7 @@ export function useCreateSession() {
                     if (success) {
                         setShowSuccess(true);
                         reset();
+                        queryClient.invalidateQueries('club-sessions');
                     }
                 }
             }),
@@ -111,7 +105,8 @@ export function useCreateSession() {
             handleSubmit,
             isValid,
             memberPriceToCharge,
-            reset
+            reset,
+            queryClient
         ]
     );
 
@@ -137,4 +132,28 @@ export function useCreateSession() {
         register,
         clearErrors
     };
+}
+
+function selectedOption(option: string, options: Option<string>[] | null | undefined) {
+    const selectedOption = options?.find(opt => opt.value === option) ?? null;
+
+    let firebaseSessionOption = null;
+
+    if (!selectedOption && !option) firebaseSessionOption = null;
+
+    if (selectedOption) {
+        firebaseSessionOption = {
+            id: selectedOption.id,
+            name: selectedOption.value
+        };
+    }
+
+    if (!selectedOption && option) {
+        firebaseSessionOption = {
+            id: uuid(),
+            name: option
+        };
+    }
+
+    return firebaseSessionOption;
 }
