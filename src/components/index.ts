@@ -29,5 +29,7 @@ export * from './onboarding/address-autocomplete/AddressAutocomplete';
 
 // Profile Pages
 export { default as Avatar } from './profile/avatar/Avatar';
+export { default as SessionForm } from './profile/create-session/SessionForm';
+export { default as CreateSessionSuccess } from './profile/create-session/CreateSessionSuccess';
 export { default as ClubProfileMenu } from './profile/menu/ClubProfileMenu';
 export { default as ClubProfileLayout } from './profile/profile-layout/ClubProfileLayout';
