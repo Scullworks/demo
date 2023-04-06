@@ -17,6 +17,14 @@
     cursor: pointer;
 }
 
+.button__static {
+    @include with-pointer {
+        &:hover {
+            background-color: #f5af19;
+        }
+    }
+}
+
 .button {
     @include with-pointer {
         &:hover {

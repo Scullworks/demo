@@ -1,0 +1,205 @@
+@use '@/styles/abstracts/breakpoints' as *;
+@use '@/styles/abstracts/colors' as *;
+@use '@/styles/abstracts/mixins' as *;
+
+.profile {
+    @include flex-center(row);
+    height: 100vh;
+    width: 100vw;
+}
+
+.profile-menu,
+.profile-menu__user {
+    @include flex-center;
+}
+
+.profile-menu {
+    justify-content: space-between;
+    height: 90%;
+    width: 20%;
+    border-right: 1px solid rgb(221, 221, 221);
+
+    h3 {
+        margin-top: 0;
+    }
+}
+
+.profile-menu__user {
+    h3 {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 0;
+        margin-block: 2rem;
+        color: rgb(34, 34, 34);
+        letter-spacing: normal;
+    }
+
+    p {
+        font-size: 1.5rem;
+    }
+}
+
+.profile-menu__link,
+.active {
+    @include flex-center(row);
+    justify-content: flex-start;
+    margin-bottom: 4rem;
+
+    .MuiSvgIcon-root,
+    img {
+        margin-right: 1rem;
+    }
+}
+
+.active {
+    font-weight: 600;
+}
+
+.profile-main {
+    @include flex-center;
+    min-height: 90%;
+    flex: 1;
+
+    h1 {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-weight: 700;
+        font-size: 5rem;
+        letter-spacing: normal;
+    }
+}
+
+// Payments
+.profile-payments {
+    @include flex-center;
+    height: 100%;
+
+    p {
+        margin-top: 2rem;
+    }
+}
+
+// Sessions
+.profile-session-form {
+    @include flex-center;
+
+    h1 {
+        margin-bottom: 5rem;
+        text-transform: capitalize;
+    }
+}
+
+.profile-session-form__pricing {
+    @include flex-center(row);
+    justify-content: space-between;
+    width: min(80vw, 55rem);
+
+    .MuiFormControl-root {
+        width: 32%;
+    }
+
+    .MuiInputBase-root {
+        width: 100%;
+    }
+
+    @include mobile-large {
+        flex-direction: column;
+
+        .MuiFormControl-root {
+            width: 100%;
+        }
+    }
+}
+
+.profile-session-form__prices {
+    @include flex-center(row);
+    justify-content: space-between;
+    width: 65.5%;
+
+    .MuiFormControl-root {
+        width: 48%;
+    }
+
+    .MuiInputBase-root {
+        width: 100%;
+    }
+
+    @include mobile-large {
+        width: 100%;
+    }
+}
+
+.profile-session-form__date-time {
+    @include flex-center(row);
+    justify-content: space-between;
+    width: min(80vw, 55rem);
+
+    .MuiFormControl-root {
+        width: 31%;
+    }
+
+    .MuiInputBase-root {
+        width: 100%;
+    }
+
+    @include mobile-large {
+        flex-direction: column;
+
+        .MuiFormControl-root {
+            width: 100%;
+        }
+    }
+}
+
+.profile-session-form__time {
+    @include flex-center(row);
+    justify-content: space-between;
+    width: 66%;
+
+    .MuiFormControl-root {
+        width: 48%;
+    }
+
+    .MuiInputBase-root {
+        width: 100%;
+    }
+
+    @include mobile-large {
+        width: 100%;
+    }
+}
+
+.profile-session-form__payout-text,
+.profile-session-form__guest-payout-text {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: rgb(119, 119, 119);
+    margin-bottom: 1rem;
+}
+
+.profile-session-form__payout-text {
+    margin-top: 1rem;
+}
+
+.profile-session-form-button {
+    margin-top: 2rem;
+}
+
+// Create Session Success
+.profile-session__create-success {
+    @include flex-center;
+
+    img {
+        height: 30rem;
+        width: auto;
+    }
+
+    h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        font-size: 1.6rem;
+    }
+}

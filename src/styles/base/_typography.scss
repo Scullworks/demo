@@ -49,9 +49,9 @@ h3 {
 }
 
 p {
-    font-size: clamp($font-size-300, 4vw + 0.1rem, 1.9rem);
+    font-size: clamp($font-size-300, 4vw + 0.1rem, 1.8rem);
     margin-bottom: 3rem;
-    line-height: 1.7;
+    line-height: 1.8;
 
     @include mobile-small {
         font-size: $font-size-base;
