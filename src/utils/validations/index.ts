@@ -4,5 +4,6 @@ export * from './auth.schema';
 export * from './boat.schema';
 export * from './coach-details.schema';
 export * from './contact-us.schema';
+export * from './create-session.schema';
 export * from './operation.schema';
 export * from './profile.schema';
