@@ -31,6 +31,7 @@
         "framer-motion": "^10.2.4",
         "next": "13.2.4",
         "react": "18.2.0",
+        "react-calendar": "4.0.0",
         "react-dom": "18.2.0",
         "react-hook-form": "^7.43.5",
         "react-query": "^3.39.3",
@@ -45,6 +46,7 @@
     },
     "devDependencies": {
         "@types/autosuggest-highlight": "^3.2.0",
+        "@types/react-calendar": "3.9.0",
         "@types/react-scroll": "^1.8.6",
         "@types/uuid": "^9.0.1",
         "@typescript-eslint/eslint-plugin": "^5.54.1",
