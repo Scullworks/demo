@@ -3,5 +3,6 @@ export * from './useAthleteOnboardingStore';
 export * from './useAuthStore';
 export * from './useClubOnboardingStore';
 export * from './useCommonOnboardingStore';
+export * from './useDateStore';
 export * from './useFeeProcessingStore';
 export * from './useStepperStore';
