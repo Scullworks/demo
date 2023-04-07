@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { Timestamp, collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import {
     CollectionName,
     FirebaseUserDoc,
@@ -63,13 +63,23 @@ export async function getNestedClubOptions(
     }
 }
 
-export async function getSessionsFromFirebase(clubId: string | undefined) {
+export async function getSessionsFromFirebase(
+    clubId: string | undefined,
+    startDate: Date,
+    endDate: Date
+) {
     try {
         let sessions: FirebaseSession[] = [];
 
         if (clubId) {
-            const collectionRef = collection(database, 'clubs', clubId, 'sessions');
-            const snapshot = await getDocs(collectionRef);
+            const sessionsRef = collection(database, 'clubs', clubId, 'sessions');
+            const sessionsQuery = query(
+                sessionsRef,
+                where('date', '>=', Timestamp.fromDate(startDate)),
+                where('date', '<=', Timestamp.fromDate(endDate))
+            );
+
+            const snapshot = await getDocs(sessionsQuery);
             snapshot.forEach(doc => {
                 sessions = [...sessions, { id: doc.id, ...doc.data() }] as FirebaseSession[];
             });
