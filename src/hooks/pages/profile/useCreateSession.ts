@@ -1,13 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import dayjs from 'dayjs';
+import { Timestamp } from 'firebase/firestore';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useQueryClient } from 'react-query';
 import { v4 as uuid } from 'uuid';
 import { useClubDataQuery, useNestedOptionsQuery } from '@/hooks/queries';
 import { useFeeProcessingStore } from '@/hooks/store';
 import { Option, ProfileSession } from '@/models';
 import { createSession } from '@/services/firebase';
-import { checkIsTodayOrGreater, formatTime } from '@/utils/dates';
+import { checkIsTodayOrGreater } from '@/utils/dates';
 import { createSessionSchema } from '@/utils/validations';
 
 export interface SessionValues {
@@ -35,8 +36,6 @@ export function useCreateSession() {
 
     const clubServices = club?.services.map(service => ({ id: uuid(), value: service }));
 
-    const queryClient = useQueryClient();
-
     const {
         control,
         handleSubmit,
@@ -50,7 +49,7 @@ export function useCreateSession() {
             sessionPrice: '' as unknown as number,
             sessionGuestPrice: undefined,
             sessionFeeProcessing: 'Absorb Fees',
-            sessionType: '',
+            sessionType: undefined,
             sessionCoach: undefined,
             sessionDate: undefined,
             sessionStart: undefined,
@@ -63,6 +62,7 @@ export function useCreateSession() {
         () =>
             handleSubmit(async data => {
                 const {
+                    sessionFeeProcessing,
                     sessionType,
                     sessionCoach,
                     sessionDate,
@@ -77,10 +77,11 @@ export function useCreateSession() {
                 const sessionData: ProfileSession = {
                     price: memberPriceToCharge,
                     guestPrice: guestPriceToCharge ?? null,
+                    feeProcessingOption: sessionFeeProcessing,
                     type: sessionType,
-                    date: sessionDate,
-                    start: formatTime(sessionStart),
-                    end: formatTime(sessionEnd),
+                    date: Timestamp.fromDate(dayjs(sessionDate).toDate()),
+                    start: dayjs(sessionStart).format('h:mm A'),
+                    end: dayjs(sessionEnd).format('h:mm A'),
                     coach: selectedCoach,
                     boat: selectedBoat
                 };
@@ -93,7 +94,6 @@ export function useCreateSession() {
                     if (success) {
                         setShowSuccess(true);
                         reset();
-                        queryClient.invalidateQueries('club-sessions');
                     }
                 }
             }),
@@ -105,8 +105,7 @@ export function useCreateSession() {
             handleSubmit,
             isValid,
             memberPriceToCharge,
-            reset,
-            queryClient
+            reset
         ]
     );
 

@@ -1,4 +1,5 @@
-import { FieldValue } from 'firebase/firestore';
+import { FieldValue, Timestamp } from 'firebase/firestore';
+import { FeeProcessingOption } from './profile';
 import { UserType } from './user';
 
 export type CollectionName = 'clubs' | 'athletes' | 'coaches';
@@ -66,9 +67,10 @@ export interface FirebaseUserDoc {
 export interface ProfileSession {
     readonly price: number;
     readonly guestPrice: number | null;
+    readonly feeProcessingOption: FeeProcessingOption;
     readonly type: string;
     readonly coach: Option | null;
-    readonly date: string;
+    readonly date: Timestamp;
     readonly start: string;
     readonly end: string;
     readonly boat: Option | null;

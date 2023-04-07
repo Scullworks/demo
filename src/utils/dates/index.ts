@@ -18,27 +18,10 @@ export function checkIsTodayOrGreater(dateString: string, isTodayOrGreater: bool
     const enteredDateUnix = dayjs(dateString).unix();
     const yesterdayUnix = dayjs(new Date()).subtract(1, 'day').unix();
     const isError = enteredDate instanceof Date && enteredDateUnix < yesterdayUnix;
-    const errorMessage = isError ? 'Session date must be in the future' : null;
+    const errorMessage = isError ? 'Date is in the past' : null;
 
     return {
         isError,
         errorMessage
     };
-}
-
-/**
- * Formats time from a date string
- * @param dateString date string
- * @returns formatted time (e.g. '10:30 AM')
- */
-export function formatTime(dateString: string) {
-    const splitDate = dateString.split(' ');
-    const time = splitDate[4];
-    const splitTime = time.split(':');
-    const hour = parseInt(splitTime[0]);
-    const minute = splitTime[1];
-    const isPmHour = hour > 12;
-    const formattedHour = isPmHour ? hour - 12 : hour;
-    const formattedTime = `${formattedHour}:${minute} ${isPmHour ? 'PM' : 'AM'}`;
-    return formattedTime;
 }
