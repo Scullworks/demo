@@ -15,6 +15,12 @@ interface Option {
     readonly name: string | undefined;
 }
 
+interface OptionProfileImage {
+    readonly id: string | undefined;
+    readonly name: string | undefined;
+    readonly profileImageRef: string | null;
+}
+
 export interface OnboardingDoc {
     readonly uid: string | undefined;
     readonly name: string | null;
@@ -69,11 +75,13 @@ export interface ProfileSession {
     readonly guestPrice: number | null;
     readonly feeProcessingOption: FeeProcessingOption;
     readonly type: string;
-    readonly coach: Option | null;
+    readonly coach: OptionProfileImage | null;
     readonly date: Timestamp;
     readonly start: string;
     readonly end: string;
     readonly boat: Option | null;
+    readonly createdAt: FieldValue;
+    readonly updatedAt: FieldValue;
 }
 
 export interface FirebaseSession extends ProfileSession {

@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp, serverTimestamp } from 'firebase/firestore';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
@@ -83,7 +83,9 @@ export function useCreateSession() {
                     start: dayjs(sessionStart).format('h:mm A'),
                     end: dayjs(sessionEnd).format('h:mm A'),
                     coach: selectedCoach,
-                    boat: selectedBoat
+                    boat: selectedBoat,
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp()
                 };
 
                 const { isError } = checkIsTodayOrGreater(sessionDate, true);
@@ -154,7 +156,8 @@ function selectedOption(
     if (!selectedOption && option) {
         firebaseSessionOption = {
             id: uuid(),
-            name: option
+            name: option,
+            profileImageRef: null
         };
     }
 
