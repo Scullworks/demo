@@ -108,6 +108,7 @@ function SessionForm(props: SessionFormProps) {
                 clearErrors={clearErrors}
                 options={clubServices ?? ([] as Option[])}
                 error={errors.sessionType?.message}
+                freeSolo
             />
             <Autocomplete
                 label="Session Coach"
@@ -116,6 +117,7 @@ function SessionForm(props: SessionFormProps) {
                 clearErrors={clearErrors}
                 options={coaches ?? ([] as Option[])}
                 error={errors.sessionCoach?.message}
+                freeSolo
             />
             <Autocomplete
                 label="Session Boat"
@@ -124,6 +126,7 @@ function SessionForm(props: SessionFormProps) {
                 clearErrors={clearErrors}
                 options={boats ?? ([] as Option[])}
                 error={errors.sessionBoat?.message}
+                freeSolo
             />
             {payoutText && <p className="profile-session-form__payout-text">{payoutText}</p>}
             {guestPayoutText && (

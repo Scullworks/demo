@@ -11,10 +11,20 @@ interface AutocompleteProps<T extends FieldValues> extends Omit<ComponentProps<'
     readonly clearErrors: UseFormClearErrors<T>;
     readonly options: Option[];
     readonly error: string | undefined;
+    readonly freeSolo?: boolean;
 }
 
 function Autocomplete<T extends FieldValues>(props: AutocompleteProps<T>) {
-    const { label, name, defaultValue, register, clearErrors, options, error } = props;
+    const {
+        label,
+        name,
+        defaultValue,
+        register,
+        clearErrors,
+        options,
+        error,
+        freeSolo = false
+    } = props;
 
     const isError = typeof error === 'string';
 
@@ -23,6 +33,7 @@ function Autocomplete<T extends FieldValues>(props: AutocompleteProps<T>) {
             defaultValue={defaultValue}
             options={options.map(option => option.value)}
             onChange={() => clearErrors(name)}
+            freeSolo={freeSolo}
             renderInput={params => (
                 <TextField
                     label={label}
