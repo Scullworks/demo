@@ -1,20 +1,19 @@
-import Calendar from 'react-calendar';
+import Calendar, { ViewCallbackProperties } from 'react-calendar';
 import { useDateStore } from '@/hooks/store';
-import { FirebaseClub } from '@/models';
 import TileContent from './TileContent';
-import { useSessionCalendar } from './useSessionCalendar';
 
 export interface SessionCalendarProps {
-    readonly club: FirebaseClub | undefined;
+    readonly setDate: (date: Date) => void;
+    readonly onClickDay: (date: Date) => void;
+    readonly userChangedMonthView: ({ activeStartDate }: ViewCallbackProperties) => void;
+    readonly datesWithSessions: string[] | undefined;
 }
 
-function SessionCalendar({ club }: SessionCalendarProps) {
+function SessionCalendar(props: SessionCalendarProps) {
+    const { setDate, onClickDay, userChangedMonthView, datesWithSessions } = props;
+
     const date = useDateStore(state => state.date);
     const minDate = new Date(2023, 3, 1);
-
-    const { setDate, onClickDay, userChangedMonthView, datesWithSessions } = useSessionCalendar({
-        club
-    });
 
     return (
         <Calendar

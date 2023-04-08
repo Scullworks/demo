@@ -4,9 +4,13 @@ import { useEffect, useState } from 'react';
 import { ViewCallbackProperties } from 'react-calendar';
 import { useSessionsQuery } from '@/hooks/queries';
 import { useDateStore } from '@/hooks/store';
-import { SessionCalendarProps } from './SessionCalendar';
+import { FirebaseClub } from '@/models';
 
-export function useSessionCalendar({ club }: SessionCalendarProps) {
+interface DashboardProps {
+    readonly club: FirebaseClub | undefined;
+}
+
+export function useDashboard({ club }: DashboardProps) {
     const [shouldFetch, setShouldFetch] = useState(false);
     const [monthViewChanged, setMonthViewChanged] = useState(false);
 
@@ -44,6 +48,7 @@ export function useSessionCalendar({ club }: SessionCalendarProps) {
     }, [monthViewChanged, refetch, setMonthViewChanged]);
 
     return {
+        sessions,
         setDate,
         onClickDay,
         userChangedMonthView,
