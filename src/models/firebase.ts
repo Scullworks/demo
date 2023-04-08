@@ -70,6 +70,12 @@ export interface FirebaseUserDoc {
     readonly type: UserType;
 }
 
+interface SessionAttendee {
+    readonly id: string;
+    readonly name: string;
+    readonly profileImageRef: string | null;
+}
+
 export interface ProfileSession {
     readonly price: number;
     readonly guestPrice: number | null;
@@ -79,9 +85,11 @@ export interface ProfileSession {
     readonly date: Timestamp;
     readonly start: string;
     readonly end: string;
+    readonly time: string;
     readonly boat: Option | null;
     readonly createdAt: FieldValue;
     readonly updatedAt: FieldValue;
+    readonly attendees: SessionAttendee[] | null;
 }
 
 export interface FirebaseSession extends ProfileSession {

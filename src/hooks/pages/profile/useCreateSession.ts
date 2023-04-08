@@ -88,7 +88,8 @@ export function useCreateSession() {
                     coach: selectedCoach,
                     boat: selectedBoat,
                     createdAt: serverTimestamp(),
-                    updatedAt: serverTimestamp()
+                    updatedAt: serverTimestamp(),
+                    attendees: null
                 };
 
                 const { isError } = checkIsTodayOrGreater(sessionDate, true);
