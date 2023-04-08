@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
 import { AuthStateProvider, ClubProfileMenu } from '@/components';
-import { FirebaseClubWithImage } from '@/models';
+import { FirebaseClub } from '@/models';
 import { pageTransitions } from '@/utils/animations/pages';
 
 interface ClubProfileLayoutProps {
-    readonly club: FirebaseClubWithImage | undefined;
+    readonly club: FirebaseClub | undefined;
     readonly children: ReactNode;
 }
 

@@ -7,8 +7,8 @@ import { useAddAthleteData } from '@/hooks/firebase';
 import { useAthleteOnboardingStore, useStepperStore } from '@/hooks/store';
 import {
     AthleteMembershipType,
-    FirebaseAthlete,
-    FirebaseClubDoc,
+    OnboardingAthlete,
+    OnboardingClubDoc,
     Option,
     PositionPreference
 } from '@/models';
@@ -66,7 +66,7 @@ export function useAthleteMembership({ clubs }: AthleteDetailsProps) {
 
                 const selectedClub = clubs?.find(c => c.value === club) as Option;
 
-                const athleteData: FirebaseAthlete = {
+                const athleteData: OnboardingAthlete = {
                     ...partialAthleteData,
                     club: { id: selectedClub.id, name: selectedClub.value },
                     membershipType,
@@ -80,7 +80,7 @@ export function useAthleteMembership({ clubs }: AthleteDetailsProps) {
                 if (isValid) {
                     setIsCreatingAccount(true);
 
-                    const { success, error } = await createAccount<FirebaseClubDoc>(
+                    const { success, error } = await createAccount<OnboardingClubDoc>(
                         'athletes',
                         athleteData,
                         imageUrl

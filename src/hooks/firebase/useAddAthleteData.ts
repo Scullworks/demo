@@ -1,7 +1,7 @@
 import { Dayjs } from 'dayjs';
 import { serverTimestamp } from 'firebase/firestore';
 import { useAthleteOnboardingStore, useAuthStore, useCommonOnboardingStore } from '@/hooks/store';
-import { FirebaseAthlete } from '@/models';
+import { OnboardingAthlete } from '@/models';
 
 export function useAddAthleteData() {
     const user = useAuthStore(state => state.user);
@@ -15,7 +15,7 @@ export function useAddAthleteData() {
 
     // Add the rest when a user selects from the available options
     const partialAthleteData: Omit<
-        FirebaseAthlete,
+        OnboardingAthlete,
         'club' | 'membershipType' | 'positionPreference'
     > = {
         uid: user?.uid as string,

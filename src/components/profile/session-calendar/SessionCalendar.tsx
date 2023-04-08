@@ -1,11 +1,11 @@
 import Calendar from 'react-calendar';
 import { useDateStore } from '@/hooks/store';
-import { FirebaseClubWithImage } from '@/models';
+import { FirebaseClub } from '@/models';
 import TileContent from './TileContent';
 import { useSessionCalendar } from './useSessionCalendar';
 
 export interface SessionCalendarProps {
-    readonly club: FirebaseClubWithImage | undefined;
+    readonly club: FirebaseClub | undefined;
 }
 
 function SessionCalendar({ club }: SessionCalendarProps) {

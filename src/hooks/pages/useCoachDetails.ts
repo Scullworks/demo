@@ -5,7 +5,7 @@ import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
-import { CoachMembershipType, FirebaseClubDoc, FirebaseCoach, Option } from '@/models';
+import { CoachMembershipType, OnboardingClubDoc, OnboardingCoach, Option } from '@/models';
 import { createAccount } from '@/services/firebase';
 import { coachDetailsSchema } from '@/utils/validations';
 
@@ -55,7 +55,7 @@ export function useCoachDetails({ clubs }: CoachDetailsProps) {
 
                 const selectedClub = clubs?.find(c => c.value === club) as Option;
 
-                const coachData: FirebaseCoach = {
+                const coachData: OnboardingCoach = {
                     uid: user?.uid as string,
                     name,
                     email: user?.email as string,
@@ -69,7 +69,7 @@ export function useCoachDetails({ clubs }: CoachDetailsProps) {
                 if (isValid) {
                     setIsCreatingAccount(true);
 
-                    const { success, error } = await createAccount<FirebaseClubDoc>(
+                    const { success, error } = await createAccount<OnboardingClubDoc>(
                         'coaches',
                         coachData,
                         imageUrl

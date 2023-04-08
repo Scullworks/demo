@@ -8,10 +8,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import boatIcon from '@/assets/profile/boat.svg';
 import { Avatar } from '@/components';
-import { FirebaseClubWithImage } from '@/models';
+import { FirebaseClub } from '@/models';
 
 interface ClubProfileMenuProps {
-    readonly club: FirebaseClubWithImage;
+    readonly club: FirebaseClub;
 }
 
 function ClubProfileMenu({ club }: ClubProfileMenuProps) {

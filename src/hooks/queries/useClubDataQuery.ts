@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import { useAuthStore } from '@/hooks/store';
-import { FirebaseClubWithImage } from '@/models';
+import { FirebaseClub } from '@/models';
 import { getDocDataFromFirebase } from '@/services/firebase';
 
 export function useClubDataQuery() {
@@ -8,7 +8,7 @@ export function useClubDataQuery() {
 
     const { data: club } = useQuery({
         queryKey: 'club-data',
-        queryFn: () => getDocDataFromFirebase<FirebaseClubWithImage>(user?.uid, 'clubs'),
+        queryFn: () => getDocDataFromFirebase<FirebaseClub>(user?.uid, 'clubs'),
         enabled: user !== null
     });
 

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useLocalStorage } from '@/hooks/common';
 import { useAddClubData } from '@/hooks/firebase';
 import { useClubOnboardingStore, useStepperStore } from '@/hooks/store';
-import { Boat, BoatSize, FirebaseClub } from '@/models';
+import { Boat, BoatSize, OnboardingClub } from '@/models';
 import { createAccount } from '@/services/firebase';
 import { boatSchema } from '@/utils/validations';
 
@@ -68,7 +68,7 @@ export function useBoats() {
         if (boatCount) {
             setIsCreatingAccount(true);
 
-            const { success, error } = await createAccount<FirebaseClub>(
+            const { success, error } = await createAccount<OnboardingClub>(
                 'clubs',
                 clubData,
                 imageUrl,

@@ -1,7 +1,7 @@
 import { Dayjs } from 'dayjs';
 import { serverTimestamp } from 'firebase/firestore';
 import { useAuthStore, useClubOnboardingStore, useCommonOnboardingStore } from '@/hooks/store';
-import { FirebaseClub } from '@/models';
+import { OnboardingClub } from '@/models';
 
 export function useAddClubData() {
     const user = useAuthStore(state => state.user);
@@ -17,7 +17,7 @@ export function useAddClubData() {
 
     const address = JSON.parse(addressJSON as string);
 
-    const clubData: FirebaseClub = {
+    const clubData: OnboardingClub = {
         uid: user?.uid as string,
         name,
         email: user?.email as string,

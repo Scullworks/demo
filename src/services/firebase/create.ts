@@ -1,7 +1,7 @@
 import { addDoc, collection } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { v4 as uuid } from 'uuid';
-import { FirebaseDoc, FirebaseClubDoc, Boat, CollectionName, ProfileSession } from '@/models';
+import { OnboardingDoc, OnboardingClubDoc, Boat, CollectionName, ProfileSession } from '@/models';
 import { database, storage } from './setup';
 
 interface AddDocResponse {
@@ -27,7 +27,7 @@ export async function createSession(clubId: string, data: ProfileSession): Promi
     }
 }
 
-export async function createAccount<T extends FirebaseDoc | FirebaseClubDoc>(
+export async function createAccount<T extends OnboardingDoc | OnboardingClubDoc>(
     collectionName: CollectionName,
     data: T,
     imageUrl: string | null,

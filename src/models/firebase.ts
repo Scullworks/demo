@@ -15,7 +15,7 @@ interface Option {
     readonly name: string | undefined;
 }
 
-export interface FirebaseDoc {
+export interface OnboardingDoc {
     readonly uid: string | undefined;
     readonly name: string | null;
     readonly email: string | undefined;
@@ -27,7 +27,7 @@ interface FirebaseStripe {
     readonly connected: boolean;
 }
 
-export interface FirebaseClub extends FirebaseDoc {
+export interface OnboardingClub extends OnboardingDoc {
     readonly address: string | null;
     readonly cancellationPolicy: string | null;
     readonly closingTime: string | null;
@@ -38,17 +38,17 @@ export interface FirebaseClub extends FirebaseDoc {
     readonly stripe: FirebaseStripe;
 }
 
-export interface FirebaseClubDoc extends FirebaseDoc {
+export interface OnboardingClubDoc extends OnboardingDoc {
     club: Club;
 }
 
-export interface FirebaseCoach extends FirebaseClubDoc {
+export interface OnboardingCoach extends OnboardingClubDoc {
     readonly membershipType: string;
     readonly createdAt: FieldValue;
     readonly updatedAt: FieldValue;
 }
 
-export interface FirebaseAthlete extends FirebaseClubDoc {
+export interface OnboardingAthlete extends OnboardingClubDoc {
     readonly dateOfBirth: string | null;
     readonly emergencyName: string | null;
     readonly emergencyNumber: number | null;
@@ -80,19 +80,16 @@ export interface FirebaseSession extends ProfileSession {
     readonly id: string;
 }
 
-interface ProfileImage {
+interface FirebaseProfileImageAndId {
     readonly id: string;
     readonly profileImage: string | null;
     readonly profileImageRef: string | null;
 }
 
-export type FirebaseClubWithImage = FirebaseClub & ProfileImage;
-export type FirebaseCoachWithImage = FirebaseCoach & ProfileImage;
-export type FirebaseAthleteWithImage = FirebaseAthlete & ProfileImage;
+export type FirebaseClub = OnboardingClub & FirebaseProfileImageAndId;
+export type FirebaseCoach = OnboardingCoach & FirebaseProfileImageAndId;
+export type FirebaseAthlete = OnboardingAthlete & FirebaseProfileImageAndId;
 
-export type ResponseData =
-    | FirebaseClubWithImage
-    | FirebaseCoachWithImage
-    | FirebaseAthleteWithImage;
+export type ResponseData = FirebaseClub | FirebaseCoach | FirebaseAthlete;
 
 export type GetDocDataResponse<T extends ResponseData> = T;
