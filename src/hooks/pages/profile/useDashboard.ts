@@ -14,6 +14,7 @@ export function useDashboard({ club }: DashboardProps) {
     const [shouldFetch, setShouldFetch] = useState(false);
     const [monthViewChanged, setMonthViewChanged] = useState(false);
 
+    const activeStartDate = useDateStore(state => state.activeStartDate);
     const setDate = useDateStore(state => state.setDate);
     const setActiveStartDate = useDateStore(state => state.setActiveStartDate);
     const setActiveEndDate = useDateStore(state => state.setActiveEndDate);
@@ -47,11 +48,22 @@ export function useDashboard({ club }: DashboardProps) {
         }
     }, [monthViewChanged, refetch, setMonthViewChanged]);
 
+    useEffect(() => {
+        const firstDateWithSession = sessions?.find(session => {
+            const month = dayjs(session.date.toDate()).get('month');
+            const currentMonth = dayjs(activeStartDate).get('month');
+            return month === currentMonth;
+        });
+
+        if (firstDateWithSession) setDate(firstDateWithSession.date.toDate());
+    }, [sessions, activeStartDate, setDate]);
+
     return {
         sessions,
         setDate,
         onClickDay,
         userChangedMonthView,
-        datesWithSessions
+        datesWithSessions,
+        refetch
     };
 }
