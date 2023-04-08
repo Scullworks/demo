@@ -6,7 +6,8 @@ import {
     NestedCollectionName,
     Option,
     ResponseData,
-    FirebaseSession
+    FirebaseSession,
+    OptionWithProfileImage
 } from '@/models';
 import { database } from './setup';
 
@@ -39,13 +40,20 @@ export async function getNestedClubOptions(
     collectionName: NestedCollectionName
 ) {
     try {
-        let options: Option[] = [];
+        let options: OptionWithProfileImage[] = [];
 
         if (clubId) {
             const collectionRef = collection(database, 'clubs', clubId, collectionName);
             const snapshot = await getDocs(collectionRef);
             snapshot.forEach(doc => {
-                options = [...options, { id: doc.id, value: doc.data().name }];
+                options = [
+                    ...options,
+                    {
+                        id: doc.id,
+                        value: doc.data().name,
+                        profileImageRef: doc.data().profileImageRef ?? null
+                    }
+                ];
             });
         }
 

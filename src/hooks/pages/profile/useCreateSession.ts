@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
 import { useClubDataQuery, useNestedOptionsQuery } from '@/hooks/queries';
 import { useFeeProcessingStore } from '@/hooks/store';
-import { Option, ProfileSession } from '@/models';
+import { OptionWithProfileImage, ProfileSession } from '@/models';
 import { createSession } from '@/services/firebase';
 import { checkIsTodayOrGreater } from '@/utils/dates';
 import { createSessionSchema } from '@/utils/validations';
@@ -133,7 +133,10 @@ export function useCreateSession() {
     };
 }
 
-function selectedOption(option: string, options: Option<string>[] | null | undefined) {
+function selectedOption(
+    option: string,
+    options: OptionWithProfileImage<string>[] | null | undefined
+) {
     const selectedOption = options?.find(opt => opt.value === option) ?? null;
 
     let firebaseSessionOption = null;
@@ -143,7 +146,8 @@ function selectedOption(option: string, options: Option<string>[] | null | undef
     if (selectedOption) {
         firebaseSessionOption = {
             id: selectedOption.id,
-            name: selectedOption.value
+            name: selectedOption.value,
+            profileImageRef: selectedOption.profileImageRef
         };
     }
 
