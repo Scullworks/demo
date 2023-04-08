@@ -73,6 +73,8 @@ export function useCreateSession() {
 
                 const selectedCoach = selectedOption(sessionCoach, coaches);
                 const selectedBoat = selectedOption(sessionBoat, boats);
+                const startTime = dayjs(sessionStart).format('h:mm A');
+                const endTime = dayjs(sessionEnd).format('h:mm A');
 
                 const sessionData: ProfileSession = {
                     price: memberPriceToCharge,
@@ -82,6 +84,7 @@ export function useCreateSession() {
                     date: Timestamp.fromDate(dayjs(sessionDate).toDate()),
                     start: dayjs(sessionStart).format('h:mm A'),
                     end: dayjs(sessionEnd).format('h:mm A'),
+                    time: formatTimeString(startTime, endTime),
                     coach: selectedCoach,
                     boat: selectedBoat,
                     createdAt: serverTimestamp(),
@@ -162,4 +165,16 @@ function selectedOption(
     }
 
     return firebaseSessionOption;
+}
+
+function formatTimeString(startTime: string, endTime: string) {
+    let timeString;
+
+    if (startTime.split(' ')[1] === endTime.split(' ')[1]) {
+        timeString = `${startTime.split(' ')[0]}-${endTime}`;
+    } else {
+        timeString = `${startTime}-${endTime}`;
+    }
+
+    return timeString;
 }
