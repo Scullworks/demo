@@ -21,8 +21,10 @@ export function useFeeProcessing() {
         if (Number.isNaN(memberPrice)) setPayoutText(null);
 
         if (memberPrice && feeProcessingOption === 'Absorb Fees') {
+            const priceToCharge = memberPrice - 0.3;
             const fees = (memberPrice - 0.3) * 0.079 + 0.3;
             const payout = memberPrice - 0.3 - roundDown(fees);
+            setMemberPriceToCharge(priceToCharge);
             setMemberPayout(roundDown(payout));
             setPayoutText(`*Your payout after Stripe and platform fees will be $${memberPayout}.`);
         }
@@ -61,8 +63,10 @@ export function useFeeProcessing() {
         if (Number.isNaN(guestPrice)) setGuestPayoutText(null);
 
         if (guestPrice && feeProcessingOption === 'Absorb Fees') {
+            const priceToCharge = guestPrice - 0.3;
             const fees = (guestPrice - 0.3) * 0.079 + 0.3;
             const payout = guestPrice - 0.3 - roundDown(fees);
+            if (guestPriceToCharge) setGuestPriceToCharge(priceToCharge);
             setGuestPayout(roundDown(payout));
             setGuestPayoutText(
                 `**Your payout after Stripe and platform fees will be $${guestPayout}.`
