@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { NestedCollectionName } from '@/models';
 import { getNestedClubOptions } from '@/services/firebase';
 
@@ -8,7 +8,7 @@ export function useNestedOptionsQuery(
     shouldFetch: boolean
 ) {
     const { data } = useQuery({
-        queryKey: `club-${collectionName}`,
+        queryKey: ['club', collectionName],
         queryFn: () => getNestedClubOptions(clubId, collectionName),
         enabled: shouldFetch
     });

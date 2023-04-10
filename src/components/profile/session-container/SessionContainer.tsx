@@ -1,9 +1,9 @@
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from 'react-query';
 import { useDateStore } from '@/hooks/store';
 import { FirebaseClub, FirebaseSession, UserType } from '@/models';
 import SessionCard from './SessionCard';

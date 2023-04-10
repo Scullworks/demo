@@ -1,6 +1,6 @@
 import { AvatarGroup, Avatar as MuiAvatar } from '@mui/material';
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from 'react-query';
 import { Avatar } from '@/components';
 import { FirebaseClub, FirebaseSession, UserType } from '@/models';
 import { useSessionCard } from './useSessionCard';

@@ -1,5 +1,5 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useQueryClient } from 'react-query';
 import { useClubDataQuery } from '@/hooks/queries';
 import { updateFirebaseDoc } from '@/services/firebase';
 import { connectToStripe } from '@/services/stripe';
@@ -51,7 +51,7 @@ export function useClubPayments() {
 
             if (detailsSubmitted) {
                 await updateFirebaseDoc('clubs', club.id, { 'stripe.connected': true });
-                queryClient.invalidateQueries('club-info');
+                await queryClient.refetchQueries({ queryKey: ['club'] });
             }
 
             setIsLoading(false);

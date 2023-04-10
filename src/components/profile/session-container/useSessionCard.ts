@@ -1,6 +1,6 @@
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from 'react-query';
 import { useAuthStore } from '@/hooks/store';
 import { FirebaseClub, FirebaseSession, UserType } from '@/models';
 import { database } from '@/services/firebase';

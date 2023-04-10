@@ -1,8 +1,8 @@
 import { ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { theme } from '@/utils/mui/theme';
 import type { AppProps } from 'next/app';
 import '@/styles/main.scss';
