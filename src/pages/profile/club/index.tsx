@@ -5,13 +5,13 @@ import { useClubDataQuery } from '@/hooks/queries';
 function ClubDashboard() {
     const { club } = useClubDataQuery();
 
-    const { sessions, ...calendarProps } = useDashboard({ club });
+    const { sessions, refetch, ...calendarProps } = useDashboard({ club });
 
     return (
         <ClubProfileLayout club={club}>
             <div className="profile-dashboard">
                 <SessionCalendar {...calendarProps} />
-                <SessionContainer sessions={sessions} />
+                <SessionContainer sessions={sessions} club={club} refetch={refetch} />
             </div>
         </ClubProfileLayout>
     );

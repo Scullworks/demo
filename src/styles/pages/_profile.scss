@@ -6,8 +6,15 @@
     @include flex-center(row);
     height: 100vh;
     width: 100vw;
+
+    h1,
+    h2,
+    h3 {
+        font-family: 'Source Sans Pro', sans-serif;
+    }
 }
 
+// Menu Section
 .profile-menu,
 .profile-menu__user {
     @include flex-center;
@@ -24,12 +31,14 @@
     }
 }
 
+h3.profile-menu__logo {
+    font-family: 'Teko', sans-serif;
+}
+
 .profile-menu__user {
     h3 {
-        font-family: 'Source Sans Pro', sans-serif;
         font-size: 2rem;
         font-weight: 700;
-        letter-spacing: 0;
         margin-block: 2rem;
         color: rgb(34, 34, 34);
         letter-spacing: normal;
@@ -56,17 +65,111 @@
     font-weight: 600;
 }
 
+// Main Section
 .profile-main {
     @include flex-center;
     min-height: 90%;
     flex: 1;
 
     h1 {
-        font-family: 'Source Sans Pro', sans-serif;
         font-weight: 700;
         font-size: 5rem;
         letter-spacing: normal;
     }
+}
+
+// Dashboard
+.profile-dashboard {
+    @include flex-center(row);
+    justify-content: space-around;
+    width: 90%;
+    height: 90vh;
+}
+
+.profile-session__no-sessions {
+    font-size: 1.6rem;
+}
+
+.profile-session-container {
+    width: 35rem;
+    height: 90%;
+
+    &:has(> :only-child) {
+        @include flex-center;
+    }
+
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.profile-session-card {
+    @include flex-center;
+    margin-bottom: 2rem;
+    padding-block: 3rem;
+    width: 95%;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px 1px rgba(34, 34, 34, 0.08);
+    border: 1px solid rgb(221, 221, 221);
+
+    .MuiAvatarGroup-root {
+        margin-bottom: 1rem;
+
+        .MuiAvatar-root {
+            width: 40px;
+            height: 40px;
+            background-color: $color-teal;
+            font-size: 1.3rem;
+        }
+    }
+
+    button {
+        margin-top: 2rem;
+        background-color: rgb(211, 47, 47);
+        transition: 0.2s all ease-in-out;
+
+        &:hover {
+            background-color: rgb(198, 40, 40);
+        }
+    }
+}
+
+.profile-session-card__heading {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-block: 0.5rem;
+}
+
+.profile-session-card__price {
+    font-weight: 500;
+    margin-block: 1.5rem 1rem;
+}
+
+.profile-session-card__coach {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    // font-weight: 500;
+}
+
+.profile-session-card__date {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.profile-session-card__time {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.profile-session-card__attendees {
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-block: 1rem;
 }
 
 // Payments
@@ -75,7 +178,7 @@
     height: 100%;
 
     p {
-        margin-top: 2rem;
+        margin-top: 2.5rem;
     }
 }
 
