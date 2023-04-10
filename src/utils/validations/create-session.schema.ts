@@ -13,7 +13,13 @@ export const createSessionSchema = yup.object().shape({
     sessionType: yup.string().required('Session type is required'),
     sessionCoach: yup.string(),
     sessionDate: yup.string().required('Session date is required'),
-    sessionStart: yup.string().required('Session start is required'),
-    sessionEnd: yup.string().required('Session end is required'),
+    sessionStart: yup
+        .date()
+        .typeError('Must be a valid time format')
+        .required('Session start is required'),
+    sessionEnd: yup
+        .date()
+        .typeError('Must be a valid time format')
+        .required('Session end is required'),
     sessionBoat: yup.string()
 });
