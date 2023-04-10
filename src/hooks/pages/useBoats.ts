@@ -80,7 +80,9 @@ export function useBoats() {
                 clearOnboardingStores();
                 router.push('/profile/club');
             }
-        } else {
+        }
+
+        if (!boatCount) {
             setTriggerSubmit(false);
             setShowAlert(true);
         }

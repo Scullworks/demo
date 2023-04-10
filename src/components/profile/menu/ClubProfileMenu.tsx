@@ -31,7 +31,7 @@ function ClubProfileMenu({ club }: ClubProfileMenuProps) {
     return (
         <aside className="profile-menu">
             {/* Logo */}
-            <h3>ScullWorks</h3>
+            <h3 className="profile-menu__logo">ScullWorks</h3>
 
             {/* Club Info */}
             <div className="profile-menu__user">
