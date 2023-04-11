@@ -5,7 +5,7 @@ import {
     GetDocDataResponse,
     NestedCollectionName,
     Option,
-    ResponseData,
+    FirebaseCollection,
     FirebaseSession,
     OptionWithProfileImage
 } from '@/models';
@@ -71,6 +71,41 @@ export async function getNestedClubOptions(
     }
 }
 
+export async function getNestedClubCollections<T extends FirebaseCollection>(
+    clubId: string | undefined,
+    collectionName: NestedCollectionName
+) {
+    try {
+        let data: T[] = [];
+
+        if (clubId) {
+            const collectionRef = collection(database, 'clubs', clubId, collectionName);
+            const snapshot = await getDocs(collectionRef);
+            snapshot.forEach(doc => {
+                data = [
+                    ...data,
+                    {
+                        ...(doc.data() as T),
+                        id: doc.id
+                    }
+                ];
+            });
+        }
+
+        return {
+            data,
+            error: false
+        };
+    } catch (error) {
+        console.error('Get Nested Collection Error: ', error.message);
+
+        return {
+            data: null,
+            error: true
+        };
+    }
+}
+
 export async function getSessionsFromFirebase(
     clubId: string | undefined,
     startDate: Date,
@@ -128,7 +163,7 @@ export async function getUserFromFirebase(uid: string) {
     }
 }
 
-export async function getDocDataFromFirebase<T extends ResponseData>(
+export async function getDocDataFromFirebase<T extends FirebaseCollection>(
     uid: string | undefined,
     collectionName: CollectionName
 ): Promise<GetDocDataResponse<T> | undefined> {
