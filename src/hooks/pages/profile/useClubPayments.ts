@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useClubDataQuery } from '@/hooks/queries';
+import { useEnsureClubDataQuery } from '@/hooks/queries/useEnsureClubDataQuery';
 import { updateFirebaseDoc } from '@/services/firebase';
 import { connectToStripe } from '@/services/stripe';
 import { axiosInstance } from '@/services/stripe/utils';
@@ -9,8 +9,8 @@ export function useClubPayments() {
     const [isLoading, setIsLoading] = useState(false);
     const [isRedirecting, setIsRedirecting] = useState(false);
 
-    const { club } = useClubDataQuery();
     const queryClient = useQueryClient();
+    const { club } = useEnsureClubDataQuery();
 
     async function onConnectClick() {
         if (!club?.name || !club?.email) return;
@@ -67,7 +67,6 @@ export function useClubPayments() {
     return {
         isLoading,
         isRedirecting,
-        club,
         onConnectClick
     };
 }

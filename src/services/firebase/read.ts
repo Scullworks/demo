@@ -131,7 +131,9 @@ export async function getUserFromFirebase(uid: string) {
 export async function getDocDataFromFirebase<T extends ResponseData>(
     uid: string | undefined,
     collectionName: CollectionName
-): Promise<GetDocDataResponse<T>> {
+): Promise<GetDocDataResponse<T> | undefined> {
+    if (!uid) return;
+
     let data = null;
     const collectionRef = collection(database, collectionName);
     const docQuery = query(collectionRef, where('uid', '==', uid));

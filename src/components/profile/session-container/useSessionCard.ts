@@ -1,23 +1,24 @@
-import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import { useEnsureClubDataQuery } from '@/hooks/queries/useEnsureClubDataQuery';
 import { useAuthStore } from '@/hooks/store';
-import { FirebaseClub, FirebaseSession, UserType } from '@/models';
+import { FirebaseSession, UserType } from '@/models';
 import { database } from '@/services/firebase';
 
 interface UseSessionCardProps {
     readonly session: FirebaseSession;
-    readonly club: FirebaseClub | undefined;
     readonly as: UserType;
-    readonly refetch: <TPageData>(
-        options?: RefetchOptions & RefetchQueryFilters<TPageData>
-    ) => Promise<QueryObserverResult>;
 }
 
 export function useSessionCard(props: UseSessionCardProps) {
-    const { session, club, as: userType, refetch } = props;
+    const { session, as: userType } = props;
+
     const [buttonText, setButtonText] = useState('');
     const currentUser = useAuthStore(state => state.user);
+
+    const queryClient = useQueryClient();
+    const { club } = useEnsureClubDataQuery();
 
     function onClick(session: FirebaseSession) {
         if (userType === 'club') deleteSession(session.id);
@@ -32,7 +33,7 @@ export function useSessionCard(props: UseSessionCardProps) {
         try {
             const sessionRef = doc(database, 'clubs', club.id, 'sessions', sessionId);
             await deleteDoc(sessionRef);
-            refetch();
+            await queryClient.refetchQueries({ queryKey: ['club', 'sessions'] });
         } catch (error) {
             console.error('Delete Session Error: ', error.message);
         }

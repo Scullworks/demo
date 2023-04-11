@@ -96,15 +96,15 @@ export interface FirebaseSession extends ProfileSession {
     readonly id: string;
 }
 
-interface FirebaseProfileImageAndId {
+interface FirebaseProfile {
     readonly id: string;
     readonly profileImage: string | null;
     readonly profileImageRef: string | null;
 }
 
-export type FirebaseClub = OnboardingClub & FirebaseProfileImageAndId;
-export type FirebaseCoach = OnboardingCoach & FirebaseProfileImageAndId;
-export type FirebaseAthlete = OnboardingAthlete & FirebaseProfileImageAndId;
+export type FirebaseClub = OnboardingClub & FirebaseProfile;
+export type FirebaseCoach = OnboardingCoach & FirebaseProfile;
+export type FirebaseAthlete = OnboardingAthlete & FirebaseProfile;
 
 export type ResponseData = FirebaseClub | FirebaseCoach | FirebaseAthlete;
 

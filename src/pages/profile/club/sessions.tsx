@@ -2,10 +2,10 @@ import { ClubProfileLayout, CreateSessionSuccess, SessionForm } from '@/componen
 import { useCreateSession } from '@/hooks/pages';
 
 function Sessions() {
-    const { club, showSuccess, setShowSuccess, ...sessionFormProps } = useCreateSession();
+    const { showSuccess, setShowSuccess, ...sessionFormProps } = useCreateSession();
 
     return (
-        <ClubProfileLayout club={club}>
+        <ClubProfileLayout>
             {showSuccess ? (
                 <CreateSessionSuccess setShowSuccess={setShowSuccess} />
             ) : (

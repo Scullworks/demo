@@ -1,25 +1,18 @@
-import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
-
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDateStore } from '@/hooks/store';
-import { FirebaseClub, FirebaseSession, UserType } from '@/models';
+import { FirebaseSession, UserType } from '@/models';
 import SessionCard from './SessionCard';
 
 dayjs.extend(advancedFormat);
 
 interface SessionContainerProps {
     readonly sessions: FirebaseSession[] | null | undefined;
-    readonly club: FirebaseClub | undefined;
-    readonly refetch: <TPageData>(
-        options?: RefetchOptions & RefetchQueryFilters<TPageData>
-    ) => Promise<QueryObserverResult>;
 }
 
-function SessionContainer(props: SessionContainerProps) {
-    const { sessions, club, refetch } = props;
+function SessionContainer({ sessions }: SessionContainerProps) {
     const selectedDate = useDateStore(state => state.date);
     const [filteredSessions, setFilteredSessions] = useState<FirebaseSession[] | null | undefined>(
         null
@@ -49,13 +42,7 @@ function SessionContainer(props: SessionContainerProps) {
         <div className="profile-session-container">
             {userType &&
                 filteredSessions?.map(session => (
-                    <SessionCard
-                        as={userType}
-                        session={session}
-                        club={club}
-                        key={session.id}
-                        refetch={refetch}
-                    />
+                    <SessionCard as={userType} session={session} key={session.id} />
                 ))}
         </div>
     );

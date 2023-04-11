@@ -117,7 +117,7 @@ h3.profile-menu__logo {
     border: 1px solid rgb(221, 221, 221);
 
     .MuiAvatarGroup-root {
-        margin-bottom: 1rem;
+        margin-bottom: 3rem;
 
         .MuiAvatar-root {
             width: 40px;
@@ -128,7 +128,6 @@ h3.profile-menu__logo {
     }
 
     button {
-        margin-top: 2rem;
         background-color: rgb(211, 47, 47);
         transition: 0.2s all ease-in-out;
 
@@ -170,6 +169,11 @@ h3.profile-menu__logo {
     font-size: 1.3rem;
     font-weight: 500;
     margin-block: 1rem;
+}
+
+.profile-session-card__no-attendees {
+    font-size: 1.3rem;
+    margin-block: 1rem 2rem;
 }
 
 // Payments

@@ -7,18 +7,19 @@ import { theme } from '@/utils/mui/theme';
 import type { AppProps } from 'next/app';
 import '@/styles/main.scss';
 
-export default function App({ Component, pageProps, router }: AppProps) {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: {
-                staleTime: Infinity,
-                refetchOnWindowFocus: false,
-                refetchOnReconnect: false,
-                refetchOnMount: false
-            }
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+            refetchOnMount: false,
+            staleTime: Infinity,
+            cacheTime: Infinity
         }
-    });
+    }
+});
 
+export default function App({ Component, pageProps, router }: AppProps) {
     function scrollToTop() {
         window.scrollTo(0, 0);
     }

@@ -1,16 +1,15 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
 import { AuthStateProvider, ClubProfileMenu } from '@/components';
-import { FirebaseClub } from '@/models';
+import { useEnsureClubDataQuery } from '@/hooks/queries/useEnsureClubDataQuery';
 import { pageTransitions } from '@/utils/animations/pages';
 
 interface ClubProfileLayoutProps {
-    readonly club: FirebaseClub | undefined;
     readonly children: ReactNode;
 }
 
-function ClubProfileLayout(props: ClubProfileLayoutProps) {
-    const { club, children } = props;
+function ClubProfileLayout({ children }: ClubProfileLayoutProps) {
+    const { club } = useEnsureClubDataQuery();
 
     return (
         <AuthStateProvider>

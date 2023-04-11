@@ -4,7 +4,8 @@ import { Timestamp, serverTimestamp } from 'firebase/firestore';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
-import { useClubDataQuery, useNestedOptionsQuery } from '@/hooks/queries';
+import { useNestedOptionsQuery } from '@/hooks/queries';
+import { useEnsureClubDataQuery } from '@/hooks/queries/useEnsureClubDataQuery';
 import { useFeeProcessingStore } from '@/hooks/store';
 import { OptionWithProfileImage, ProfileSession } from '@/models';
 import { createSession } from '@/services/firebase';
@@ -30,7 +31,7 @@ export function useCreateSession() {
     const memberPriceToCharge = useFeeProcessingStore(state => state.memberPriceToCharge);
     const guestPriceToCharge = useFeeProcessingStore(state => state.guestPriceToCharge);
 
-    const { club } = useClubDataQuery();
+    const { club } = useEnsureClubDataQuery();
     const { options: coaches } = useNestedOptionsQuery(club?.id, 'coaches', shouldFetch);
     const { options: boats } = useNestedOptionsQuery(club?.id, 'boats', shouldFetch);
 
@@ -125,7 +126,6 @@ export function useCreateSession() {
     }, [club?.id]);
 
     return {
-        club,
         clubServices,
         coaches,
         boats,

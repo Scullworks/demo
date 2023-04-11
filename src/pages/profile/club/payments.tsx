@@ -1,13 +1,15 @@
 import { PropagateLoader } from 'react-spinners';
 import { ClubProfileLayout } from '@/components';
 import { useClubPayments } from '@/hooks/pages';
+import { useEnsureClubDataQuery } from '@/hooks/queries/useEnsureClubDataQuery';
 
 function ClubPayments() {
-    const { isLoading, isRedirecting, club, onConnectClick } = useClubPayments();
+    const { isLoading, isRedirecting, onConnectClick } = useClubPayments();
+    const { club } = useEnsureClubDataQuery();
 
     if (isLoading || isRedirecting) {
         return (
-            <ClubProfileLayout club={club}>
+            <ClubProfileLayout>
                 <div className="loading__profile">
                     <PropagateLoader color="rgb(255, 179, 109)" />
                     {isRedirecting && <p>Redirecting you to Stripe</p>}
@@ -17,7 +19,7 @@ function ClubPayments() {
     }
 
     return (
-        <ClubProfileLayout club={club}>
+        <ClubProfileLayout>
             <div className="profile-payments">
                 {club?.stripe.connected ? (
                     <>

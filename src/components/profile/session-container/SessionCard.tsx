@@ -1,22 +1,17 @@
 import { AvatarGroup, Avatar as MuiAvatar } from '@mui/material';
-import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { Avatar } from '@/components';
-import { FirebaseClub, FirebaseSession, UserType } from '@/models';
+import { FirebaseSession, UserType } from '@/models';
 import { useSessionCard } from './useSessionCard';
 
 interface SessionCardProps {
     readonly session: FirebaseSession;
-    readonly club: FirebaseClub | undefined;
     readonly as: UserType;
-    readonly refetch: <TPageData>(
-        options?: RefetchOptions & RefetchQueryFilters<TPageData>
-    ) => Promise<QueryObserverResult>;
 }
 
 function SessionCard(props: SessionCardProps) {
     const { session } = props;
-    const { buttonText, onClick } = useSessionCard({ ...props });
+    const { buttonText, onClick } = useSessionCard(props);
 
     return (
         <div className="profile-session-card" key={session.id}>
@@ -40,7 +35,7 @@ function SessionCard(props: SessionCardProps) {
                 {dayjs(session.date.toDate()).format('MMMM Do YYYY')}
             </p>
             <p className="profile-session-card__time">{session.time}</p>
-            {session.attendees && (
+            {session.attendees ? (
                 <>
                     <p className="profile-session-card__attendees">Athletes Attending:</p>
                     {/* TODO: Replace with actual functionality, after athlete dashboard implementation */}
@@ -54,6 +49,8 @@ function SessionCard(props: SessionCardProps) {
                         <MuiAvatar alt="John Doe">JD</MuiAvatar>
                     </AvatarGroup>
                 </>
+            ) : (
+                <p className="profile-session-card__no-attendees">No athletes have booked yet</p>
             )}
             <button className="button__static" onClick={() => onClick(session)}>
                 {buttonText}

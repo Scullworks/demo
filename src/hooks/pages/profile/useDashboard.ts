@@ -2,15 +2,10 @@ import dayjs from 'dayjs';
 import { Timestamp } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { ViewCallbackProperties } from 'react-calendar';
-import { useSessionsQuery } from '@/hooks/queries';
+import { useClubDataQuery, useSessionsQuery } from '@/hooks/queries';
 import { useDateStore } from '@/hooks/store';
-import { FirebaseClub } from '@/models';
 
-interface DashboardProps {
-    readonly club: FirebaseClub | undefined;
-}
-
-export function useDashboard({ club }: DashboardProps) {
+export function useDashboard() {
     const [shouldFetch, setShouldFetch] = useState(false);
     const [monthViewChanged, setMonthViewChanged] = useState(false);
 
@@ -19,6 +14,7 @@ export function useDashboard({ club }: DashboardProps) {
     const setActiveStartDate = useDateStore(state => state.setActiveStartDate);
     const setActiveEndDate = useDateStore(state => state.setActiveEndDate);
 
+    const { club } = useClubDataQuery();
     const { sessions, refetch } = useSessionsQuery(club?.id, shouldFetch);
 
     const datesWithSessions = sessions?.map(session => {
@@ -63,7 +59,6 @@ export function useDashboard({ club }: DashboardProps) {
         setDate,
         onClickDay,
         userChangedMonthView,
-        datesWithSessions,
-        refetch
+        datesWithSessions
     };
 }
