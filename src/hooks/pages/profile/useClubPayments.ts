@@ -31,9 +31,12 @@ export function useClubPayments() {
     }
 
     useEffect(() => {
-        const controller = new AbortController();
+        let isMounted = true;
 
+        // REVIEW: Switch to react-query implementation
         async function checkAccountStatus() {
+            if (club?.stripe.connected) return;
+
             setIsLoading(true);
 
             const accountIsConnected = club?.id && club.stripe.id && club.stripe.connected;
@@ -43,11 +46,11 @@ export function useClubPayments() {
                 return;
             }
 
+            if (!isMounted) return;
+
             const {
                 data: { detailsSubmitted }
-            } = await axiosInstance.get(`accounts/${club?.stripe.id}`, {
-                signal: controller.signal
-            });
+            } = await axiosInstance.get(`accounts/${club?.stripe.id}`);
 
             if (detailsSubmitted) {
                 await updateFirebaseDoc('clubs', club.id, { 'stripe.connected': true });
@@ -60,7 +63,7 @@ export function useClubPayments() {
         checkAccountStatus();
 
         return () => {
-            controller.abort();
+            isMounted = false;
         };
     }, [club?.id, club?.stripe.id, club?.stripe.connected, queryClient]);
 
