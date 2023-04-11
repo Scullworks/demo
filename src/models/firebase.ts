@@ -102,10 +102,17 @@ interface FirebaseProfile {
     readonly profileImageRef: string | null;
 }
 
+export interface FirebaseBoat {
+    readonly id: string;
+    readonly name: string;
+    readonly make: string;
+    readonly size: string;
+}
+
 export type FirebaseClub = OnboardingClub & FirebaseProfile;
 export type FirebaseCoach = OnboardingCoach & FirebaseProfile;
 export type FirebaseAthlete = OnboardingAthlete & FirebaseProfile;
 
-export type ResponseData = FirebaseClub | FirebaseCoach | FirebaseAthlete;
+export type FirebaseCollection = FirebaseClub | FirebaseCoach | FirebaseAthlete | FirebaseBoat;
 
-export type GetDocDataResponse<T extends ResponseData> = T;
+export type GetDocDataResponse<T extends FirebaseCollection> = T;

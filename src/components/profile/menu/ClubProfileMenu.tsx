@@ -22,7 +22,7 @@ function ClubProfileMenu({ club }: ClubProfileMenuProps) {
     const currentRoute = router.pathname;
     const className = 'profile-menu__link';
     const dashboardClassName = currentRoute === '/profile/club' ? 'active' : className;
-    const membersClassName = currentRoute === '/profile/club/members' ? 'active' : className;
+    const athletesClassName = currentRoute === '/profile/club/athletes' ? 'active' : className;
     const paymentsClassName = currentRoute === '/profile/club/payments' ? 'active' : className;
     const sessionsClassName = currentRoute === '/profile/club/sessions' ? 'active' : className;
     const boatsClassName = currentRoute === '/profile/club/boats' ? 'active' : className;
@@ -45,9 +45,9 @@ function ClubProfileMenu({ club }: ClubProfileMenuProps) {
                     <HomeIcon />
                     Dashboard
                 </Link>
-                <Link className={membersClassName} href="/profile/club/members">
+                <Link className={athletesClassName} href="/profile/club/athletes">
                     <PeopleIcon />
-                    Members
+                    Athletes
                 </Link>
                 <Link className={paymentsClassName} href="/profile/club/payments">
                     <PaymentIcon />
