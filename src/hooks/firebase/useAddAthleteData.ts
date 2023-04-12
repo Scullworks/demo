@@ -1,7 +1,10 @@
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
 import { serverTimestamp } from 'firebase/firestore';
 import { useAthleteOnboardingStore, useAuthStore, useCommonOnboardingStore } from '@/hooks/store';
 import { OnboardingAthlete } from '@/models';
+
+dayjs.extend(advancedFormat);
 
 export function useAddAthleteData() {
     const user = useAuthStore(state => state.user);
@@ -22,7 +25,7 @@ export function useAddAthleteData() {
         name,
         email: user?.email as string,
         phoneNumber,
-        dateOfBirth: dateOfBirth?.toString(),
+        dateOfBirth: dateOfBirth?.format('MMM Do YYYY'),
         emergencyName,
         emergencyNumber,
         createdAt: serverTimestamp(),
