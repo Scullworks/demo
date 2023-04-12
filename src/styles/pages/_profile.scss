@@ -98,13 +98,8 @@ h3.profile-menu__logo {
         @include flex-center;
     }
 
+    @include hide-scrollbar;
     overflow-y: scroll;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
 }
 
 .profile-session-card {
@@ -334,5 +329,51 @@ h3.profile-menu__logo {
 
     p {
         font-size: 1.6rem;
+    }
+}
+
+// Services
+
+.profile-services {
+    @include flex-center;
+    width: 100%;
+
+    h2 {
+        font-size: 3.3rem;
+        font-weight: 700;
+    }
+}
+
+.profile-services__services-container,
+.profile-services__boats-container {
+    @include flex-center(row);
+    @include hide-scrollbar;
+    overflow-x: scroll;
+    width: 100%;
+}
+
+.profile-services__service,
+.profile-services__boat {
+    @include flex-center;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px 1px rgba(34, 34, 34, 0.08);
+    border: 1px solid rgb(221, 221, 221);
+    width: 20rem;
+    height: 6rem;
+
+    &:not(:last-of-type) {
+        margin-right: 3rem;
+    }
+}
+
+.profile-services__boat {
+    width: 35rem;
+}
+
+.profile-services__button {
+    margin-top: 3rem;
+
+    &:first-of-type {
+        margin-bottom: 5rem;
     }
 }
