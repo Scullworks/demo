@@ -28,6 +28,7 @@ export { default as ProgressStepper } from './onboarding/progress-stepper/Progre
 export * from './onboarding/address-autocomplete/AddressAutocomplete';
 
 // Profile Pages
+export { default as AthleteTable } from './profile/athlete-table/AthleteTable';
 export { default as Avatar } from './profile/avatar/Avatar';
 export { default as SessionForm } from './profile/create-session/SessionForm';
 export { default as CreateSessionSuccess } from './profile/create-session/CreateSessionSuccess';

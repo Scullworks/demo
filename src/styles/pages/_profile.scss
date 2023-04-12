@@ -176,6 +176,32 @@ h3.profile-menu__logo {
     margin-block: 1rem 2rem;
 }
 
+// Profile Athletes
+.profile-athletes {
+    @include flex-center;
+    width: 90%;
+
+    th {
+        font-weight: 600;
+        color: rgb(85, 85, 85);
+
+        .table-heading {
+            display: flex;
+            align-items: center;
+        }
+
+        .MuiSvgIcon-root {
+            width: 1.8rem;
+            height: 1.8rem;
+            margin-left: 0.5rem;
+        }
+    }
+
+    .MuiPaper-root {
+        max-height: 80vh;
+    }
+}
+
 // Payments
 .profile-payments {
     @include flex-center;
