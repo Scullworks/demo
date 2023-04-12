@@ -37,7 +37,6 @@
         "react/no-array-index-key": "error",
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "error",
-        "react/self-closing-comp": ["error", { "component": true, "html": true }],
         "import/order": [
             "error",
             {
