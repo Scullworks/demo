@@ -1,14 +1,14 @@
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import HomeIcon from '@mui/icons-material/Home';
+import LogoutIcon from '@mui/icons-material/Logout';
 import PaymentIcon from '@mui/icons-material/Payment';
 import PeopleIcon from '@mui/icons-material/People';
 import RowingIcon from '@mui/icons-material/Rowing';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import boatIcon from '@/assets/profile/boat.svg';
 import { Avatar } from '@/components';
 import { FirebaseClub } from '@/models';
+import { signOutUser } from '@/services/firebase';
 
 interface ClubProfileMenuProps {
     readonly club: FirebaseClub;
@@ -25,7 +25,6 @@ function ClubProfileMenu({ club }: ClubProfileMenuProps) {
     const athletesClassName = currentRoute === '/profile/club/athletes' ? 'active' : className;
     const paymentsClassName = currentRoute === '/profile/club/payments' ? 'active' : className;
     const sessionsClassName = currentRoute === '/profile/club/sessions' ? 'active' : className;
-    const boatsClassName = currentRoute === '/profile/club/boats' ? 'active' : className;
     const servicesClassName = currentRoute === '/profile/club/services' ? 'active' : className;
 
     return (
@@ -57,13 +56,13 @@ function ClubProfileMenu({ club }: ClubProfileMenuProps) {
                     <RowingIcon />
                     Sessions
                 </Link>
-                <Link className={boatsClassName} href="/profile/club/boats">
-                    <Image src={boatIcon} alt="boat" width={24} />
-                    Boats
-                </Link>
                 <Link className={servicesClassName} href="/profile/club/services">
                     <FormatListBulletedIcon />
                     Services
+                </Link>
+                <Link className={className} href="" onClick={signOutUser}>
+                    <LogoutIcon />
+                    Logout
                 </Link>
             </div>
         </aside>
