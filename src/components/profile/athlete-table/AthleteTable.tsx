@@ -58,13 +58,13 @@ const columns: ColumnData[] = [
         icon: <MobileIcon />
     },
     {
-        width: 200,
+        width: 150,
         label: 'Date of Birth',
         dataKey: 'dateOfBirth',
         icon: <CalendarMonthIcon />
     },
     {
-        width: 200,
+        width: 160,
         label: 'Membership',
         dataKey: 'membershipType',
         icon: <PersonIcon />
@@ -135,7 +135,7 @@ export default function VirtualizedTable() {
     return (
         <>
             {rows?.length ? (
-                <Paper elevation={0} style={{ height: rows?.length * 26 + 111, width: '100%' }}>
+                <Paper elevation={0} style={{ height: rows.length * 53.01 + 57, width: '100%' }}>
                     <TableVirtuoso
                         data={rows}
                         components={VirtuosoTableComponents}
