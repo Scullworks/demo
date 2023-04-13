@@ -6,7 +6,6 @@ import { AlertDialog, HookedTextField, Severity, SnackbarAlert } from '@/compone
 import { useStoredUserType } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store';
 import { UserType } from '@/models';
-import { getUserFromFirebase } from '@/services/firebase';
 import { loginWithEmailAndPassword, registerWithEmailAndPassword } from '@/services/firebase/auth';
 import { authSchema } from '@/utils/validations';
 
@@ -16,10 +15,10 @@ export interface AuthFormValues {
 }
 
 export interface AuthFormProps {
-    type: 'login' | 'register';
+    as: 'login' | 'register';
 }
 
-function AuthForm({ type }: AuthFormProps) {
+function AuthForm({ as: type }: AuthFormProps) {
     const [alert, setAlert] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
@@ -53,9 +52,6 @@ function AuthForm({ type }: AuthFormProps) {
             setSeverity('success');
             setAlert('You have successfully logged in');
             setShowAlert(true);
-
-            const { userDoc } = await getUserFromFirebase(user.uid);
-            router.push(`/profile/${userDoc?.type}`);
         }
 
         if (error) {

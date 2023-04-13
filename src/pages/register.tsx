@@ -13,7 +13,7 @@ function Register() {
                     Login
                 </Link>
             </p>
-            <AuthForm type="register" />
+            <AuthForm as="register" />
             <AuthProviders />
         </motion.div>
     );

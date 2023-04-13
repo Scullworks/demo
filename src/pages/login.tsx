@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { AuthForm, AuthProviders } from '@/components';
 import { useAuthStore } from '@/hooks/store';
+import { getUserFromFirebase } from '@/services/firebase';
 
 function Login() {
     const user = useAuthStore(state => state.user);
@@ -17,10 +18,20 @@ function Login() {
     useEffect(() => {
         const originalPathRequest = localStorage.getItem('path');
 
-        if (user && originalPathRequest) {
-            localStorage.removeItem('path');
-            router.replace(originalPathRequest);
+        async function redirect() {
+            if (user && originalPathRequest) {
+                localStorage.removeItem('path');
+                router.replace(originalPathRequest);
+                return;
+            }
+
+            if (user) {
+                const { userDoc } = await getUserFromFirebase(user.uid);
+                router.push(`/profile/${userDoc?.type}`);
+            }
         }
+
+        redirect();
     }, [user, router]);
 
     return (
@@ -32,7 +43,7 @@ function Login() {
                     Register
                 </Link>
             </p>
-            <AuthForm type="login" />
+            <AuthForm as="login" />
             <AuthProviders />
         </div>
     );
