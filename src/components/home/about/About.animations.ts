@@ -21,7 +21,7 @@ export const aboutVariants: Variants = {
         opacity: 1,
         transition: {
             delayChildren: headerBenefitsIsInView ? 0.5 : 1.5,
-            staggerChildren: 0.5
+            staggerChildren: 0.3
         }
     })
 };

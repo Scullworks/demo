@@ -1,8 +1,8 @@
 import { Avatar as MuiAvatar } from '@mui/material';
 
 interface AvatarProps {
-    readonly profileImage: string | null;
-    readonly name: string | null;
+    readonly profileImage: string | null | undefined;
+    readonly name: string | null | undefined;
 }
 
 function Avatar(props: AvatarProps) {
