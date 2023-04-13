@@ -1,25 +1,26 @@
 import { PropagateLoader } from 'react-spinners';
-import { ClubProfileLayout } from '@/components';
+import { ProfileLayout } from '@/components';
 import { useClubPayments } from '@/hooks/pages';
-import { useEnsureClubDataQuery } from '@/hooks/queries/useEnsureClubDataQuery';
+import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
+import { FirebaseClub } from '@/models';
 
 function ClubPayments() {
     const { isLoading, isRedirecting, onConnectClick } = useClubPayments();
-    const { club } = useEnsureClubDataQuery();
+    const { data: club } = useEnsureFirebaseDocQuery<FirebaseClub>('clubs');
 
     if (isLoading || isRedirecting) {
         return (
-            <ClubProfileLayout>
+            <ProfileLayout for="clubs">
                 <div className="loading__profile">
                     <PropagateLoader color="rgb(255, 179, 109)" />
                     {isRedirecting && <p>Redirecting you to Stripe</p>}
                 </div>
-            </ClubProfileLayout>
+            </ProfileLayout>
         );
     }
 
     return (
-        <ClubProfileLayout>
+        <ProfileLayout for="clubs">
             <div className="profile-payments">
                 {club?.stripe.connected ? (
                     <>
@@ -37,7 +38,7 @@ function ClubPayments() {
                     </>
                 )}
             </div>
-        </ClubProfileLayout>
+        </ProfileLayout>
     );
 }
 

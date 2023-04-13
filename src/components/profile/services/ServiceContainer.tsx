@@ -1,8 +1,9 @@
 import { v4 as uuid } from 'uuid';
-import { useEnsureClubDataQuery } from '@/hooks/queries/useEnsureClubDataQuery';
+import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
+import { FirebaseClub } from '@/models';
 
 function ServiceContainer() {
-    const { club } = useEnsureClubDataQuery();
+    const { data: club } = useEnsureFirebaseDocQuery<FirebaseClub>('clubs');
     const services = club?.services.map(service => ({ id: uuid(), value: service }));
 
     return (

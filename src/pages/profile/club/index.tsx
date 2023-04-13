@@ -1,16 +1,16 @@
-import { ClubProfileLayout, SessionCalendar, SessionContainer } from '@/components';
+import { ProfileLayout, SessionCalendar, SessionContainer } from '@/components';
 import { useDashboard } from '@/hooks/pages/profile/useDashboard';
 
 function ClubDashboard() {
-    const { sessions, ...calendarProps } = useDashboard();
+    const { sessions, ...calendarProps } = useDashboard('clubs');
 
     return (
-        <ClubProfileLayout>
+        <ProfileLayout for="clubs">
             <div className="profile-dashboard">
                 <SessionCalendar {...calendarProps} />
                 <SessionContainer sessions={sessions} />
             </div>
-        </ClubProfileLayout>
+        </ProfileLayout>
     );
 }
 

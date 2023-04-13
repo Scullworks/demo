@@ -7,15 +7,18 @@ import RowingIcon from '@mui/icons-material/Rowing';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Avatar } from '@/components';
-import { FirebaseClub } from '@/models';
+import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
+import { CollectionName } from '@/models';
 import { signOutUser } from '@/services/firebase';
 
-interface ClubProfileMenuProps {
-    readonly club: FirebaseClub;
+interface ProfileMenuProps {
+    readonly for: CollectionName;
 }
 
-function ClubProfileMenu({ club }: ClubProfileMenuProps) {
-    const { profileImageRef, name } = club;
+function ProfileMenu(props: ProfileMenuProps) {
+    const { for: collectionName } = props;
+
+    const { data } = useEnsureFirebaseDocQuery(collectionName);
 
     const router = useRouter();
 
@@ -34,8 +37,8 @@ function ClubProfileMenu({ club }: ClubProfileMenuProps) {
 
             {/* Club Info */}
             <div className="profile-menu__user">
-                <Avatar profileImage={profileImageRef} name={name} />
-                <h3>{name}</h3>
+                <Avatar profileImage={data?.profileImageRef} name={data?.name} />
+                <h3>{data?.name}</h3>
             </div>
 
             {/* Button Links */}
@@ -69,4 +72,4 @@ function ClubProfileMenu({ club }: ClubProfileMenuProps) {
     );
 }
 
-export default ClubProfileMenu;
+export default ProfileMenu;

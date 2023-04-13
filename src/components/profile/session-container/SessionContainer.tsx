@@ -3,7 +3,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDateStore } from '@/hooks/store';
-import { FirebaseSession, UserType } from '@/models';
+import { CollectionName, FirebaseSession } from '@/models';
 import SessionCard from './SessionCard';
 
 dayjs.extend(advancedFormat);
@@ -19,7 +19,7 @@ function SessionContainer({ sessions }: SessionContainerProps) {
     );
 
     const router = useRouter();
-    const userType = router.asPath.split('/')[2] as UserType;
+    const userType = (router.asPath.split('/')[2] + 's') as CollectionName;
 
     useEffect(() => {
         const sessionsForSelectedDate = sessions?.filter(session => {

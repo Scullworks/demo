@@ -1,14 +1,14 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { useEnsureClubDataQuery } from '@/hooks/queries/useEnsureClubDataQuery';
+import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
 import { useAuthStore } from '@/hooks/store';
-import { FirebaseSession, UserType } from '@/models';
+import { CollectionName, FirebaseSession } from '@/models';
 import { database } from '@/services/firebase';
 
 interface UseSessionCardProps {
     readonly session: FirebaseSession;
-    readonly as: UserType;
+    readonly as: CollectionName;
 }
 
 export function useSessionCard(props: UseSessionCardProps) {
@@ -18,20 +18,20 @@ export function useSessionCard(props: UseSessionCardProps) {
     const currentUser = useAuthStore(state => state.user);
 
     const queryClient = useQueryClient();
-    const { club } = useEnsureClubDataQuery();
+    const { data } = useEnsureFirebaseDocQuery(userType);
 
     function onClick(session: FirebaseSession) {
-        if (userType === 'club') deleteSession(session.id);
-        if (userType === 'coach' && session.coach?.id === currentUser?.uid) {
+        if (userType === 'clubs') deleteSession(session.id);
+        if (userType === 'coaches' && session.coach?.id === currentUser?.uid) {
             deleteSession(session.id);
         }
     }
 
     async function deleteSession(sessionId: string) {
-        if (!club) return;
+        if (!data) return;
 
         try {
-            const sessionRef = doc(database, 'clubs', club.id, 'sessions', sessionId);
+            const sessionRef = doc(database, 'clubs', data.id, 'sessions', sessionId);
             await deleteDoc(sessionRef);
             await queryClient.refetchQueries({ queryKey: ['club', 'sessions'] });
         } catch (error) {
@@ -40,9 +40,9 @@ export function useSessionCard(props: UseSessionCardProps) {
     }
 
     useEffect(() => {
-        if (userType === 'athlete') setButtonText('Attend Session');
-        if (userType === 'club') setButtonText('Cancel Session');
-        if (userType === 'coach' && session.coach?.id === currentUser?.uid) {
+        if (userType === 'athletes') setButtonText('Attend Session');
+        if (userType === 'clubs') setButtonText('Cancel Session');
+        if (userType === 'coaches' && session.coach?.id === currentUser?.uid) {
             setButtonText('Cancel Session');
         }
     }, [userType, setButtonText, session.coach?.id, currentUser?.uid]);

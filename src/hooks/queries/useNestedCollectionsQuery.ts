@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { FirebaseCollection, NestedCollectionName } from '@/models';
+import { FirebaseClub, FirebaseCollection, NestedCollectionName } from '@/models';
 import { getNestedClubCollections } from '@/services/firebase';
-import { useEnsureClubDataQuery } from './useEnsureClubDataQuery';
+import { useEnsureFirebaseDocQuery } from './useEnsureFirebaseDocQuery';
 
 export function useNestedCollectionsQuery<T extends FirebaseCollection>(
     collectionName: NestedCollectionName
 ) {
-    const { club } = useEnsureClubDataQuery();
+    const { data: club } = useEnsureFirebaseDocQuery<FirebaseClub>('clubs');
 
     const { data: response } = useQuery({
         queryKey: ['club', 'nested', collectionName],

@@ -2,7 +2,8 @@ import { useNestedCollectionsQuery } from '@/hooks/queries';
 import { FirebaseBoat } from '@/models';
 
 function BoatContainer() {
-    const { data: boats } = useNestedCollectionsQuery<FirebaseBoat>('boats');
+    const { data } = useNestedCollectionsQuery('boats');
+    const boats = data as unknown as FirebaseBoat[];
 
     return (
         <>

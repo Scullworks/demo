@@ -1,4 +1,13 @@
-import { Timestamp, collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import {
+    Timestamp,
+    collection,
+    collectionGroup,
+    doc,
+    getDoc,
+    getDocs,
+    query,
+    where
+} from 'firebase/firestore';
 import {
     CollectionName,
     FirebaseUserDoc,
@@ -170,7 +179,7 @@ export async function getDocDataFromFirebase<T extends FirebaseCollection>(
     if (!uid) return;
 
     let data = null;
-    const collectionRef = collection(database, collectionName);
+    const collectionRef = collectionGroup(database, collectionName);
     const docQuery = query(collectionRef, where('uid', '==', uid));
     const querySnapshot = await getDocs(docQuery);
     querySnapshot.forEach(doc => (data = { ...doc.data(), id: doc.id }));

@@ -1,12 +1,12 @@
 import { AvatarGroup, Avatar as MuiAvatar } from '@mui/material';
 import dayjs from 'dayjs';
 import { Avatar } from '@/components';
-import { FirebaseSession, UserType } from '@/models';
+import { CollectionName, FirebaseSession } from '@/models';
 import { useSessionCard } from './useSessionCard';
 
 interface SessionCardProps {
     readonly session: FirebaseSession;
-    readonly as: UserType;
+    readonly as: CollectionName;
 }
 
 function SessionCard(props: SessionCardProps) {
@@ -52,7 +52,10 @@ function SessionCard(props: SessionCardProps) {
             ) : (
                 <p className="profile-session-card__no-attendees">No athletes have booked yet</p>
             )}
-            <button className="button__static" onClick={() => onClick(session)}>
+            <button
+                className="profile-session-card__button button__static"
+                onClick={() => onClick(session)}
+            >
                 {buttonText}
             </button>
         </div>

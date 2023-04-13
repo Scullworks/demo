@@ -2,10 +2,11 @@ import dayjs from 'dayjs';
 import { Timestamp } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { ViewCallbackProperties } from 'react-calendar';
-import { useClubDataQuery, useSessionsQuery } from '@/hooks/queries';
+import { useFirebaseDocQuery, useSessionsQuery } from '@/hooks/queries';
 import { useDateStore } from '@/hooks/store';
+import { CollectionName } from '@/models';
 
-export function useDashboard() {
+export function useDashboard(collectionName: CollectionName) {
     const [shouldFetch, setShouldFetch] = useState(false);
     const [monthViewChanged, setMonthViewChanged] = useState(false);
 
@@ -14,7 +15,7 @@ export function useDashboard() {
     const setActiveStartDate = useDateStore(state => state.setActiveStartDate);
     const setActiveEndDate = useDateStore(state => state.setActiveEndDate);
 
-    const { club } = useClubDataQuery();
+    const { club } = useFirebaseDocQuery(collectionName);
     const { sessions, refetch } = useSessionsQuery(club?.id, shouldFetch);
 
     const datesWithSessions = sessions?.map(session => {

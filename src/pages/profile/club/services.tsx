@@ -1,13 +1,13 @@
-import { BoatContainer, ClubProfileLayout, ServiceContainer } from '@/components';
+import { BoatContainer, ProfileLayout, ServiceContainer } from '@/components';
 
 function ClubServices() {
     return (
-        <ClubProfileLayout>
+        <ProfileLayout for="clubs">
             <div className="profile-services">
                 <ServiceContainer />
                 <BoatContainer />
             </div>
-        </ClubProfileLayout>
+        </ProfileLayout>
     );
 }
 

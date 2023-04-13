@@ -113,6 +113,6 @@ export type FirebaseClub = OnboardingClub & FirebaseProfile;
 export type FirebaseCoach = OnboardingCoach & FirebaseProfile;
 export type FirebaseAthlete = OnboardingAthlete & FirebaseProfile;
 
-export type FirebaseCollection = FirebaseClub | FirebaseCoach | FirebaseAthlete | FirebaseBoat;
+export type FirebaseCollection = FirebaseClub | FirebaseCoach | FirebaseAthlete;
 
 export type GetDocDataResponse<T extends FirebaseCollection> = T;

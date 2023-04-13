@@ -1,17 +1,17 @@
-import { ClubProfileLayout, CreateSessionSuccess, SessionForm } from '@/components';
+import { ProfileLayout, CreateSessionSuccess, SessionForm } from '@/components';
 import { useCreateSession } from '@/hooks/pages';
 
 function Sessions() {
     const { showSuccess, setShowSuccess, ...sessionFormProps } = useCreateSession();
 
     return (
-        <ClubProfileLayout>
+        <ProfileLayout for="clubs">
             {showSuccess ? (
                 <CreateSessionSuccess setShowSuccess={setShowSuccess} />
             ) : (
                 <SessionForm {...sessionFormProps} />
             )}
-        </ClubProfileLayout>
+        </ProfileLayout>
     );
 }
 

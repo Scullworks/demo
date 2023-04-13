@@ -1,13 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { Timestamp, serverTimestamp } from 'firebase/firestore';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
 import { useNestedOptionsQuery } from '@/hooks/queries';
-import { useEnsureClubDataQuery } from '@/hooks/queries/useEnsureClubDataQuery';
+import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
 import { useFeeProcessingStore } from '@/hooks/store';
-import { OptionWithProfileImage, ProfileSession } from '@/models';
+import { FirebaseClub, OptionWithProfileImage, ProfileSession } from '@/models';
 import { createSession } from '@/services/firebase';
 import { checkIsTodayOrGreater } from '@/utils/dates';
 import { createSessionSchema } from '@/utils/validations';
@@ -31,18 +32,20 @@ export function useCreateSession() {
     const memberPriceToCharge = useFeeProcessingStore(state => state.memberPriceToCharge);
     const guestPriceToCharge = useFeeProcessingStore(state => state.guestPriceToCharge);
 
-    const { club } = useEnsureClubDataQuery();
+    const { data: club } = useEnsureFirebaseDocQuery<FirebaseClub>('clubs');
     const { options: coaches } = useNestedOptionsQuery(club?.id, 'coaches', shouldFetch);
     const { options: boats } = useNestedOptionsQuery(club?.id, 'boats', shouldFetch);
 
     const clubServices = club?.services.map(service => ({ id: uuid(), value: service }));
+
+    const queryClient = useQueryClient();
 
     const {
         control,
         handleSubmit,
         register,
         clearErrors,
-        reset,
+        reset: clearFields,
         formState: { errors, isValid }
     } = useForm<SessionValues>({
         resolver: yupResolver(createSessionSchema),
@@ -100,7 +103,8 @@ export function useCreateSession() {
 
                     if (success) {
                         setShowSuccess(true);
-                        reset();
+                        clearFields();
+                        await queryClient.refetchQueries({ queryKey: ['club'] });
                     }
                 }
             }),
@@ -112,7 +116,8 @@ export function useCreateSession() {
             handleSubmit,
             isValid,
             memberPriceToCharge,
-            reset
+            clearFields,
+            queryClient
         ]
     );
 
