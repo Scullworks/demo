@@ -35,6 +35,7 @@ export function useBoats() {
     const {
         control,
         handleSubmit,
+        reset: clearFields,
         formState: { errors, isValid }
     } = useForm<BoatValues>({
         resolver: yupResolver(boatSchema),
@@ -59,9 +60,12 @@ export function useBoats() {
                     name: boatName
                 };
 
-                if (isValid && userAddedBoat) addBoat(boat);
+                if (isValid && userAddedBoat) {
+                    addBoat(boat);
+                    clearFields();
+                }
             }),
-        [handleSubmit, isValid, addBoat]
+        [handleSubmit, isValid, addBoat, clearFields]
     );
 
     const submitDetails = useCallback(async () => {
