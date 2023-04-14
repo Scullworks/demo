@@ -4,7 +4,7 @@
 
 .button,
 .button__static {
-    background-color: $color-button;
+    background-color: $color-orange;
     color: $color-white;
     border: none;
     border-radius: 5px;
@@ -20,7 +20,7 @@
 .button__static {
     @include with-pointer {
         &:hover {
-            background-color: #f5af19;
+            background-color: darken($color: $color-orange, $amount: 6);
         }
     }
 }

@@ -171,7 +171,7 @@
     right: 1rem;
     font-weight: 500;
     border-radius: 8px;
-    box-shadow: $box-shadow;
+    box-shadow: $box-shadow-header;
     user-select: none;
 
     @include laptop-small {

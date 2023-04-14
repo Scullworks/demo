@@ -11,11 +11,11 @@
 
     .MuiSvgIcon-root.Mui-completed,
     .MuiSvgIcon-root.Mui-active {
-        color: $color-button;
+        color: $color-orange;
     }
 
     .MuiMobileStepper-dotActive {
-        background-color: $color-button;
+        background-color: $color-orange;
     }
 
     .MuiMobileStepper-root {
@@ -31,7 +31,7 @@
 }
 
 .stepper-button {
-    background-color: $color-button;
+    background-color: $color-orange;
     color: $color-white;
     border: none;
     border-radius: 5px;

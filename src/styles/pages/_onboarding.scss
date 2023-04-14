@@ -67,7 +67,7 @@
     @include with-pointer {
         &:hover {
             transform: translateY(0);
-            background-color: $color-button;
+            background-color: $color-orange;
             color: $color-white;
             border: none;
             box-shadow: none;
@@ -106,14 +106,14 @@
 }
 
 .onboarding-club__services > button.selected {
-    background-color: $color-button;
+    background-color: $color-orange;
     color: $color-white;
     border: none;
     box-shadow: none;
 }
 
 .onboarding-club__boats-button {
-    background-color: $color-button;
+    background-color: $color-orange;
     color: $color-white;
     border: none;
     border-radius: 5px;

@@ -1,17 +1,12 @@
 @use '@/styles/abstracts/breakpoints' as *;
 @use '@/styles/abstracts/colors' as *;
 @use '@/styles/abstracts/mixins' as *;
+@use '@/styles/abstracts/variables' as *;
 
 .profile {
     @include flex-center(row);
     height: 100vh;
     width: 100vw;
-
-    h1,
-    h2,
-    h3 {
-        font-family: 'Source Sans Pro', sans-serif;
-    }
 }
 
 // Menu Section
@@ -22,26 +17,24 @@
 
 .profile-menu {
     justify-content: space-between;
-    height: 90%;
-    width: 20%;
-    border-right: 1px solid rgb(221, 221, 221);
+    height: min(90%, 80rem);
+    width: min(20%, 29rem);
+    border-right: 1px solid $color-border;
 
     h3 {
         margin-top: 0;
     }
-}
 
-h3.profile-menu__logo {
-    font-family: 'Teko', sans-serif;
+    a {
+        text-transform: capitalize;
+    }
 }
 
 .profile-menu__user {
     h3 {
-        font-size: 2rem;
-        font-weight: 700;
+        font-size: 2.5rem;
         margin-block: 2rem;
         color: rgb(34, 34, 34);
-        letter-spacing: normal;
     }
 
     p {
@@ -70,19 +63,13 @@ h3.profile-menu__logo {
     @include flex-center;
     min-height: 90%;
     flex: 1;
-
-    h1 {
-        font-weight: 700;
-        font-size: 5rem;
-        letter-spacing: normal;
-    }
 }
 
 // Dashboard
 .profile-dashboard {
     @include flex-center(row);
     justify-content: space-around;
-    width: 90%;
+    width: min(90%, 105rem);
     height: 90vh;
 }
 
@@ -108,8 +95,8 @@ h3.profile-menu__logo {
     padding-block: 3rem;
     width: 95%;
     border-radius: 5px;
-    box-shadow: 1px 1px 5px 1px rgba(34, 34, 34, 0.08);
-    border: 1px solid rgb(221, 221, 221);
+    border: 1px solid $color-border;
+    box-shadow: $box-shadow-profile;
 
     .MuiAvatarGroup-root {
         margin-bottom: 3rem;
@@ -121,21 +108,11 @@ h3.profile-menu__logo {
             font-size: 1.3rem;
         }
     }
-
-    button {
-        background-color: rgb(211, 47, 47);
-        transition: 0.2s all ease-in-out;
-
-        &:hover {
-            background-color: rgb(198, 40, 40);
-        }
-    }
 }
 
 .profile-session-card__heading {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-block: 0.5rem;
+    font-size: 2.5rem;
+    margin-block: 0.5rem 0.2rem;
 }
 
 .profile-session-card__price {
@@ -146,29 +123,48 @@ h3.profile-menu__logo {
 .profile-session-card__coach {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
-    // font-weight: 500;
 }
 
 .profile-session-card__date {
     font-size: 1.5rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
+    font-weight: 600;
+    margin-bottom: 0;
 }
 
 .profile-session-card__time {
     font-size: 1.4rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .profile-session-card__attendees {
     font-size: 1.3rem;
     font-weight: 500;
-    margin-block: 1rem;
+    margin-bottom: 1rem;
 }
 
 .profile-session-card__no-attendees {
     font-size: 1.3rem;
-    margin-block: 1rem 2rem;
+    margin-bottom: 2rem;
+}
+
+.profile-session-card__button {
+    background-color: rgb(211, 47, 47);
+    transition: 0.2s all ease-in-out;
+    font-size: 1.5rem;
+
+    &:hover {
+        background-color: rgb(198, 40, 40);
+    }
+}
+
+.profile-session-card__button--athlete {
+    background-color: $color-orange;
+    transition: 0.2s all ease-in-out;
+    font-size: 1.5rem;
+
+    &:hover {
+        background-color: darken($color-orange, 6);
+    }
 }
 
 // Profile Athletes
@@ -323,8 +319,8 @@ h3.profile-menu__logo {
     }
 
     h1 {
-        font-size: 3.5rem;
-        margin-bottom: 1rem;
+        font-size: clamp(3.8rem, 6vw + 0.1rem, 5rem);
+        margin-bottom: 0;
     }
 
     p {
@@ -333,14 +329,13 @@ h3.profile-menu__logo {
 }
 
 // Services
-
 .profile-services {
     @include flex-center;
     width: 100%;
 
     h2 {
-        font-size: 3.3rem;
-        font-weight: 700;
+        font-size: clamp(3.8rem, 6vw + 0.1rem, 4.5rem);
+        margin-bottom: 1rem;
     }
 }
 
@@ -356,9 +351,9 @@ h3.profile-menu__logo {
 .profile-services__boat {
     @include flex-center;
     border-radius: 5px;
-    box-shadow: 1px 1px 5px 1px rgba(34, 34, 34, 0.08);
-    border: 1px solid rgb(221, 221, 221);
-    width: 20rem;
+    border: 1px solid $color-border;
+    box-shadow: $box-shadow-profile;
+    min-width: 20rem;
     height: 6rem;
 
     &:not(:last-of-type) {
@@ -367,7 +362,7 @@ h3.profile-menu__logo {
 }
 
 .profile-services__boat {
-    width: 35rem;
+    min-width: 35rem;
 }
 
 .profile-services__button {

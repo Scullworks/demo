@@ -9,10 +9,14 @@
         border-radius: 50%;
         width: 15rem;
         height: 15rem;
-        background-color: $color-button;
+        background-color: $color-orange;
         color: $color-white;
         box-shadow: none;
         margin-bottom: 5rem;
+
+        &:hover {
+            background-color: $color-orange;
+        }
     }
 
     // Camera Icon
