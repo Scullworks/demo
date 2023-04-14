@@ -1,12 +1,15 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AuthForm, AuthProviders } from '@/components';
+import { useStoredUserType } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store';
 import { getUserFromFirebase } from '@/services/firebase';
 
 function Login() {
+    const [routeToChangeTo, setRouteToChangeTo] = useState<string | null>(null);
     const user = useAuthStore(state => state.user);
+    const { storedUserType } = useStoredUserType();
     const router = useRouter();
 
     /**
@@ -19,20 +22,33 @@ function Login() {
         const originalPathRequest = localStorage.getItem('path');
 
         async function redirect() {
-            if (user && originalPathRequest) {
+            if (!user) return;
+
+            if (originalPathRequest) {
                 localStorage.removeItem('path');
-                router.replace(originalPathRequest);
+                setRouteToChangeTo(originalPathRequest);
                 return;
             }
 
-            if (user) {
-                const { userDoc } = await getUserFromFirebase(user.uid);
-                router.push(`/profile/${userDoc?.type}`);
+            if (storedUserType) {
+                setRouteToChangeTo(`/profile/${storedUserType}`);
+                return;
+            }
+
+            const { userDoc } = await getUserFromFirebase(user.uid);
+
+            if (userDoc) {
+                localStorage.setItem('user', userDoc.type);
+                setRouteToChangeTo(`/profile/${userDoc.type}`);
             }
         }
 
         redirect();
-    }, [user, router]);
+    }, [user, storedUserType, router]);
+
+    useEffect(() => {
+        if (routeToChangeTo) router.push(routeToChangeTo);
+    }, [routeToChangeTo, router]);
 
     return (
         <div className="auth">

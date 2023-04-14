@@ -10,7 +10,7 @@ function Join() {
     const router = useRouter();
 
     function onClick(userType: UserType) {
-        localStorage.setItem('user-type', userType);
+        localStorage.setItem('user', userType);
         setUserType(userType);
         router.push('/register');
     }

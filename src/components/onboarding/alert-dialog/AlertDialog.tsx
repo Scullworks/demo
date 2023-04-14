@@ -31,7 +31,7 @@ function AlertDialog(props: AlertDialogProps) {
     const setUserType = useAuthStore(state => state.setUserType);
 
     function onClick(userType: UserType) {
-        localStorage.setItem('user-type', userType);
+        localStorage.setItem('user', userType);
         setUserType(userType);
         setOpenDialog(false);
     }
