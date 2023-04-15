@@ -1,9 +1,11 @@
 import { Close as CloseIcon, Menu as MenuIcon } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Link as ScrollLink } from 'react-scroll';
+import logo from '@/assets/logos/scullworks.svg';
 import { pageVariants } from '@/utils/animations/pages';
 
 function Navbar() {
@@ -58,9 +60,9 @@ function Navbar() {
     return (
         <>
             <motion.nav className="navbar" exit="exit" variants={pageVariants}>
-                <h3 className="navbar__heading" onClick={scrollToTop}>
-                    ScullWorks
-                </h3>
+                <div className="navbar__logo">
+                    <Image src={logo} alt="ScullWorks logo" width={90} onClick={scrollToTop} />
+                </div>
                 <ul className={'navbar__list'} ref={navRef}>
                     <li>
                         <ScrollLink
