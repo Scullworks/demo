@@ -9,16 +9,16 @@ export function useEnsureFirebaseDocQuery<T extends FirebaseCollection>(
     const [data, setData] = useState<T | undefined>(undefined);
 
     const queryClient = useQueryClient();
-    const { clubDataQueryOptions } = useFirebaseDocQueryOptions<T>(collectionName);
+    const { firebaseDocQueryOptions } = useFirebaseDocQueryOptions<T>(collectionName);
 
     useEffect(() => {
         async function ensureData() {
-            const data = await queryClient.ensureQueryData(clubDataQueryOptions);
+            const data = await queryClient.ensureQueryData(firebaseDocQueryOptions);
             setData(data);
         }
 
         ensureData();
-    }, [clubDataQueryOptions, queryClient]);
+    }, [firebaseDocQueryOptions, queryClient]);
 
     return { data };
 }

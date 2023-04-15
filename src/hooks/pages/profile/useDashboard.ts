@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { ViewCallbackProperties } from 'react-calendar';
 import { useFirebaseDocQuery, useSessionsQuery } from '@/hooks/queries';
 import { useDateStore } from '@/hooks/store';
-import { CollectionName } from '@/models';
+import { CollectionName, FirebaseCollection } from '@/models';
 
-export function useDashboard(collectionName: CollectionName) {
+export function useDashboard<T extends FirebaseCollection>(collectionName: CollectionName) {
     const [shouldFetch, setShouldFetch] = useState(false);
     const [monthViewChanged, setMonthViewChanged] = useState(false);
 
@@ -15,8 +15,9 @@ export function useDashboard(collectionName: CollectionName) {
     const setActiveStartDate = useDateStore(state => state.setActiveStartDate);
     const setActiveEndDate = useDateStore(state => state.setActiveEndDate);
 
-    const { club } = useFirebaseDocQuery(collectionName);
-    const { sessions, refetch } = useSessionsQuery(club?.id, shouldFetch);
+    const { data } = useFirebaseDocQuery<T>(collectionName);
+    const clubId = data && 'club' in data ? data.club.id : data?.id;
+    const { sessions, refetch } = useSessionsQuery(clubId, shouldFetch);
 
     const datesWithSessions = sessions?.map(session => {
         const timestamp = new Timestamp(session.date.seconds, session.date.nanoseconds);
@@ -35,8 +36,8 @@ export function useDashboard(collectionName: CollectionName) {
     }
 
     useEffect(() => {
-        if (club) setShouldFetch(true);
-    }, [club]);
+        if (data) setShouldFetch(true);
+    }, [data]);
 
     useEffect(() => {
         if (monthViewChanged) {

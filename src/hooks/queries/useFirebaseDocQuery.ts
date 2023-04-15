@@ -8,18 +8,20 @@ export function useFirebaseDocQueryOptions<T extends FirebaseCollection>(
 ) {
     const user = useAuthStore(state => state.user);
 
-    const clubDataQueryOptions = {
+    const firebaseDocQueryOptions = {
         queryKey: [collectionName],
         queryFn: () => getDocDataFromFirebase<T>(user?.uid, collectionName),
         enabled: user !== null
     };
 
-    return { clubDataQueryOptions };
+    return { firebaseDocQueryOptions };
 }
 
-export function useFirebaseDocQuery(collectionName: CollectionName) {
-    const { clubDataQueryOptions } = useFirebaseDocQueryOptions(collectionName);
-    const { data: club } = useQuery({ ...clubDataQueryOptions });
+export function useFirebaseDocQuery<T extends FirebaseCollection>(collectionName: CollectionName) {
+    const { firebaseDocQueryOptions } = useFirebaseDocQueryOptions(collectionName);
+    const { data } = useQuery({ ...firebaseDocQueryOptions });
 
-    return { club };
+    return {
+        data: data as T
+    };
 }

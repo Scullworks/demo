@@ -70,7 +70,7 @@ export interface FirebaseUserDoc {
     readonly type: UserType;
 }
 
-interface SessionAttendee {
+export interface SessionAttendee {
     readonly id: string;
     readonly name: string;
     readonly profileImageRef: string | null;
