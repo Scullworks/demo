@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
-import { AuthStateProvider, ProfileMenu } from '@/components';
+import { AuthStateProvider, ClubProfileMenu, ProfileMenu } from '@/components';
 import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
 import { CollectionName } from '@/models';
 import { pageTransitions } from '@/utils/animations/pages';
@@ -19,7 +19,11 @@ function ProfileLayout(props: ProfileLayoutProps) {
         <AuthStateProvider>
             {data && (
                 <div className="profile">
-                    <ProfileMenu for="clubs" />
+                    {collectionName === 'clubs' ? (
+                        <ClubProfileMenu />
+                    ) : (
+                        <ProfileMenu for={collectionName} />
+                    )}
                     <motion.div className="profile-main" {...pageTransitions}>
                         {children}
                     </motion.div>
