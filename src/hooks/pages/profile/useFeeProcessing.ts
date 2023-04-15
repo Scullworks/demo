@@ -26,7 +26,7 @@ export function useFeeProcessing() {
             const payout = memberPrice - 0.3 - roundDown(fees);
             setMemberPriceToCharge(priceToCharge);
             setMemberPayout(roundDown(payout));
-            setPayoutText(`*Your payout after Stripe and platform fees will be $${memberPayout}.`);
+            setPayoutText(`* Your payout after Stripe and platform fees will be $${memberPayout}.`);
         }
 
         if (memberPrice && feeProcessingOption === 'Split Fees') {
@@ -36,7 +36,7 @@ export function useFeeProcessing() {
             setMemberPriceToCharge(roundDown(priceToCharge));
             setMemberPayout(roundDown(payout));
             setPayoutText(
-                `*Session price will be $${memberPriceToCharge}. After Stripe and platform fees, your payout will be $${memberPayout}.`
+                `* Session will be automatically priced at $${memberPriceToCharge}. After fees, your payout will be $${memberPayout}.`
             );
         }
 
@@ -47,7 +47,7 @@ export function useFeeProcessing() {
             setMemberPriceToCharge(roundDown(priceToCharge));
             setMemberPayout(roundDown(payout));
             setPayoutText(
-                `*Session price will be $${memberPriceToCharge}. After Stripe and platform fees, your payout will be $${memberPayout}.`
+                `* Session will be automatically priced at $${memberPriceToCharge}. After fees, your payout will be $${memberPayout}.`
             );
         }
     }, [
@@ -69,7 +69,7 @@ export function useFeeProcessing() {
             if (guestPriceToCharge) setGuestPriceToCharge(priceToCharge);
             setGuestPayout(roundDown(payout));
             setGuestPayoutText(
-                `**Your payout after Stripe and platform fees will be $${guestPayout}.`
+                `** Your payout after Stripe and platform fees will be $${guestPayout}.`
             );
         }
 
@@ -80,7 +80,7 @@ export function useFeeProcessing() {
             setGuestPriceToCharge(roundDown(priceToCharge));
             setGuestPayout(roundDown(payout));
             setGuestPayoutText(
-                `**Session price will be $${guestPriceToCharge}. After Stripe and platform fees, your payout will be $${guestPayout}.`
+                `** Session will be automatically priced at $${guestPriceToCharge}. After fees, your payout will be $${guestPayout}.`
             );
         }
 
@@ -91,7 +91,7 @@ export function useFeeProcessing() {
             setGuestPriceToCharge(roundDown(priceToCharge));
             setGuestPayout(roundDown(payout));
             setGuestPayoutText(
-                `**Session price will be $${guestPriceToCharge}. After Stripe and platform fees, your payout will be $${guestPayout}.`
+                `** Session will be automatically priced at $${guestPriceToCharge}. After fees, your payout will be $${guestPayout}.`
             );
         }
     }, [
