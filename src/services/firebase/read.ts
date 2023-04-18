@@ -29,7 +29,7 @@ export async function getClubsFromFirebase() {
         snapshot.forEach(doc => {
             clubs = [
                 ...clubs,
-                { id: doc.id, value: doc.data().name, stripeId: doc.data().stripe.id }
+                { id: doc?.id, value: doc.data().name, stripeId: doc.data()?.stripe?.id }
             ];
         });
 
