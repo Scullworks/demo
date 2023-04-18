@@ -20,12 +20,12 @@ export { default as Header } from './home/header/Header';
 export { default as Navbar } from './home/navbar/Navbar';
 
 // Onboarding Pages
-export { default as AddressAutocomplete } from './onboarding/address-autocomplete/AddressAutocomplete';
+export { default as AddressAutocomplete } from './onboarding/address-auto-complete/AddressAutocomplete';
 export { default as AlertDialog } from './onboarding/alert-dialog/AlertDialog';
 export { default as OnboardingLayout } from './onboarding/onboarding-layout/OnboardingLayout';
 export { default as ProfileInfo } from './onboarding/profile-info/ProfileInfo';
 export { default as ProgressStepper } from './onboarding/progress-stepper/ProgressStepper';
-export * from './onboarding/address-autocomplete/AddressAutocomplete';
+export * from './onboarding/address-auto-complete/AddressAutocomplete';
 
 // Profile Pages
 export { default as AthleteTable } from './profile/athlete-table/AthleteTable';
