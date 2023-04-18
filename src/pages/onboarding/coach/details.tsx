@@ -2,19 +2,17 @@ import { MenuItem } from '@mui/material';
 import { PropagateLoader } from 'react-spinners';
 import { Autocomplete, HookedTextField, OnboardingLayout } from '@/components';
 import { useCoachDetails } from '@/hooks/pages';
+import { useGetClubsQuery } from '@/hooks/queries';
 import { CoachMembershipType, Option } from '@/models';
-import { getClubsFromFirebase } from '@/services/firebase';
 
 const coachMembershipOptions: Option<CoachMembershipType>[] = [
     { id: '3f269ba5-c4ab-453f-b00b-90239cb81ad7', value: 'Coach' },
     { id: '48755830-29b5-4255-9d75-a58dffaea420', value: 'Guest Coach' }
 ];
 
-interface CoachDetailsProps {
-    readonly clubs: Option[] | null;
-}
+function CoachDetails() {
+    const { clubs } = useGetClubsQuery();
 
-function CoachDetails({ clubs }: CoachDetailsProps) {
     const {
         // eslint-disable-next-line prettier/prettier
         isCreatingAccount,
@@ -23,7 +21,7 @@ function CoachDetails({ clubs }: CoachDetailsProps) {
         errors,
         register,
         clearErrors
-    } = useCoachDetails({ clubs });
+    } = useCoachDetails(clubs);
 
     if (isCreatingAccount) {
         return (
@@ -73,13 +71,3 @@ function CoachDetails({ clubs }: CoachDetailsProps) {
 }
 
 export default CoachDetails;
-
-export async function getServerSideProps() {
-    const { clubs } = await getClubsFromFirebase();
-
-    return {
-        props: {
-            clubs
-        }
-    };
-}

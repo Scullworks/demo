@@ -5,7 +5,13 @@ import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
-import { CoachMembershipType, OnboardingClubDoc, OnboardingCoach, Option } from '@/models';
+import {
+    CoachMembershipType,
+    OnboardingClubDoc,
+    OnboardingCoach,
+    Option,
+    OptionWIthStripe
+} from '@/models';
 import { createAccount } from '@/services/firebase';
 import { coachDetailsSchema } from '@/utils/validations';
 
@@ -15,11 +21,7 @@ interface CoachDetailsValues {
     readonly membershipType: CoachMembershipType | string;
 }
 
-interface CoachDetailsProps {
-    readonly clubs: Option[] | null;
-}
-
-export function useCoachDetails({ clubs }: CoachDetailsProps) {
+export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
     const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
     const user = useAuthStore(state => state.user);

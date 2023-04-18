@@ -21,11 +21,7 @@ interface AthleteMembershipValues {
     readonly positionPreference: string;
 }
 
-interface AthleteDetailsProps {
-    readonly clubs: OptionWIthStripe[] | null;
-}
-
-export function useAthleteMembership({ clubs }: AthleteDetailsProps) {
+export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefined) {
     const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
     const club = useAthleteOnboardingStore(state => state.club);

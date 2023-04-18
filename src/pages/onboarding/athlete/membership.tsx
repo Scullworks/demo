@@ -2,8 +2,8 @@ import { MenuItem } from '@mui/material';
 import { PropagateLoader } from 'react-spinners';
 import { Autocomplete, HookedTextField, OnboardingLayout } from '@/components';
 import { useAthleteMembership } from '@/hooks/pages';
-import { AthleteMembershipType, Option, OptionWIthStripe, PositionPreference } from '@/models';
-import { getClubsFromFirebase } from '@/services/firebase';
+import { useGetClubsQuery } from '@/hooks/queries';
+import { AthleteMembershipType, Option, PositionPreference } from '@/models';
 
 const athleteMembershipOptions: Option<AthleteMembershipType>[] = [
     { id: 'a9a30fbe-488e-41d6-ac5a-9ea6be3457c2', value: 'Member' },
@@ -17,11 +17,9 @@ const positionPreferenceOptions: Option<PositionPreference>[] = [
     { id: '935dafa4-c5e9-414d-a88c-49900c2a6b00', value: 'Starboard' }
 ];
 
-interface AthleteMembershipProps {
-    readonly clubs: OptionWIthStripe[] | null;
-}
+function AthleteMembership() {
+    const { clubs } = useGetClubsQuery();
 
-function AthleteMembership({ clubs }: AthleteMembershipProps) {
     const {
         // eslint-disable-next-line prettier/prettier
         isCreatingAccount,
@@ -30,7 +28,7 @@ function AthleteMembership({ clubs }: AthleteMembershipProps) {
         errors,
         register,
         clearErrors
-    } = useAthleteMembership({ clubs });
+    } = useAthleteMembership(clubs);
 
     if (isCreatingAccount) {
         return (
@@ -86,13 +84,3 @@ function AthleteMembership({ clubs }: AthleteMembershipProps) {
 }
 
 export default AthleteMembership;
-
-export async function getServerSideProps() {
-    const { clubs } = await getClubsFromFirebase();
-
-    return {
-        props: {
-            clubs
-        }
-    };
-}
