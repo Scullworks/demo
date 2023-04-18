@@ -11,6 +11,8 @@ interface AuthStateProviderProps {
 
 function AuthStateProvider({ children }: AuthStateProviderProps) {
     const [isLoading, setIsLoading] = useState(false);
+
+    const userLoggedOut = useAuthStore(state => state.userLoggedOut);
     const setCurrentUser = useAuthStore(state => state.setUser);
 
     const router = useRouter();
@@ -24,11 +26,11 @@ function AuthStateProvider({ children }: AuthStateProviderProps) {
                 setIsLoading(false);
             } else {
                 setCurrentUser(null);
-                localStorage.setItem('path', router.asPath);
+                if (!userLoggedOut) localStorage.setItem('path', router.asPath);
                 router.replace('/login');
             }
         });
-    }, [setCurrentUser, router]);
+    }, [setCurrentUser, userLoggedOut, router]);
 
     if (isLoading) {
         return (

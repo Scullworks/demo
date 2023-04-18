@@ -11,6 +11,7 @@ interface SessionCardProps {
 
 function SessionCard(props: SessionCardProps) {
     const { session, as: collectionName } = props;
+
     const { buttonText, onClick } = useSessionCard(props);
     const isAthlete = collectionName === 'athletes';
 
@@ -21,7 +22,7 @@ function SessionCard(props: SessionCardProps) {
                 {dayjs(session.date.toDate()).format('MMMM Do YYYY')}
             </p>
             <p className="profile-session-card__time">{session.time}</p>
-            <SessionAttendees attendees={session.attendees} />
+            <SessionAttendees attendees={session.attendees} isAthlete={isAthlete} />
             <button
                 className={`profile-session-card__button ${
                     isAthlete && 'profile-session-card__button--athlete'

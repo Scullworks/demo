@@ -8,6 +8,7 @@ export type NestedCollectionName = 'athletes' | 'coaches' | 'sessions' | 'boats'
 interface Club {
     readonly id: string;
     readonly name: string;
+    readonly stripeId: string | null;
 }
 
 interface Option {

@@ -3,9 +3,12 @@ import { SessionAttendee } from '@/models';
 
 interface SessionAttendeesProps {
     readonly attendees: SessionAttendee[] | null;
+    readonly isAthlete: boolean;
 }
 
-function SessionAttendees({ attendees }: SessionAttendeesProps) {
+function SessionAttendees(props: SessionAttendeesProps) {
+    const { attendees, isAthlete } = props;
+
     return (
         <>
             {attendees ? (
@@ -28,7 +31,13 @@ function SessionAttendees({ attendees }: SessionAttendeesProps) {
                     </AvatarGroup>
                 </>
             ) : (
-                <p className="profile-session-card__no-attendees">No athletes have booked yet</p>
+                <>
+                    {!isAthlete && (
+                        <p className="profile-session-card__no-attendees">
+                            No athletes have booked yet
+                        </p>
+                    )}
+                </>
             )}
         </>
     );

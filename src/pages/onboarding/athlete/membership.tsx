@@ -2,7 +2,7 @@ import { MenuItem } from '@mui/material';
 import { PropagateLoader } from 'react-spinners';
 import { Autocomplete, HookedTextField, OnboardingLayout } from '@/components';
 import { useAthleteMembership } from '@/hooks/pages';
-import { AthleteMembershipType, Option, PositionPreference } from '@/models';
+import { AthleteMembershipType, Option, OptionWIthStripe, PositionPreference } from '@/models';
 import { getClubsFromFirebase } from '@/services/firebase';
 
 const athleteMembershipOptions: Option<AthleteMembershipType>[] = [
@@ -17,11 +17,11 @@ const positionPreferenceOptions: Option<PositionPreference>[] = [
     { id: '935dafa4-c5e9-414d-a88c-49900c2a6b00', value: 'Starboard' }
 ];
 
-interface AthleteDetailsProps {
-    readonly clubs: Option[] | null;
+interface AthleteMembershipProps {
+    readonly clubs: OptionWIthStripe[] | null;
 }
 
-function AthleteMembership({ clubs }: AthleteDetailsProps) {
+function AthleteMembership({ clubs }: AthleteMembershipProps) {
     const {
         // eslint-disable-next-line prettier/prettier
         isCreatingAccount,

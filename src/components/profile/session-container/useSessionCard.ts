@@ -3,8 +3,9 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
 import { useAuthStore } from '@/hooks/store';
-import { CollectionName, FirebaseSession } from '@/models';
+import { CollectionName, FirebaseAthlete, FirebaseSession } from '@/models';
 import { database } from '@/services/firebase';
+import { StripeItem, payForStripeSession } from '@/services/stripe';
 
 interface UseSessionCardProps {
     readonly session: FirebaseSession;
@@ -20,13 +21,6 @@ export function useSessionCard(props: UseSessionCardProps) {
     const queryClient = useQueryClient();
     const { data } = useEnsureFirebaseDocQuery(userType);
 
-    function onClick(session: FirebaseSession) {
-        if (userType === 'clubs') deleteSession(session.id);
-        if (userType === 'coaches' && session.coach?.id === currentUser?.uid) {
-            deleteSession(session.id);
-        }
-    }
-
     async function deleteSession(sessionId: string) {
         if (!data) return;
 
@@ -36,6 +30,37 @@ export function useSessionCard(props: UseSessionCardProps) {
             await queryClient.refetchQueries({ queryKey: ['club', 'sessions'] });
         } catch (error) {
             console.error('Delete Session Error: ', error.message);
+        }
+    }
+
+    async function payForSession(session: FirebaseSession) {
+        const { club } = data as FirebaseAthlete;
+
+        const item: StripeItem = {
+            connectedAccountId: club.stripeId as string,
+            quantity: 1,
+            price_data: {
+                currency: 'usd',
+                unit_amount: session.price * 100,
+                product_data: {
+                    name: club.name,
+                    description: session.type
+                }
+            }
+        };
+
+        try {
+            await payForStripeSession(item);
+        } catch (error) {
+            console.error('Pay for Stripe Session Error: ', error);
+        }
+    }
+
+    async function onClick(session: FirebaseSession) {
+        if (userType === 'athletes') await payForSession(session);
+        if (userType === 'clubs') deleteSession(session.id);
+        if (userType === 'coaches' && session.coach?.id === currentUser?.uid) {
+            deleteSession(session.id);
         }
     }
 

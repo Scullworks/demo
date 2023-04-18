@@ -8,7 +8,10 @@ import { getUserFromFirebase } from '@/services/firebase';
 
 function Login() {
     const [routeToChangeTo, setRouteToChangeTo] = useState<string | null>(null);
+
     const user = useAuthStore(state => state.user);
+    const userLoggedOut = useAuthStore(state => state.userLoggedOut);
+
     const { storedUserType } = useStoredUserType();
     const router = useRouter();
 
@@ -19,21 +22,23 @@ function Login() {
      to the requested path.
      */
     useEffect(() => {
-        const originalPathRequest = localStorage.getItem('path');
+        // const originalPathRequest = localStorage.getItem('path');
 
         async function redirect() {
             if (!user) return;
 
-            if (originalPathRequest) {
-                localStorage.removeItem('path');
-                setRouteToChangeTo(originalPathRequest);
-                return;
-            }
+            // if (userLoggedOut) localStorage.removeItem('path');
 
-            if (storedUserType) {
-                setRouteToChangeTo(`/profile/${storedUserType}`);
-                return;
-            }
+            // if (originalPathRequest && !userLoggedOut) {
+            //     localStorage.removeItem('path');
+            //     setRouteToChangeTo(originalPathRequest);
+            //     return;
+            // }
+
+            // if (storedUserType) {
+            //     setRouteToChangeTo(`/profile/${storedUserType}`);
+            //     return;
+            // }
 
             const { userDoc } = await getUserFromFirebase(user.uid);
 
@@ -44,7 +49,7 @@ function Login() {
         }
 
         redirect();
-    }, [user, storedUserType, router]);
+    }, [user, userLoggedOut, storedUserType, router]);
 
     useEffect(() => {
         if (routeToChangeTo) router.push(routeToChangeTo);

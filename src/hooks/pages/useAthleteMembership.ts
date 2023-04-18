@@ -9,7 +9,7 @@ import {
     AthleteMembershipType,
     OnboardingAthlete,
     OnboardingClubDoc,
-    Option,
+    OptionWIthStripe,
     PositionPreference
 } from '@/models';
 import { createAccount } from '@/services/firebase';
@@ -22,7 +22,7 @@ interface AthleteMembershipValues {
 }
 
 interface AthleteDetailsProps {
-    readonly clubs: Option[] | null;
+    readonly clubs: OptionWIthStripe[] | null;
 }
 
 export function useAthleteMembership({ clubs }: AthleteDetailsProps) {
@@ -64,11 +64,15 @@ export function useAthleteMembership({ clubs }: AthleteDetailsProps) {
             handleSubmit(async data => {
                 const { club, membershipType, positionPreference } = data;
 
-                const selectedClub = clubs?.find(c => c.value === club) as Option;
+                const selectedClub = clubs?.find(c => c.value === club) as OptionWIthStripe;
 
                 const athleteData: OnboardingAthlete = {
                     ...partialAthleteData,
-                    club: { id: selectedClub.id, name: selectedClub.value },
+                    club: {
+                        id: selectedClub.id,
+                        name: selectedClub.value,
+                        stripeId: selectedClub.stripeId
+                    },
                     membershipType,
                     positionPreference
                 };
@@ -80,6 +84,7 @@ export function useAthleteMembership({ clubs }: AthleteDetailsProps) {
                 if (isValid) {
                     setIsCreatingAccount(true);
 
+                    // TODO: Rename this as athletes-uid and create a separate one called athletes
                     const { success, error } = await createAccount<OnboardingClubDoc>(
                         'athletes',
                         athleteData,

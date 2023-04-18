@@ -36,8 +36,6 @@ export function useClubPayments() {
 
         // REVIEW: Switch to react-query implementation
         async function checkAccountStatus() {
-            if (club?.stripe.connected) return;
-
             setIsLoading(true);
 
             const accountIsConnected = club?.id && club.stripe.id && club.stripe.connected;

@@ -144,10 +144,7 @@ export function useCreateSession() {
     };
 }
 
-function selectedOption(
-    option: string,
-    options: OptionWithProfileImage<string>[] | null | undefined
-) {
+function selectedOption(option: string, options: OptionWithProfileImage[] | null | undefined) {
     const selectedOption = options?.find(opt => opt.value === option) ?? null;
 
     let firebaseSessionOption = null;

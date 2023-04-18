@@ -13,21 +13,24 @@ import {
     FirebaseUserDoc,
     GetDocDataResponse,
     NestedCollectionName,
-    Option,
     FirebaseCollection,
     FirebaseSession,
-    OptionWithProfileImage
+    OptionWithProfileImage,
+    OptionWIthStripe
 } from '@/models';
 import { database } from './setup';
 
 export async function getClubsFromFirebase() {
     try {
-        let clubs: Option[] = [];
+        let clubs: OptionWIthStripe[] = [];
 
         const collectionRef = collection(database, 'clubs');
         const snapshot = await getDocs(collectionRef);
         snapshot.forEach(doc => {
-            clubs = [...clubs, { id: doc.id, value: doc.data().name }];
+            clubs = [
+                ...clubs,
+                { id: doc.id, value: doc.data().name, stripeId: doc.data().stripe.id }
+            ];
         });
 
         return {

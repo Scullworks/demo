@@ -60,7 +60,7 @@ export function useCoachDetails({ clubs }: CoachDetailsProps) {
                     name,
                     email: user?.email as string,
                     phoneNumber,
-                    club: { id: selectedClub.id, name: selectedClub.value },
+                    club: { id: selectedClub.id, name: selectedClub.value, stripeId: null },
                     membershipType,
                     createdAt: serverTimestamp(),
                     updatedAt: serverTimestamp()
@@ -69,6 +69,7 @@ export function useCoachDetails({ clubs }: CoachDetailsProps) {
                 if (isValid) {
                     setIsCreatingAccount(true);
 
+                    // TODO: Rename this as coaches-uid and create a separate one called coaches
                     const { success, error } = await createAccount<OnboardingClubDoc>(
                         'coaches',
                         coachData,
