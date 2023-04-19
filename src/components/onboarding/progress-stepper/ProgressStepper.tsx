@@ -3,9 +3,9 @@ import MobileStepper from './MobileStepper';
 import { useProgressStepper } from './useProgressStepper';
 
 function ProgressStepper() {
-    const { isShortMobile } = useProgressStepper();
+    const { isMobile } = useProgressStepper();
 
-    return <div className="stepper">{isShortMobile ? <MobileStepper /> : <DefaultStepper />}</div>;
+    return <div className="stepper">{isMobile ? <MobileStepper /> : <DefaultStepper />}</div>;
 }
 
 export default ProgressStepper;

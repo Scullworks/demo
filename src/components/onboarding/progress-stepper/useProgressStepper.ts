@@ -5,7 +5,7 @@ import { Step, athleteSteps, clubSteps, coachSteps } from './steps';
 
 export function useProgressStepper() {
     const [steps, setSteps] = useState<Step[]>([]);
-    const [isShortMobile, setIsShortMobile] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     const userType = useAuthStore(state => state.userType);
     const activeStep = useStepperStore(state => state.activeStep);
@@ -31,11 +31,7 @@ export function useProgressStepper() {
 
     useEffect(() => {
         function checkWindowHeight() {
-            if (window.innerHeight <= 700) {
-                setIsShortMobile(true);
-            } else {
-                setIsShortMobile(false);
-            }
+            window.innerWidth <= 430 ? setIsMobile(true) : setIsMobile(false);
         }
 
         window.addEventListener('resize', checkWindowHeight);
@@ -46,7 +42,7 @@ export function useProgressStepper() {
     }, []);
 
     return {
-        isShortMobile,
+        isMobile,
         steps,
         activeStep,
         onBackClick,

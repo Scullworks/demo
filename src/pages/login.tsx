@@ -22,10 +22,11 @@ function Login() {
      to the requested path.
      */
     useEffect(() => {
+        let mounted = true;
         // const originalPathRequest = localStorage.getItem('path');
 
         async function redirect() {
-            if (!user) return;
+            if (!user || !mounted) return;
 
             // if (userLoggedOut) localStorage.removeItem('path');
 
@@ -49,6 +50,10 @@ function Login() {
         }
 
         redirect();
+
+        return () => {
+            mounted = false;
+        };
     }, [user, userLoggedOut, storedUserType, router]);
 
     useEffect(() => {

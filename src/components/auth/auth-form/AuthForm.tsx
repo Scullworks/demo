@@ -24,7 +24,6 @@ function AuthForm({ as: type }: AuthFormProps) {
     const [showDialog, setShowDialog] = useState(false);
     const [severity, setSeverity] = useState<Severity>('error');
 
-    const userType = useAuthStore(state => state.userType);
     const setUser = useAuthStore(state => state.setUser);
 
     const { storedUserType } = useStoredUserType();
@@ -55,6 +54,7 @@ function AuthForm({ as: type }: AuthFormProps) {
         }
 
         if (error) {
+            setSeverity('error');
             setAlert(error);
             setShowAlert(true);
         }
@@ -65,7 +65,7 @@ function AuthForm({ as: type }: AuthFormProps) {
         const { user, error } = await registerWithEmailAndPassword(
             email,
             password,
-            userType as UserType
+            storedUserType as UserType
         );
 
         if (user) {
@@ -73,18 +73,19 @@ function AuthForm({ as: type }: AuthFormProps) {
             setSeverity('success');
             setAlert('Account created successfully');
             setShowAlert(true);
-            router.push(`/onboarding/${userType}/profile`);
+            router.push(`/onboarding/${storedUserType}/profile`);
         }
 
         if (error) {
+            setSeverity('error');
             setAlert(error);
             setShowAlert(true);
         }
     });
 
     useEffect(() => {
-        if (type === 'register' && !userType && !storedUserType) setShowDialog(true);
-    }, [type, userType, storedUserType, router]);
+        if (type === 'register' && !storedUserType) setShowDialog(true);
+    }, [type, storedUserType, router]);
 
     const onSubmit = type === 'login' ? onLoginSubmit : onRegisterSubmit;
     const buttonText = type === 'login' ? 'Login' : 'Register';
