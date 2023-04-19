@@ -1,9 +1,16 @@
+import { useRouter } from 'next/router';
 import { useNestedCollectionsQuery } from '@/hooks/queries';
 import { FirebaseBoat } from '@/models';
 
 function BoatContainer() {
     const { data } = useNestedCollectionsQuery('boats');
     const boats = data as unknown as FirebaseBoat[];
+
+    const router = useRouter();
+
+    function onClick() {
+        router.push('services/boats/add');
+    }
 
     return (
         <>
@@ -17,7 +24,9 @@ function BoatContainer() {
                     </div>
                 ))}
             </div>
-            <button className="profile-services__button button__static">Add Boat</button>
+            <button className="profile-services__button button__static" onClick={onClick}>
+                Add Boat
+            </button>
         </>
     );
 }
