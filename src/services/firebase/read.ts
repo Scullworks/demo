@@ -16,7 +16,8 @@ import {
     FirebaseCollection,
     FirebaseSession,
     OptionWithProfileImage,
-    OptionWIthStripe
+    OptionWIthStripe,
+    SessionAttendee
 } from '@/models';
 import { database } from './setup';
 
@@ -149,6 +150,34 @@ export async function getSessionsFromFirebase(
 
         return {
             sessions: null,
+            error: true
+        };
+    }
+}
+
+export async function getAttendeesFromFirebase(clubId: string | undefined, sessionId: string) {
+    try {
+        let attendees: SessionAttendee[] = [];
+
+        if (clubId) {
+            const attendeesRef = collection(database, 'clubs', clubId, 'attendees');
+            const attendeesQuery = query(attendeesRef, where('sessionId', '==', sessionId));
+
+            const snapshot = await getDocs(attendeesQuery);
+            snapshot.forEach(doc => {
+                attendees = [...attendees, { id: doc.id, ...doc.data() }] as SessionAttendee[];
+            });
+        }
+
+        return {
+            attendees,
+            error: false
+        };
+    } catch (error) {
+        console.error('Get Attendees Error: ', error.message);
+
+        return {
+            attendees: null,
             error: true
         };
     }

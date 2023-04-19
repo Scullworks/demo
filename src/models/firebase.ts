@@ -3,7 +3,7 @@ import { FeeProcessingOption } from './profile';
 import { UserType } from './user';
 
 export type CollectionName = 'clubs' | 'athletes' | 'coaches';
-export type NestedCollectionName = 'athletes' | 'coaches' | 'sessions' | 'boats';
+export type NestedCollectionName = 'athletes' | 'coaches' | 'sessions' | 'boats' | 'attendees';
 
 interface Club {
     readonly id: string;
@@ -69,15 +69,21 @@ export interface FirebaseUserDoc {
     readonly uid: string;
     readonly email: string;
     readonly type: UserType;
+    readonly completedOnboarding: boolean;
 }
 
 export interface SessionAttendee {
-    readonly id: string;
-    readonly name: string;
+    readonly sessionId: string;
+    readonly sessionType: string;
+    readonly sessionDate: Timestamp;
+    readonly sessionPaymentId: string;
+    readonly athleteId: string;
+    readonly athleteName: string;
     readonly profileImageRef: string | null;
 }
 
 export interface ProfileSession {
+    readonly clubId: string | undefined;
     readonly price: number;
     readonly guestPrice: number | null;
     readonly feeProcessingOption: FeeProcessingOption;
@@ -90,7 +96,6 @@ export interface ProfileSession {
     readonly boat: Option | null;
     readonly createdAt: FieldValue;
     readonly updatedAt: FieldValue;
-    readonly attendees: SessionAttendee[] | null;
 }
 
 export interface FirebaseSession extends ProfileSession {

@@ -1,7 +1,15 @@
 import { addDoc, collection } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { v4 as uuid } from 'uuid';
-import { OnboardingDoc, OnboardingClubDoc, Boat, CollectionName, ProfileSession } from '@/models';
+import {
+    OnboardingDoc,
+    OnboardingClubDoc,
+    Boat,
+    CollectionName,
+    ProfileSession,
+    NestedCollectionName,
+    SessionAttendee
+} from '@/models';
 import { database, storage } from './setup';
 
 interface AddDocResponse {
@@ -9,16 +17,24 @@ interface AddDocResponse {
     readonly error: boolean;
 }
 
-export async function createSession(clubId: string, data: ProfileSession): Promise<AddDocResponse> {
+type NestedCollectionType = ProfileSession | Boat | SessionAttendee;
+
+export async function createDoc(
+    clubId: string,
+    collectionName: NestedCollectionName,
+    data: NestedCollectionType
+): Promise<AddDocResponse> {
     try {
-        await addDoc(collection(database, 'clubs', clubId, 'sessions'), data);
+        const collectionRef = collection(database, 'clubs', clubId, collectionName);
+        console.log('data to add', data);
+        await addDoc(collectionRef, data);
 
         return {
             success: true,
             error: false
         };
     } catch (error) {
-        console.error('Create Session Error: ', error.message);
+        console.error('Create Doc Error: ', error);
 
         return {
             success: false,
