@@ -38,18 +38,18 @@ export function useClubPayments() {
         async function checkAccountStatus() {
             setIsLoading(true);
 
-            const accountIsConnected = club?.id && club.stripe.id && club.stripe.connected;
+            const accountIsConnected = club && club.stripe.id && club.stripe.connected;
 
-            if (!accountIsConnected) {
+            if (accountIsConnected) {
                 setIsLoading(false);
                 return;
             }
 
-            if (!isMounted) return;
+            if (!isMounted || !club) return;
 
             const {
                 data: { detailsSubmitted }
-            } = await axiosInstance.get(`accounts/${club?.stripe.id}`);
+            } = await axiosInstance.get(`accounts/${club.stripe.id}`);
 
             if (detailsSubmitted) {
                 await updateFirebaseDoc('clubs', club.id, { 'stripe.connected': true });
@@ -64,7 +64,7 @@ export function useClubPayments() {
         return () => {
             isMounted = false;
         };
-    }, [club?.id, club?.stripe.id, club?.stripe.connected, queryClient]);
+    }, [club, club?.stripe.id, club?.stripe.connected, queryClient]);
 
     return {
         isLoading,
