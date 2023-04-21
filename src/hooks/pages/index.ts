@@ -1,6 +1,7 @@
 export * from './useAthleteDetails';
 export * from './useAthleteMembership';
 export * from './useBoats';
+export * from './useCheckoutSuccess';
 export * from './useCoachDetails';
 export * from './useClubDetails';
 export * from './useSelectedServices';
