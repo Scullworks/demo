@@ -1,4 +1,5 @@
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
@@ -43,6 +44,7 @@ function MenuLink(props: MenuLinkProps) {
     const setUserLoggedOut = useAuthStore(state => state.setUserLoggedOut);
 
     const router = useRouter();
+    const queryClient = useQueryClient();
 
     const BASE_ROUTE = `/profile/${userType}`;
     const CURRENT_ROUTE = router.pathname;
@@ -50,10 +52,11 @@ function MenuLink(props: MenuLinkProps) {
 
     const className = 'profile-menu__link';
     const homeClassName = CURRENT_ROUTE === BASE_ROUTE ? 'active' : className;
-    const linkClassName = CURRENT_ROUTE === `/profile/club/${href}` ? 'active' : className;
+    const linkClassName = CURRENT_ROUTE.includes(`/profile/club/${href}`) ? 'active' : className;
 
     async function onLogoutClick() {
         setUserLoggedOut(true);
+        queryClient.clear();
         localStorage.clear();
         await signOutUser();
     }

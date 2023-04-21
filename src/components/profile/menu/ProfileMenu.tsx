@@ -21,9 +21,13 @@ function ProfileMenu(props: ProfileMenuProps) {
 
     return (
         <aside className="profile-menu">
-            <Image src={logo} alt="ScullWorks logo" height={50} />
-
             <div className="profile-menu__user">
+                <Image
+                    className="profile-menu__logo"
+                    src={logo}
+                    alt="ScullWorks logo"
+                    height={50}
+                />
                 <Avatar profileImage={data?.profileImageRef} name={data?.name} />
                 <h3>{data?.name}</h3>
             </div>
