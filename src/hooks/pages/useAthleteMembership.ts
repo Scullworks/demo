@@ -80,7 +80,6 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
                 if (isValid) {
                     setIsCreatingAccount(true);
 
-                    // TODO: Rename this as athletes-uid and create a separate one called athletes
                     const { success, error } = await createAccount<OnboardingClubDoc>(
                         'athletes',
                         athleteData,
@@ -91,6 +90,7 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
 
                     if (success) {
                         clearOnboardingStores();
+                        localStorage.setItem('completed', 'true');
                         router.push('/profile/athlete');
                     }
                 }

@@ -79,9 +79,13 @@ export function useBoats() {
                 boats
             );
 
-            if (error) setIsCreatingAccount(false);
+            if (error) {
+                setIsCreatingAccount(false);
+            }
+
             if (success) {
                 clearOnboardingStores();
+                localStorage.setItem('completed', 'true');
                 router.push('/profile/club');
             }
         }

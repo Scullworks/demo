@@ -71,7 +71,6 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
                 if (isValid) {
                     setIsCreatingAccount(true);
 
-                    // TODO: Rename this as coaches-uid and create a separate one called coaches
                     const { success, error } = await createAccount<OnboardingClubDoc>(
                         'coaches',
                         coachData,
@@ -82,6 +81,7 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
 
                     if (success) {
                         clearOnboardingStores();
+                        localStorage.setItem('completed', 'true');
                         router.push('/profile/coach');
                     }
                 }
