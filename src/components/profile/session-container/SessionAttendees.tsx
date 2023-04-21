@@ -18,13 +18,14 @@ function SessionAttendees(props: SessionAttendeesProps) {
                         {attendees.map(attendee =>
                             attendee.profileImageRef ? (
                                 <MuiAvatar
-                                    key={attendee.id}
+                                    key={attendee.athleteId}
                                     src={attendee.profileImageRef}
-                                    alt={attendee.name}
+                                    alt={attendee.athleteName}
                                 />
                             ) : (
-                                <MuiAvatar key={attendee.id} alt={attendee.name}>
-                                    {attendee.name}
+                                <MuiAvatar key={attendee.athleteId} alt={attendee.athleteName}>
+                                    {attendee.athleteName.charAt(0) +
+                                        attendee.athleteName.split(' ')[1].charAt(0) ?? ''}
                                 </MuiAvatar>
                             )
                         )}

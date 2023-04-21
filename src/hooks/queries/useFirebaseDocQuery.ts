@@ -22,6 +22,6 @@ export function useFirebaseDocQuery<T extends FirebaseCollection>(collectionName
     const { data } = useQuery({ ...firebaseDocQueryOptions });
 
     return {
-        data: data as T
+        data: !data ? undefined : (data as T)
     };
 }

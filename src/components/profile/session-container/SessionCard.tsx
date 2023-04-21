@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
+import { useGetSessionAttendeesQuery } from '@/hooks/queries';
 import { CollectionName, FirebaseSession } from '@/models';
-import SessionAttendees from './SessionCardAttendees';
+import SessionAttendees from './SessionAttendees';
+import SessionCardButton from './SessionCardButton';
 import SessionCardHeader from './SessionCardHeader';
-import { useSessionCard } from './useSessionCard';
 
 interface SessionCardProps {
     readonly session: FirebaseSession;
@@ -12,8 +13,9 @@ interface SessionCardProps {
 function SessionCard(props: SessionCardProps) {
     const { session, as: collectionName } = props;
 
-    const { buttonText, onClick } = useSessionCard(props);
     const isAthlete = collectionName === 'athletes';
+
+    const { attendees, isAttending } = useGetSessionAttendeesQuery(session, collectionName);
 
     return (
         <div className="profile-session-card" key={session.id}>
@@ -22,15 +24,13 @@ function SessionCard(props: SessionCardProps) {
                 {dayjs(session.date.toDate()).format('MMMM Do YYYY')}
             </p>
             <p className="profile-session-card__time">{session.time}</p>
-            <SessionAttendees attendees={session.attendees} isAthlete={isAthlete} />
-            <button
-                className={`profile-session-card__button ${
-                    isAthlete && 'profile-session-card__button--athlete'
-                } button__static`}
-                onClick={() => onClick(session)}
-            >
-                {buttonText}
-            </button>
+            <SessionAttendees attendees={attendees} isAthlete={isAthlete} />
+            <SessionCardButton
+                as={collectionName}
+                session={session}
+                isAthlete={isAthlete}
+                isAttending={isAttending}
+            />
         </div>
     );
 }
