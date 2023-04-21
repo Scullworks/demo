@@ -9,7 +9,7 @@ import { useNestedOptionsQuery } from '@/hooks/queries';
 import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
 import { useFeeProcessingStore } from '@/hooks/store';
 import { FirebaseClub, OptionWithProfileImage, ProfileSession } from '@/models';
-import { createSession } from '@/services/firebase';
+import { createDoc } from '@/services/firebase';
 import { checkIsTodayOrGreater } from '@/utils/dates';
 import { createSessionSchema } from '@/utils/validations';
 
@@ -81,6 +81,7 @@ export function useCreateSession() {
                 const endTime = dayjs(sessionEnd).format('h:mm A');
 
                 const sessionData: ProfileSession = {
+                    clubId: club?.id,
                     price: memberPriceToCharge,
                     guestPrice: guestPriceToCharge ?? null,
                     feeProcessingOption: sessionFeeProcessing,
@@ -92,19 +93,18 @@ export function useCreateSession() {
                     coach: selectedCoach,
                     boat: selectedBoat,
                     createdAt: serverTimestamp(),
-                    updatedAt: serverTimestamp(),
-                    attendees: null
+                    updatedAt: serverTimestamp()
                 };
 
                 const { isError } = checkIsTodayOrGreater(sessionDate, true);
 
                 if (isValid && club?.id && !isError) {
-                    const { success } = await createSession(club.id, sessionData);
+                    const { success } = await createDoc(club.id, 'sessions', sessionData);
 
                     if (success) {
                         setShowSuccess(true);
                         clearFields();
-                        await queryClient.refetchQueries({ queryKey: ['club'] });
+                        await queryClient.refetchQueries({ queryKey: ['club', 'sessions'] });
                     }
                 }
             }),
