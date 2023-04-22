@@ -7,11 +7,17 @@
     @include flex-center(row);
     height: 100vh;
     width: 100vw;
+
+    @include respond-to(1200px) {
+        flex-direction: column;
+        min-height: 100vh;
+        height: max-content;
+    }
 }
 
 // Menu Section
 .profile-menu,
-.profile-menu__user {
+.profile-menu__header {
     @include flex-center;
 }
 
@@ -28,9 +34,32 @@
     a {
         text-transform: capitalize;
     }
+
+    .MuiAvatar-root {
+        border: 4px solid $color-orange;
+    }
+
+    @include respond-to(1200px) {
+        border: none;
+
+        .logo {
+            position: absolute;
+            top: 2rem;
+            left: 5rem;
+        }
+    }
+
+    @include mobile-large {
+        .logo {
+            @include absolute-center;
+            top: 4rem;
+        }
+    }
 }
 
-.profile-menu__user {
+.profile-menu__header {
+    justify-self: flex-start;
+
     h3 {
         font-size: 2.5rem;
         margin-block: 2rem;
@@ -40,6 +69,34 @@
     p {
         font-size: 1.5rem;
     }
+
+    @include respond-to(1200px) {
+        width: 90vw;
+        margin-top: 10rem;
+    }
+}
+
+.profile-menu__logo {
+    margin-bottom: 7rem;
+}
+
+.profile-menu__links {
+    @include respond-to(1200px) {
+        @include flex-center(row);
+        margin-block: 1.5rem 3rem;
+
+        @include hide-scrollbar;
+        width: 90vw;
+        overflow-x: scroll;
+
+        svg {
+            display: none;
+        }
+    }
+
+    @include mobile-large {
+        justify-content: flex-start;
+    }
 }
 
 .profile-menu__link,
@@ -48,9 +105,17 @@
     justify-content: flex-start;
     margin-bottom: 4rem;
 
-    .MuiSvgIcon-root,
+    svg,
     img {
         margin-right: 1rem;
+    }
+
+    @include respond-to(1200px) {
+        margin-bottom: 0;
+
+        &:not(:last-of-type) {
+            margin-right: 2rem;
+        }
     }
 }
 
@@ -62,7 +127,13 @@
 .profile-main {
     @include flex-center;
     min-height: 90%;
+    height: max-content;
     flex: 1;
+
+    @include respond-to(1200px) {
+        min-width: 90vw;
+        justify-content: flex-start;
+    }
 }
 
 // Dashboard
@@ -71,22 +142,43 @@
     justify-content: space-around;
     width: min(90%, 105rem);
     height: 90vh;
+
+    @include respond-to(1200px) {
+        flex-direction: column;
+        height: max-content;
+    }
 }
 
 .profile-session__no-sessions {
     font-size: 1.6rem;
+
+    @include respond-to(1200px) {
+        margin-top: 5rem;
+    }
+
+    @include mobile-large {
+        font-size: 1.4rem;
+    }
 }
 
 .profile-session-container {
+    @include hide-scrollbar;
+    overflow-y: scroll;
+
     width: 35rem;
     height: 90%;
 
-    &:has(> :only-child) {
-        @include flex-center;
+    &.single-child {
+        @include flex-center(row);
     }
 
-    @include hide-scrollbar;
-    overflow-y: scroll;
+    @include respond-to(1200px) {
+        overflow-y: hidden;
+        overflow-x: scroll;
+        width: 95vw;
+        padding-block: 5rem;
+        display: flex;
+    }
 }
 
 .profile-session-card {
@@ -99,13 +191,22 @@
     box-shadow: $box-shadow-profile;
 
     .MuiAvatarGroup-root {
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
 
         .MuiAvatar-root {
             width: 40px;
             height: 40px;
             background-color: $color-teal;
             font-size: 1.3rem;
+        }
+    }
+
+    @include respond-to(1200px) {
+        width: 330px;
+        height: 46.3rem;
+
+        &:not(:last-of-type) {
+            margin-right: 3rem;
         }
     }
 }
@@ -128,12 +229,16 @@
 .profile-session-card__date {
     font-size: 1.5rem;
     font-weight: 600;
-    margin-bottom: 0;
+    margin-bottom: 0.2rem;
 }
 
 .profile-session-card__time {
     font-size: 1.4rem;
     margin-bottom: 1.5rem;
+
+    &.isAthlete {
+        margin-bottom: 2rem;
+    }
 }
 
 .profile-session-card__attendees {
@@ -165,6 +270,11 @@
     &:hover {
         background-color: darken($color-orange, 6);
     }
+
+    &.success {
+        background-color: rgb(62, 159, 90);
+        cursor: not-allowed;
+    }
 }
 
 // Profile Athletes
@@ -191,6 +301,10 @@
     .MuiPaper-root {
         max-height: 80vh;
     }
+
+    @include respond-to(1200px) {
+        @include absolute-center;
+    }
 }
 
 // Payments
@@ -201,6 +315,15 @@
     p {
         margin-top: 2.5rem;
     }
+
+    @include respond-to(1200px) {
+        @include absolute-center;
+        width: 90vw;
+
+        p {
+            font-size: 1.4rem;
+        }
+    }
 }
 
 // Sessions
@@ -210,6 +333,11 @@
     h1 {
         margin-bottom: 5rem;
         text-transform: capitalize;
+    }
+
+    @include respond-to(1200px) {
+        justify-self: flex-start;
+        margin-bottom: 5rem;
     }
 }
 
@@ -344,7 +472,11 @@
     @include flex-center(row);
     @include hide-scrollbar;
     overflow-x: scroll;
-    width: 100%;
+
+    @include mobile-large {
+        @include flex-center;
+        width: 90vw;
+    }
 }
 
 .profile-services__service,
@@ -359,6 +491,13 @@
     &:not(:last-of-type) {
         margin-right: 3rem;
     }
+
+    @include mobile-large {
+        &:not(:last-of-type) {
+            margin-bottom: 1rem;
+            margin-right: 0;
+        }
+    }
 }
 
 .profile-services__boat {
@@ -370,5 +509,55 @@
 
     &:first-of-type {
         margin-bottom: 5rem;
+    }
+
+    @include mobile-large {
+        margin-top: 1.5rem;
+
+        &:first-of-type {
+            margin-bottom: 2.5rem;
+        }
+    }
+}
+
+// Services - Add Boat
+.profile-services-boats {
+    @include flex-center;
+    justify-content: flex-start;
+    width: 90%;
+    min-height: 100vh;
+    margin-top: 5rem;
+}
+
+.profile-services-form {
+    @include flex-center;
+
+    button {
+        margin-top: 2rem;
+    }
+}
+
+// Checkout
+.profile-checkout {
+    @include flex-center;
+    height: 100vh;
+
+    img {
+        height: 30rem;
+        width: auto;
+    }
+
+    h1 {
+        font-size: clamp(3.8rem, 6vw + 0.1rem, 5rem);
+        margin-bottom: 0;
+    }
+
+    p {
+        font-size: 1.6rem;
+        padding-inline: 2rem;
+    }
+
+    a {
+        font-weight: 600;
     }
 }

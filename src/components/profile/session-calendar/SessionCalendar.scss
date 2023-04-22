@@ -1,4 +1,5 @@
 @use '@/styles/abstracts/colors' as *;
+@use '@/styles/abstracts/mixins' as *;
 
 .react-calendar {
     width: 600px;
@@ -9,6 +10,10 @@
 
     & * {
         font-family: 'Montserrat', sans-serif;
+    }
+
+    @include mobile-large {
+        width: 95vw;
     }
 }
 
@@ -72,6 +77,10 @@
     font-weight: 600;
     font-size: 0.95em;
 
+    @include mobile-large {
+        font-size: 0.75em;
+    }
+
     abbr {
         text-decoration: none;
     }
@@ -87,6 +96,10 @@
     justify-content: center;
     font-size: 0.95em;
     font-weight: bold;
+
+    @include mobile-large {
+        font-size: 0.75em;
+    }
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
@@ -118,6 +131,10 @@
         background-color: rgba(255, 179, 109, 0.1);
         border-radius: 3px;
         padding: 11px 18px;
+
+        @include mobile-large {
+            padding: 5px 8px;
+        }
     }
 }
 
@@ -126,6 +143,10 @@
         border: 1px solid $color-black;
         border-radius: 3px;
         padding: 10px 15px;
+
+        @include mobile-large {
+            padding: 5px 8px;
+        }
     }
 }
 
@@ -135,6 +156,10 @@
         border: none;
         border-radius: 3px;
         padding: 10px 15px;
+
+        @include mobile-large {
+            padding: 5px 8px;
+        }
     }
 }
 
@@ -166,6 +191,10 @@
         color: $color-white;
         border-radius: 3px;
         padding: 11px 18px;
+
+        @include mobile-large {
+            padding: 5px 8px;
+        }
     }
 }
 
@@ -175,6 +204,10 @@
         color: $color-white;
         border-radius: 3px;
         padding: 11px 18px;
+
+        @include mobile-large {
+            padding: 5px 8px;
+        }
     }
 }
 
@@ -184,6 +217,10 @@
         background: $color-orange;
         border-radius: 3px;
         padding: 11px 18px;
+
+        @include mobile-large {
+            padding: 5px 8px;
+        }
     }
 }
 
