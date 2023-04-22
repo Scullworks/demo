@@ -16,6 +16,8 @@ export function useClubPayments() {
     async function onConnectClick() {
         if (!club?.name || !club?.email) return;
 
+        localStorage.setItem('connected', 'true');
+
         setIsRedirecting(true);
 
         const { name, email } = club;
@@ -45,7 +47,12 @@ export function useClubPayments() {
                 return;
             }
 
-            if (!isMounted || !club) return;
+            const isConnected = localStorage.getItem('connected');
+
+            if (!isMounted || !club || !isConnected) {
+                setIsLoading(false);
+                return;
+            }
 
             const {
                 data: { detailsSubmitted }
