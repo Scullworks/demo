@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -13,6 +14,7 @@ function Login() {
     const userLoggedOut = useAuthStore(state => state.userLoggedOut);
 
     const { storedUserType } = useStoredUserType();
+    const queryClient = useQueryClient();
     const router = useRouter();
 
     /**
@@ -45,6 +47,7 @@ function Login() {
 
             if (userDoc) {
                 localStorage.setItem('user', userDoc.type);
+                await queryClient.resetQueries();
                 setRouteToChangeTo(`/profile/${userDoc.type}`);
             }
         }
@@ -54,7 +57,7 @@ function Login() {
         return () => {
             mounted = false;
         };
-    }, [user, userLoggedOut, storedUserType, router]);
+    }, [user, userLoggedOut, storedUserType, queryClient, router]);
 
     useEffect(() => {
         if (routeToChangeTo) router.push(routeToChangeTo);
