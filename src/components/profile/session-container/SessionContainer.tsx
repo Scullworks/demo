@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDateStore } from '@/hooks/store';
 import { CollectionName, FirebaseSession } from '@/models';
@@ -10,16 +9,15 @@ dayjs.extend(advancedFormat);
 
 interface SessionContainerProps {
     readonly sessions: FirebaseSession[] | null | undefined;
+    readonly as: CollectionName;
 }
 
-function SessionContainer({ sessions }: SessionContainerProps) {
+function SessionContainer(props: SessionContainerProps) {
+    const { as: collectionName, sessions } = props;
     const selectedDate = useDateStore(state => state.date);
     const [filteredSessions, setFilteredSessions] = useState<FirebaseSession[] | null | undefined>(
         null
     );
-
-    const router = useRouter();
-    const userType = (router.asPath.split('/')[2] + 's') as CollectionName;
 
     const singleSession = filteredSessions?.length === 1;
 
@@ -42,9 +40,9 @@ function SessionContainer({ sessions }: SessionContainerProps) {
 
     return (
         <div className={`profile-session-container ${singleSession ? 'single-child' : ''}`}>
-            {userType &&
+            {collectionName &&
                 filteredSessions?.map(session => (
-                    <SessionCard as={userType} session={session} key={session.id} />
+                    <SessionCard as={collectionName} session={session} key={session.id} />
                 ))}
         </div>
     );

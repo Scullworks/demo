@@ -74,6 +74,7 @@ export function useSessionCard(props: UseSessionCardProps) {
     }
 
     return {
-        onClick
+        onClick,
+        isSessionCoach
     };
 }

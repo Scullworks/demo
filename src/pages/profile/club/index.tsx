@@ -8,7 +8,7 @@ function ClubDashboard() {
         <ProfileLayout for="clubs">
             <div className="profile-dashboard">
                 <SessionCalendar {...calendarProps} />
-                <SessionContainer sessions={sessions} />
+                <SessionContainer as="clubs" sessions={sessions} />
             </div>
         </ProfileLayout>
     );

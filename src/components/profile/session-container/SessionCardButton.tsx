@@ -13,7 +13,7 @@ function SessionCardButton(props: SessionCardButtonProps) {
     const { isAttending, as: collectionName, session } = props;
     const [redirecting, setRedirecting] = useState(false);
 
-    const { onClick } = useSessionCard({ as: collectionName, session });
+    const { onClick, isSessionCoach } = useSessionCard({ as: collectionName, session });
 
     const isAthlete = collectionName === 'athletes';
     const isCoach = collectionName === 'coaches';
@@ -24,6 +24,14 @@ function SessionCardButton(props: SessionCardButtonProps) {
     }
 
     if (isCoach) return <></>;
+
+    if (isSessionCoach) {
+        return (
+            <button className="profile-session-card__button--athlete success button__static">
+                You&apos;re coaching
+            </button>
+        );
+    }
 
     if (isAthlete && isAttending) {
         return (
