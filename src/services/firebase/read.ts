@@ -62,7 +62,7 @@ export async function getNestedClubOptions(
                 options = [
                     ...options,
                     {
-                        id: doc.id,
+                        id: doc.data().uid ?? doc.id,
                         value: doc.data().name,
                         profileImageRef: doc.data().profileImageRef ?? null
                     }

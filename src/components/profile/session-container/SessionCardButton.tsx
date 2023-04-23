@@ -23,8 +23,6 @@ function SessionCardButton(props: SessionCardButtonProps) {
         onClick();
     }
 
-    if (isCoach) return <></>;
-
     if (isSessionCoach) {
         return (
             <button className="profile-session-card__button--athlete success button__static">
@@ -32,6 +30,8 @@ function SessionCardButton(props: SessionCardButtonProps) {
             </button>
         );
     }
+
+    if (isCoach) return <></>;
 
     if (isAthlete && isAttending) {
         return (

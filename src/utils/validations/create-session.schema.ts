@@ -11,7 +11,7 @@ export const createSessionSchema = yup.object().shape({
         .oneOf(['Absorb Fees', 'Split Fees', 'Pass On Fees'])
         .required('Fee Processing is required'),
     sessionType: yup.string().required('Session type is required'),
-    sessionCoach: yup.string(),
+    sessionCoach: yup.string().required('Coach name is required'),
     sessionDate: yup.string().required('Session date is required'),
     sessionStart: yup
         .date()
