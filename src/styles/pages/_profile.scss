@@ -40,6 +40,8 @@
     }
 
     @include respond-to(1200px) {
+        height: fit-content;
+        width: fit-content;
         border: none;
 
         .logo {
@@ -476,6 +478,14 @@
     @include mobile-large {
         @include flex-center;
         width: 90vw;
+    }
+
+    .MuiFormControl-root {
+        margin-block: 1rem 0;
+    }
+
+    .MuiInputLabel-root {
+        color: $color-black !important;
     }
 }
 
