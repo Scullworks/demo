@@ -9,37 +9,31 @@ interface SessionAttendeesProps {
 function SessionAttendees(props: SessionAttendeesProps) {
     const { attendees, isAthlete } = props;
 
+    if (isAthlete) return <></>;
+
+    if (!attendees?.length) {
+        return <p className="profile-session-card__no-attendees">No athletes have booked yet</p>;
+    }
+
     return (
         <>
-            {attendees ? (
-                <>
-                    <p className="profile-session-card__attendees">Athletes Attending:</p>
-                    <AvatarGroup max={4} total={attendees?.length}>
-                        {attendees.map(attendee =>
-                            attendee.profileImageRef ? (
-                                <MuiAvatar
-                                    key={attendee.athleteId}
-                                    src={attendee.profileImageRef}
-                                    alt={attendee.athleteName}
-                                />
-                            ) : (
-                                <MuiAvatar key={attendee.athleteId} alt={attendee.athleteName}>
-                                    {attendee.athleteName.charAt(0) +
-                                        attendee.athleteName.split(' ')[1].charAt(0) ?? ''}
-                                </MuiAvatar>
-                            )
-                        )}
-                    </AvatarGroup>
-                </>
-            ) : (
-                <>
-                    {!isAthlete && (
-                        <p className="profile-session-card__no-attendees">
-                            No athletes have booked yet
-                        </p>
-                    )}
-                </>
-            )}
+            <p className="profile-session-card__attendees">Athletes Attending:</p>
+            <AvatarGroup max={4} total={attendees?.length}>
+                {attendees?.map(attendee =>
+                    attendee.profileImageRef ? (
+                        <MuiAvatar
+                            key={attendee.athleteId}
+                            src={attendee.profileImageRef}
+                            alt={attendee.athleteName}
+                        />
+                    ) : (
+                        <MuiAvatar key={attendee.athleteId} alt={attendee.athleteName}>
+                            {attendee.athleteName.charAt(0) +
+                                attendee.athleteName.split(' ')[1].charAt(0) ?? ''}
+                        </MuiAvatar>
+                    )
+                )}
+            </AvatarGroup>
         </>
     );
 }

@@ -7,23 +7,27 @@ interface SessionCardButtonProps {
     readonly session: FirebaseSession;
     readonly as: CollectionName;
     readonly isAttending: boolean;
-    readonly isAthlete: boolean;
 }
 
 function SessionCardButton(props: SessionCardButtonProps) {
-    const { isAttending, isAthlete, ...sessionCardProps } = props;
+    const { isAttending, as: collectionName, session } = props;
     const [redirecting, setRedirecting] = useState(false);
 
-    const { isSessionCoach, onClick } = useSessionCard({ ...sessionCardProps });
+    const { onClick } = useSessionCard({ as: collectionName, session });
+
+    const isAthlete = collectionName === 'athletes';
+    const isCoach = collectionName === 'coaches';
 
     function onPayForSessionClick() {
         setRedirecting(true);
         onClick();
     }
 
+    if (isCoach) return <></>;
+
     if (isAthlete && isAttending) {
         return (
-            <button className="'profile-session-card__button--athlete' button__static">
+            <button className="profile-session-card__button--athlete success button__static">
                 Already Attending
             </button>
         );
@@ -32,7 +36,7 @@ function SessionCardButton(props: SessionCardButtonProps) {
     if (isAthlete) {
         return (
             <button
-                className="'profile-session-card__button--athlete' button__static"
+                className="profile-session-card__button--athlete button__static"
                 onClick={onPayForSessionClick}
             >
                 {redirecting ? (
@@ -42,10 +46,6 @@ function SessionCardButton(props: SessionCardButtonProps) {
                 )}
             </button>
         );
-    }
-
-    if (!isSessionCoach) {
-        return <></>;
     }
 
     return (

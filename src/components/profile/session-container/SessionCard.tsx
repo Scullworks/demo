@@ -23,14 +23,11 @@ function SessionCard(props: SessionCardProps) {
             <p className="profile-session-card__date">
                 {dayjs(session.date.toDate()).format('MMMM Do YYYY')}
             </p>
-            <p className="profile-session-card__time">{session.time}</p>
+            <p className={`profile-session-card__time ${isAthlete ? 'isAthlete' : ''}`}>
+                {session.time}
+            </p>
             <SessionAttendees attendees={attendees} isAthlete={isAthlete} />
-            <SessionCardButton
-                as={collectionName}
-                session={session}
-                isAthlete={isAthlete}
-                isAttending={isAttending}
-            />
+            <SessionCardButton as={collectionName} session={session} isAttending={isAttending} />
         </div>
     );
 }

@@ -21,6 +21,8 @@ function SessionContainer({ sessions }: SessionContainerProps) {
     const router = useRouter();
     const userType = (router.asPath.split('/')[2] + 's') as CollectionName;
 
+    const singleSession = filteredSessions?.length === 1;
+
     useEffect(() => {
         const sessionsForSelectedDate = sessions?.filter(session => {
             const sessionDate = dayjs(session.date.toDate()).format('MM/DD/YYYY');
@@ -39,7 +41,7 @@ function SessionContainer({ sessions }: SessionContainerProps) {
         );
 
     return (
-        <div className="profile-session-container">
+        <div className={`profile-session-container ${singleSession ? 'single-child' : ''}`}>
             {userType &&
                 filteredSessions?.map(session => (
                     <SessionCard as={userType} session={session} key={session.id} />
