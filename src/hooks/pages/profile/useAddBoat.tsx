@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCallback, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { FormEvent, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BoatValues } from '@/hooks/pages/useBoats';
 import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
@@ -9,8 +10,8 @@ import { boatSchema } from '@/utils/validations';
 
 export function useAddBoat() {
     const [showAlert, setShowAlert] = useState(false);
-
     const { data: club } = useEnsureFirebaseDocQuery<FirebaseClub>('clubs');
+    const queryClient = useQueryClient();
 
     const {
         control,
@@ -43,15 +44,17 @@ export function useAddBoat() {
                     const { success } = await createDoc(club.id, 'boats', boat);
 
                     if (success) {
+                        await queryClient.refetchQueries({ queryKey: ['clubs'] });
                         setShowAlert(true);
                         clearFields();
                     }
                 }
             }),
-        [handleSubmit, club, isValid, clearFields]
+        [handleSubmit, club, isValid, queryClient, clearFields]
     );
 
-    function onClick() {
+    function onSubmit(event: FormEvent) {
+        event.preventDefault();
         submitDetails()();
     }
 
@@ -60,6 +63,6 @@ export function useAddBoat() {
         setShowAlert,
         control,
         errors,
-        onClick
+        onSubmit
     };
 }

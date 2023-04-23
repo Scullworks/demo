@@ -15,13 +15,13 @@ const boatSizes: Option[] = [
 ];
 
 function AddBoats() {
-    const { showAlert, setShowAlert, control, errors, onClick } = useAddBoat();
+    const { showAlert, setShowAlert, control, errors, onSubmit } = useAddBoat();
 
     return (
         <ProfileLayout for="clubs">
             <div className="profile-services-boats">
                 <h1>Add the boats available at your club</h1>
-                <form className="profile-services-form">
+                <form className="profile-services-form" onSubmit={onSubmit}>
                     <HookedTextField
                         name="boatSize"
                         placeholder="Boat Size"
@@ -47,7 +47,7 @@ function AddBoats() {
                         control={control}
                         error={errors.boatName?.message}
                     />
-                    <button className="button__static" type="button" onClick={onClick}>
+                    <button className="button__static" type="submit">
                         Add Boat
                     </button>
                 </form>

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { v4 as uuid } from 'uuid';
 import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
 import { FirebaseClub } from '@/models';
@@ -5,6 +6,12 @@ import { FirebaseClub } from '@/models';
 function ServiceContainer() {
     const { data: club } = useEnsureFirebaseDocQuery<FirebaseClub>('clubs');
     const services = club?.services.map(service => ({ id: uuid(), value: service }));
+
+    const router = useRouter();
+
+    function onClick() {
+        router.push('services/create');
+    }
 
     return (
         <>
@@ -16,7 +23,9 @@ function ServiceContainer() {
                     </div>
                 ))}
             </div>
-            <button className="profile-services__button button__static">Add Service</button>
+            <button className="profile-services__button button__static" onClick={onClick}>
+                Add Service
+            </button>
         </>
     );
 }
