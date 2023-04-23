@@ -5,11 +5,11 @@ interface CommonOnboardingState {
     readonly imageUrl: string | null;
     readonly name: string | null;
     readonly email: string | null;
-    readonly phoneNumber: number | null;
+    readonly phoneNumber: string | null;
     readonly setImageUrl: (imageUrl: string) => void;
     readonly setName: (name: string) => void;
     readonly setEmail: (email: string) => void;
-    readonly setPhoneNumber: (phoneNumber: number) => void;
+    readonly setPhoneNumber: (phoneNumber: string) => void;
 }
 
 export const useCommonOnboardingStore = create<CommonOnboardingState>()(

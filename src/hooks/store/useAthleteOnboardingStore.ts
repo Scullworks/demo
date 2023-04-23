@@ -6,13 +6,13 @@ import { AthleteMembershipType, PositionPreference } from '@/models';
 interface AthleteOnboardingState {
     readonly dateOfBirth: Dayjs | null;
     readonly emergencyName: string | null;
-    readonly emergencyNumber: number | null;
+    readonly emergencyNumber: string | null;
     readonly club: string | null;
     readonly membershipType: AthleteMembershipType | null;
     readonly positionPreference: PositionPreference | null;
     readonly setDateOfBirth: (dateOfBirth: Dayjs) => void;
     readonly setEmergencyName: (emergencyName: string) => void;
-    readonly setEmergencyNumber: (emergencyNumber: number) => void;
+    readonly setEmergencyNumber: (emergencyNumber: string) => void;
     readonly setClub: (club: string) => void;
     readonly setMembershipType: (membershipType: AthleteMembershipType) => void;
     readonly setPositionPreference: (positionPreference: PositionPreference) => void;

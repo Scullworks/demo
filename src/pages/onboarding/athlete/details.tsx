@@ -31,7 +31,6 @@ function AthleteDetails() {
                     name="emergencyNumber"
                     control={control}
                     error={errors.emergencyNumber?.message}
-                    type="number"
                     placeholder="Emergency Contact Number"
                 />
             </form>

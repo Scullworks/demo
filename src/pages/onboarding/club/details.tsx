@@ -62,7 +62,6 @@ function ClubDetails() {
                     name="phoneNumber"
                     control={control}
                     error={errors.phoneNumber?.message}
-                    type="number"
                     placeholder="Phone Number"
                 />
             </form>

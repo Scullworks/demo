@@ -11,8 +11,5 @@ export const operationSchema = yup.object().shape({
         .required('Closing time is required'),
     cancellationPolicy: yup.string().required('Cancellation policy is required'),
     address: yup.string().required('Address is required'),
-    phoneNumber: yup
-        .number()
-        .typeError('Phone number is required')
-        .required('Phone number is required')
+    phoneNumber: yup.string().required('Phone number is required')
 });

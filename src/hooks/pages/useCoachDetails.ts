@@ -16,7 +16,7 @@ import { createAccount } from '@/services/firebase';
 import { coachDetailsSchema } from '@/utils/validations';
 
 interface CoachDetailsValues {
-    readonly phoneNumber: number;
+    readonly phoneNumber: string;
     readonly club: string;
     readonly membershipType: CoachMembershipType | string;
 }
@@ -44,7 +44,7 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
     } = useForm<CoachDetailsValues>({
         resolver: yupResolver(coachDetailsSchema),
         defaultValues: {
-            phoneNumber: undefined,
+            phoneNumber: '',
             club: '',
             membershipType: ''
         }

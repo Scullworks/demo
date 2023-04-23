@@ -26,7 +26,7 @@ export interface OnboardingDoc {
     readonly uid: string | undefined;
     readonly name: string | null;
     readonly email: string | undefined;
-    readonly phoneNumber: number | null;
+    readonly phoneNumber: string | null;
 }
 
 interface FirebaseStripe {

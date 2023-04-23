@@ -12,7 +12,7 @@ interface OperationValues {
     readonly closingTime: string;
     readonly cancellationPolicy: string;
     readonly address: string;
-    readonly phoneNumber: number;
+    readonly phoneNumber: string;
 }
 
 export function useClubDetails() {
@@ -49,7 +49,7 @@ export function useClubDetails() {
             closingTime: persistedClosingTime ?? undefined,
             cancellationPolicy: cancellationPolicy ?? '',
             address: address ?? '',
-            phoneNumber: phoneNumber ?? ('' as unknown as number)
+            phoneNumber: phoneNumber ?? ''
         }
     });
 

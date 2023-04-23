@@ -11,10 +11,10 @@ import {
 import { athleteDetailsSchema } from '@/utils/validations';
 
 interface AthleteDetailsValues {
-    readonly phoneNumber: number;
+    readonly phoneNumber: string;
     readonly dateOfBirth: string;
     readonly emergencyName: string;
-    readonly emergencyNumber: number;
+    readonly emergencyNumber: string;
 }
 
 export function useAthleteDetails() {
@@ -43,10 +43,10 @@ export function useAthleteDetails() {
     } = useForm<AthleteDetailsValues>({
         resolver: yupResolver(athleteDetailsSchema),
         defaultValues: {
-            phoneNumber: phoneNumber ?? undefined,
+            phoneNumber: phoneNumber ?? '',
             dateOfBirth: persistedDateOfBirth ?? undefined,
             emergencyName: emergencyName ?? '',
-            emergencyNumber: emergencyNumber ?? undefined
+            emergencyNumber: emergencyNumber ?? ''
         }
     });
 
