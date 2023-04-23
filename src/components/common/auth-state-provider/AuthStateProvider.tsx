@@ -27,7 +27,7 @@ function AuthStateProvider({ children }: AuthStateProviderProps) {
             } else {
                 setCurrentUser(null);
                 if (!userLoggedOut) localStorage.setItem('path', router.asPath);
-                router.replace('/login');
+                router.push('/login');
             }
         });
     }, [setCurrentUser, userLoggedOut, router]);
