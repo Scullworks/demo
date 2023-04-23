@@ -58,7 +58,7 @@ export interface OnboardingCoach extends OnboardingClubDoc {
 export interface OnboardingAthlete extends OnboardingClubDoc {
     readonly dateOfBirth: string | null;
     readonly emergencyName: string | null;
-    readonly emergencyNumber: number | null;
+    readonly emergencyNumber: string | null;
     readonly membershipType: string;
     readonly positionPreference: string;
     readonly createdAt: FieldValue;

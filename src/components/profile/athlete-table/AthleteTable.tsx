@@ -22,10 +22,10 @@ interface Data {
     readonly id: string;
     readonly name: string;
     readonly email: string;
-    readonly phoneNumber: number;
+    readonly phoneNumber: string;
     readonly dateOfBirth: string;
     readonly emergencyName: string;
-    readonly emergencyNumber: number;
+    readonly emergencyNumber: string;
     readonly membershipType: AthleteMembershipType;
 }
 
