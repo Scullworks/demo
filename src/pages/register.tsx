@@ -1,11 +1,9 @@
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { AuthForm, AuthProviders } from '@/components';
-import { pageTransitions } from '@/utils/animations/pages';
+import { AuthForm, AuthProviders, PageAnimation } from '@/components';
 
 function Register() {
     return (
-        <motion.div className="auth" {...pageTransitions}>
+        <PageAnimation className="auth">
             <h1 className="auth__heading">Create Account</h1>
             <p className="auth__text">
                 Already have an account?{' '}
@@ -15,7 +13,7 @@ function Register() {
             </p>
             <AuthForm as="register" />
             <AuthProviders />
-        </motion.div>
+        </PageAnimation>
     );
 }
 

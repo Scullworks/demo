@@ -1,8 +1,7 @@
-import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
+import { PageAnimation } from '@/components';
 import { useAuthStore } from '@/hooks/store';
 import { UserType } from '@/models';
-import { pageTransitions } from '@/utils/animations/pages';
 
 function Join() {
     const setUserType = useAuthStore(state => state.setUserType);
@@ -16,8 +15,8 @@ function Join() {
     }
 
     return (
-        <motion.div className="join" {...pageTransitions}>
-            <h1 className="join__heading">Who Are You?</h1>
+        <PageAnimation className="join">
+            <h1 className="join__heading">Select User Type</h1>
             <div className="join__options">
                 <button className="button" onClick={() => onClick('athlete')}>
                     Athlete
@@ -29,7 +28,7 @@ function Join() {
                     Coach
                 </button>
             </div>
-        </motion.div>
+        </PageAnimation>
     );
 }
 
