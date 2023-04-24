@@ -13,7 +13,8 @@
     position: relative;
     margin-inline: 5rem;
     width: min(100vw, 134rem);
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100svh;
 
     @include laptop-small {
         @include flex-center;
@@ -37,27 +38,33 @@
 }
 
 .header__heading {
+    font-size: clamp(4.5rem, 6.5vw + 0.1rem, 6rem);
     font-weight: 400;
     letter-spacing: 0.1rem;
     margin-bottom: 1rem;
 
+    @include respond-to(1335px) {
+        font-weight: 600;
+    }
+
+    @include laptop-small {
+        letter-spacing: 0.05rem;
+    }
+
     span {
         @include respond-to(1335px) {
             display: block;
-            font-weight: 600;
             letter-spacing: 0.05rem;
             padding-left: 3px;
         }
 
         @include laptop-small {
             display: inline;
-            font-weight: 500;
             letter-spacing: normal;
         }
 
         @include tablet {
             display: block;
-            font-weight: 600;
             letter-spacing: 0.05rem;
         }
     }

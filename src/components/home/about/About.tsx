@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 import athletes from '@/assets/about/athletes.png';
 import clubs from '@/assets/about/clubs.png';
 import coaches from '@/assets/about/coaches.png';
@@ -18,30 +18,16 @@ import {
 } from './About.animations';
 
 function About() {
-    const [isMediumMobileOrSmaller, setIsMediumMobileOrSmaller] = useState(false);
     const headerBenefitsIsInView = useAnimationStore(state => state.headerBenefitsIsInView);
 
-    useEffect(() => {
-        function checkWindowWidth() {
-            if (window.innerWidth <= 375) {
-                setIsMediumMobileOrSmaller(true);
-            } else {
-                setIsMediumMobileOrSmaller(false);
-            }
-        }
-
-        window.addEventListener('resize', checkWindowWidth);
-
-        return () => {
-            window.removeEventListener('resize', checkWindowWidth);
-        };
-    }, [isMediumMobileOrSmaller]);
+    const isMobileRef = useRef(typeof window !== 'undefined' && window.innerWidth <= 430);
+    const isMobile = isMobileRef.current;
 
     return (
         <main className="about">
             <motion.h2
                 className="about__heading"
-                custom={isMediumMobileOrSmaller ? true : headerBenefitsIsInView}
+                custom={isMobile ? true : headerBenefitsIsInView}
                 variants={headingVariants}
                 {...animations}
             >
@@ -49,7 +35,7 @@ function About() {
             </motion.h2>
             <motion.div
                 className="about__benefits"
-                custom={isMediumMobileOrSmaller ? true : headerBenefitsIsInView}
+                custom={isMobile ? true : headerBenefitsIsInView}
                 variants={aboutVariants}
                 {...animations}
             >

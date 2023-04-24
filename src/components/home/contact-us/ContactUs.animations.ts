@@ -1,9 +1,9 @@
 import { Variants } from 'framer-motion';
 
 export const contactUsVariants: Variants = {
-    initial: {
-        opacity: 0
-    },
+    initial: (isMobile: boolean) => ({
+        opacity: isMobile ? 1 : 0
+    }),
     animate: {
         opacity: 1,
         transition: {

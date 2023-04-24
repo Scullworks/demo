@@ -9,9 +9,14 @@
     @include laptop-small {
         height: 90vh;
     }
+
+    @include mobile-large {
+        height: 100vh;
+    }
 }
 
 .contact-us__heading {
+    font-size: clamp(4.5rem, 6.5vw + 0.1rem, 6rem);
     margin-bottom: 0.5rem;
 }
 
