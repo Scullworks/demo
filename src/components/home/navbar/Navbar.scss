@@ -16,6 +16,10 @@
     z-index: 200;
     padding-block: 1.5rem;
 
+    @include tablet {
+        padding-inline: 2rem;
+    }
+
     .navbar__menu,
     .navbar__close {
         display: none;
@@ -28,6 +32,11 @@
 
 .navbar__logo {
     cursor: pointer;
+
+    @include tablet {
+        margin-inline: auto;
+        padding-left: 5rem;
+    }
 }
 
 .navbar__list {
@@ -76,6 +85,7 @@
     left: 0;
     width: 100vw;
     height: 91vh;
+    height: 91dvh;
     animation: 0.5s slideIn;
 
     & > .navbar__list {
@@ -97,6 +107,7 @@
     left: 0;
     width: 100vw;
     height: 91vh;
+    height: 91dvh;
     transform: translateX(100vw);
     transition: all 0.5s;
 

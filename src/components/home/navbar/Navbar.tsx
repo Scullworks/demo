@@ -3,16 +3,17 @@ import { IconButton } from '@mui/material';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link as ScrollLink } from 'react-scroll';
 import logo from '@/assets/logos/scullworks.svg';
 import { pageVariants } from '@/utils/animations/pages';
 
 function Navbar() {
     const [showMenuIcon, setShowMenuIcon] = useState(true);
-    const [isTabletOrSmaller, setIsTabletOrSmaller] = useState(false);
 
     const navRef = useRef<HTMLUListElement | null>(null);
+    const isTabletOrSmallerRef = useRef(typeof window !== 'undefined' && window.innerWidth <= 768);
+    const isTabletOrSmaller = isTabletOrSmallerRef.current;
 
     function scrollToTop() {
         if (typeof window === 'undefined') return;
@@ -41,27 +42,11 @@ function Navbar() {
         setShowMenuIcon(prevState => !prevState);
     }
 
-    useEffect(() => {
-        function checkWindowWidth() {
-            if (window.innerWidth <= 768) {
-                setIsTabletOrSmaller(true);
-            } else {
-                setIsTabletOrSmaller(false);
-            }
-        }
-
-        window.addEventListener('resize', checkWindowWidth);
-
-        return () => {
-            window.removeEventListener('resize', checkWindowWidth);
-        };
-    }, [isTabletOrSmaller]);
-
     return (
         <>
             <motion.nav className="navbar" exit="exit" variants={pageVariants}>
                 <div className="navbar__logo">
-                    <Image src={logo} alt="ScullWorks logo" width={90} onClick={scrollToTop} />
+                    <Image src={logo} alt="ScullWorks logo" height={40} onClick={scrollToTop} />
                 </div>
                 <ul className={'navbar__list'} ref={navRef}>
                     <li>
