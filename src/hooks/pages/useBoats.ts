@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocalStorage } from '@/hooks/common';
 import { useAddClubData } from '@/hooks/firebase';
@@ -17,7 +17,6 @@ export interface BoatValues {
 
 export function useBoats() {
     const [showAlert, setShowAlert] = useState(false);
-    const [isMobilePhone, setIsMobilePhone] = useState(false);
     const [boatCountText, setBoatCountText] = useState('');
     const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
@@ -116,21 +115,8 @@ export function useBoats() {
         }
     }, [setTriggerSubmit, submitDetails, triggerSubmit]);
 
-    useEffect(() => {
-        function checkWindowWidth() {
-            if (window.innerWidth <= 500) {
-                setIsMobilePhone(true);
-            } else {
-                setIsMobilePhone(false);
-            }
-        }
-
-        window.addEventListener('resize', checkWindowWidth);
-
-        return () => {
-            window.removeEventListener('resize', checkWindowWidth);
-        };
-    }, [isMobilePhone]);
+    const isMobilePhoneRef = useRef(typeof window !== 'undefined' && window.innerWidth <= 500);
+    const isMobilePhone = isMobilePhoneRef.current;
 
     useEffect(() => {
         if (!isMobilePhone) return;

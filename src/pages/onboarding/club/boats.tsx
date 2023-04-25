@@ -16,7 +16,7 @@ function Boats() {
 
     return (
         <OnboardingLayout>
-            <h1>Add the boats available at your club</h1>
+            <h1>Club Boats</h1>
             <BoatsForm {...boatFormProps} />
         </OnboardingLayout>
     );

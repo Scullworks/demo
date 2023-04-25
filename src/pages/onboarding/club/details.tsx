@@ -9,8 +9,9 @@ import { useClubDetails } from '@/hooks/pages';
 import { Option } from '@/models';
 
 const cancellationOptions: Option[] = [
+    { id: '942c6288-d3a0-4f0d-b6d8-2fd1251ec0c7', value: '12 hours notice' },
     { id: '8caa6a7b-0f2e-42e5-a81d-fe1531520af3', value: '24 hours notice' },
-    { id: 'eb1d0c12-a290-4291-a16b-2de28bbe2940', value: '2 days notice' },
+    { id: 'eb1d0c12-a290-4291-a16b-2de28bbe2940', value: '48 hours notice' },
     { id: 'a2275a00-e866-4ad9-8f7f-fc7d74b25cef', value: '3 days notice' },
     { id: '886c3cc3-c198-4eac-a534-16c881227eec', value: '4 days notice' },
     { id: '70541e3f-0ba3-429f-9f7e-1cc15639f19f', value: '5 days notice' },
@@ -23,7 +24,7 @@ function ClubDetails() {
 
     return (
         <OnboardingLayout>
-            <h1>Your operating hours and policies</h1>
+            <h1>Club Details</h1>
             <form className="onboarding__form" onSubmit={onSubmit}>
                 <div className="onboarding-club__opening-hours">
                     <HookedTimeField

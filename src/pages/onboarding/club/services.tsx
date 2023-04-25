@@ -21,7 +21,7 @@ function Services() {
 
     return (
         <OnboardingLayout>
-            <h1>Your club&apos;s services</h1>
+            <h1>Club Services</h1>
             <div className="onboarding-club__services">
                 <button
                     className={`button ${scullingHighlight && 'selected'}`}
