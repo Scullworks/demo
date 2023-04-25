@@ -3,7 +3,9 @@ import MobileStepper from './MobileStepper';
 import { useProgressStepper } from './useProgressStepper';
 
 function ProgressStepper() {
-    const { isMobile } = useProgressStepper();
+    const { isMobileRef } = useProgressStepper();
+
+    const isMobile = isMobileRef.current;
 
     return <div className="stepper">{isMobile ? <MobileStepper /> : <DefaultStepper />}</div>;
 }

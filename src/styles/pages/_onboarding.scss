@@ -5,17 +5,23 @@
 
 .onboarding {
     @include flex-center;
-    justify-content: flex-start;
-    margin-top: 5rem;
+    justify-content: space-between;
+    padding-block: 5rem;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100svh;
 
     h1 {
         padding-inline: 2rem;
+        text-align: center;
     }
 
     .MuiSnackbar-root {
         margin-bottom: 4.5rem;
+    }
+
+    @include mobile-large {
+        padding-block: 2rem;
     }
 }
 
@@ -132,7 +138,6 @@
 
 .onboarding-club__boats-added {
     margin-top: 3rem;
-    font-weight: 600;
     color: rgb(85, 85, 85);
 }
 

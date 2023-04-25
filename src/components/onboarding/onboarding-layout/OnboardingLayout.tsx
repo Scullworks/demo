@@ -1,16 +1,19 @@
-import { motion } from 'framer-motion';
-import { ReactNode, useEffect, useState } from 'react';
-import { AlertDialog, AuthStateProvider, ProgressStepper } from '@/components';
+import { PropsWithChildren, useEffect, useState } from 'react';
+import { AlertDialog, AuthStateProvider, PageAnimation, ProgressStepper } from '@/components';
 import { useStoredUserType } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store';
 import { UserType } from '@/models';
-import { pageTransitions } from '@/utils/animations/pages';
 
-interface OnboardingLayoutProps {
-    readonly children: ReactNode;
+function Onboarding({ children }: PropsWithChildren) {
+    return (
+        <div className="onboarding">
+            <PageAnimation>{children}</PageAnimation>
+            <ProgressStepper />
+        </div>
+    );
 }
 
-function OnboardingLayout({ children }: OnboardingLayoutProps) {
+function OnboardingLayout({ children }: PropsWithChildren) {
     const [showDialog, setShowDialog] = useState(false);
 
     const userType = useAuthStore(state => state.userType);
@@ -26,12 +29,7 @@ function OnboardingLayout({ children }: OnboardingLayoutProps) {
     return (
         <AuthStateProvider>
             {userType ? (
-                <>
-                    <motion.div className="onboarding" {...pageTransitions}>
-                        {children}
-                    </motion.div>
-                    <ProgressStepper />
-                </>
+                <Onboarding>{children}</Onboarding>
             ) : (
                 <AlertDialog openDialog={showDialog} setOpenDialog={setShowDialog} />
             )}

@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material';
-import { HTMLInputTypeAttribute, ReactNode, useEffect, useState } from 'react';
+import { HTMLInputTypeAttribute, PropsWithChildren, ReactNode, useEffect, useState } from 'react';
 import { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 import { useFeeProcessingStore } from '@/hooks/store';
 import MuiInputAdornment from './MuiInputAdornment';
@@ -11,11 +11,10 @@ interface MuiTextFieldProps<T extends FieldValues> {
     readonly type?: HTMLInputTypeAttribute;
     readonly placeholder?: string;
     readonly select?: boolean;
-    readonly children?: ReactNode;
     readonly startAdornment?: ReactNode;
 }
 
-function MuiTextField<T extends FieldValues>(props: MuiTextFieldProps<T>) {
+function MuiTextField<T extends FieldValues>(props: PropsWithChildren<MuiTextFieldProps<T>>) {
     const {
         name,
         error,

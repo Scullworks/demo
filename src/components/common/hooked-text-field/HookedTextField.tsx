@@ -1,4 +1,4 @@
-import { ComponentProps, HTMLInputTypeAttribute, ReactNode } from 'react';
+import { ComponentProps, HTMLInputTypeAttribute, PropsWithChildren, ReactNode } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import MuiTextField from './MuiTextField';
 
@@ -12,10 +12,9 @@ interface HookedTextFieldProps<T extends FieldValues> extends InputProps {
     readonly placeholder?: string;
     readonly select?: boolean;
     readonly startAdornment?: ReactNode;
-    readonly children?: ReactNode;
 }
 
-function HookedTextField<T extends FieldValues>(props: HookedTextFieldProps<T>) {
+function HookedTextField<T extends FieldValues>(props: PropsWithChildren<HookedTextFieldProps<T>>) {
     const { name, control, error, type, placeholder, select, startAdornment, children } = props;
 
     return (
