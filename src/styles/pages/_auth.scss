@@ -5,8 +5,14 @@
 .auth {
     @include flex-center;
     background-color: $color-background-main;
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100svh;
     width: 100vw;
+
+    @include mobile-large {
+        padding-top: 2rem;
+        justify-content: flex-start;
+    }
 }
 
 .auth__heading {
