@@ -22,7 +22,7 @@ function BoatContainer() {
                     <Select labelId="boats" label="Your Boats" color="info">
                         {boats?.map(boat => (
                             <MenuItem value={boat.name} key={boat.id}>
-                                {boat.name} &#x2022; {boat.make}
+                                {boat.name} ({boat.make})
                             </MenuItem>
                         ))}
                     </Select>

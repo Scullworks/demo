@@ -178,7 +178,7 @@
         overflow-y: hidden;
         overflow-x: scroll;
         width: 95vw;
-        padding-block: 5rem;
+        padding: 3rem 2rem;
         display: flex;
     }
 }
@@ -204,7 +204,7 @@
     }
 
     @include respond-to(1200px) {
-        width: 330px;
+        padding-inline: 5rem;
         height: 46.3rem;
 
         &:not(:last-of-type) {
@@ -464,8 +464,15 @@
     width: 100%;
 
     h2 {
-        font-size: clamp(3.8rem, 6vw + 0.1rem, 4.5rem);
         margin-bottom: 1rem;
+    }
+
+    @include mobile-large {
+        padding-bottom: 5rem;
+
+        h2 {
+            margin-bottom: 0;
+        }
     }
 }
 
@@ -482,6 +489,10 @@
 
     .MuiFormControl-root {
         margin-block: 1rem 0;
+
+        @include mobile-large {
+            margin-block: 1rem;
+        }
     }
 
     .MuiInputLabel-root {
@@ -533,7 +544,6 @@
 // Services - Add Boat
 .profile-services-boats {
     @include flex-center;
-    justify-content: flex-start;
     width: 90%;
     min-height: 100vh;
     margin-top: 5rem;
