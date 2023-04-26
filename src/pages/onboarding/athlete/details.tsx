@@ -6,7 +6,7 @@ function AthleteDetails() {
 
     return (
         <OnboardingLayout>
-            <h1>Required information by your club</h1>
+            <h1>Your Details</h1>
             <form className="onboarding__form" onSubmit={onSubmit}>
                 <HookedTextField
                     name="phoneNumber"

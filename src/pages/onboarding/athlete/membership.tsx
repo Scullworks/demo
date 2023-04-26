@@ -41,7 +41,7 @@ function AthleteMembership() {
 
     return (
         <OnboardingLayout>
-            <h1>Details about your membership</h1>
+            <h1>Membership Details</h1>
             <form className="onboarding__form" onSubmit={onSubmit}>
                 <Autocomplete
                     label="Your Club"
