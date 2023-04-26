@@ -34,7 +34,7 @@ function CoachDetails() {
 
     return (
         <OnboardingLayout>
-            <h1>Your details</h1>
+            <h1>Your Details</h1>
             <form onSubmit={onSubmit}>
                 <HookedTextField
                     name="phoneNumber"
