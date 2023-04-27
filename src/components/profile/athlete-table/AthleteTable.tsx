@@ -12,7 +12,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import * as React from 'react';
 import { forwardRef } from 'react';
 import { TableVirtuoso, TableComponents } from 'react-virtuoso';
 import { useNestedCollectionsQuery } from '@/hooks/queries';
@@ -37,9 +36,11 @@ interface ColumnData {
     icon?: React.ReactNode;
 }
 
+const isMobile = typeof window !== 'undefined' && window.innerWidth <= 430;
+
 const columns: ColumnData[] = [
     {
-        width: 250,
+        width: isMobile ? 150 : 250,
         label: 'Name',
         dataKey: 'name',
         icon: <PersonIcon />
@@ -70,7 +71,7 @@ const columns: ColumnData[] = [
         icon: <PersonIcon />
     },
     {
-        width: 260,
+        width: isMobile ? 200 : 260,
         label: 'Emergency Contact',
         dataKey: 'emergencyName',
         icon: <PersonIcon />
@@ -119,7 +120,7 @@ function rowContent(_index: number, row: Data) {
     return (
         <>
             {columns.map(column => (
-                <TableCell key={column.dataKey} align={column.numeric || false ? 'left' : 'left'}>
+                <TableCell key={column.dataKey} align="left">
                     {row[column.dataKey]}
                 </TableCell>
             ))}

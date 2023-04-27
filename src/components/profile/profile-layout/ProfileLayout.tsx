@@ -1,17 +1,17 @@
-import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
-import { AuthStateProvider, ClubProfileMenu, ProfileMenu } from '@/components';
+import { PropsWithChildren, useRef } from 'react';
+import { AuthStateProvider, ClubProfileMenu, PageAnimation, ProfileMenu } from '@/components';
 import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
 import { CollectionName } from '@/models';
-import { pageTransitions } from '@/utils/animations/pages';
 
 interface ProfileLayoutProps {
     readonly for: CollectionName;
-    readonly children: ReactNode;
 }
 
-function ProfileLayout(props: ProfileLayoutProps) {
+function ProfileLayout(props: PropsWithChildren<ProfileLayoutProps>) {
     const { for: collectionName, children } = props;
+
+    const isMobileRef = useRef(typeof window !== 'undefined' && window.innerWidth <= 500);
+    const isMobile = isMobileRef.current;
 
     const { data } = useEnsureFirebaseDocQuery(collectionName);
 
@@ -24,9 +24,9 @@ function ProfileLayout(props: ProfileLayoutProps) {
                     ) : (
                         <ProfileMenu for={collectionName} />
                     )}
-                    <motion.div className="profile-main" {...pageTransitions}>
+                    <PageAnimation className="profile-main" isMobile={isMobile}>
                         {children}
-                    </motion.div>
+                    </PageAnimation>
                 </div>
             )}
         </AuthStateProvider>
