@@ -1,8 +1,9 @@
+import emailjs from '@emailjs/browser';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { motion } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { HookedTextField } from '@/components';
+import { HookedTextField, SnackbarAlert } from '@/components';
 import content from '@/utils/content/contact-us.json';
 import { contactUsSchema } from '@/utils/validations';
 import { animations } from './ContactUs.animations';
@@ -14,20 +15,37 @@ export interface ContactUsFormValues {
 }
 
 function ContactUs() {
+    const [showAlert, setShowAlert] = useState(false);
+
     const {
         control,
         handleSubmit,
+        reset: clearFields,
         formState: { errors }
     } = useForm<ContactUsFormValues>({
-        resolver: yupResolver(contactUsSchema)
+        resolver: yupResolver(contactUsSchema),
+        defaultValues: {
+            name: '',
+            email: '',
+            message: ''
+        }
     });
 
     const isMobileRef = useRef(typeof window !== 'undefined' && window.innerWidth <= 430);
     const isMobile = isMobileRef.current;
 
-    const onSubmit = handleSubmit(data => {
-        // TODO: Discuss what needs to be done at this point
-        console.log('data', data);
+    const onSubmit = handleSubmit(async data => {
+        const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string;
+        const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string;
+        const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY as string;
+
+        try {
+            await emailjs.send(SERVICE_ID, TEMPLATE_ID, { ...data }, PUBLIC_KEY);
+            setShowAlert(true);
+            clearFields();
+        } catch (error) {
+            console.error('Contact Us Error: ', error.message);
+        }
     });
 
     return (
@@ -51,6 +69,12 @@ function ContactUs() {
                     Submit
                 </button>
             </motion.form>
+            <SnackbarAlert
+                text="Message sent!"
+                severity="success"
+                open={showAlert}
+                setOpen={setShowAlert}
+            />
         </footer>
     );
 }
