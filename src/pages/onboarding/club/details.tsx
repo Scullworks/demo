@@ -3,7 +3,8 @@ import {
     AddressAutocomplete,
     HookedTextField,
     HookedTimeField,
-    OnboardingLayout
+    OnboardingLayout,
+    PageTitle
 } from '@/components';
 import { useClubDetails } from '@/hooks/pages';
 import { Option } from '@/models';
@@ -23,50 +24,53 @@ function ClubDetails() {
     const { addressPlaceType, onSubmit, control, errors, register } = useClubDetails();
 
     return (
-        <OnboardingLayout>
-            <h1>Club Details</h1>
-            <form className="onboarding__form" onSubmit={onSubmit}>
-                <div className="onboarding-club__opening-hours">
-                    <HookedTimeField
-                        name="openingTime"
-                        label="Opening Time"
+        <>
+            <PageTitle text="Club Details" />
+            <OnboardingLayout>
+                <h1>Club Details</h1>
+                <form className="onboarding__form" onSubmit={onSubmit}>
+                    <div className="onboarding-club__opening-hours">
+                        <HookedTimeField
+                            name="openingTime"
+                            label="Opening Time"
+                            control={control}
+                            error={errors.openingTime?.message}
+                        />
+                        <HookedTimeField
+                            name="closingTime"
+                            label="Closing Time"
+                            control={control}
+                            error={errors.closingTime?.message}
+                        />
+                    </div>
+                    <HookedTextField
+                        name="cancellationPolicy"
                         control={control}
-                        error={errors.openingTime?.message}
+                        error={errors.cancellationPolicy?.message}
+                        placeholder="Cancellation Policy"
+                        select
+                    >
+                        {cancellationOptions.map(option => (
+                            <MenuItem key={option.id} value={option.value}>
+                                {option.value}
+                            </MenuItem>
+                        ))}
+                    </HookedTextField>
+                    <AddressAutocomplete
+                        name="address"
+                        defaultValue={addressPlaceType ?? null}
+                        register={register}
+                        error={errors?.address?.message}
                     />
-                    <HookedTimeField
-                        name="closingTime"
-                        label="Closing Time"
+                    <HookedTextField
+                        name="phoneNumber"
                         control={control}
-                        error={errors.closingTime?.message}
+                        error={errors.phoneNumber?.message}
+                        placeholder="Phone Number"
                     />
-                </div>
-                <HookedTextField
-                    name="cancellationPolicy"
-                    control={control}
-                    error={errors.cancellationPolicy?.message}
-                    placeholder="Cancellation Policy"
-                    select
-                >
-                    {cancellationOptions.map(option => (
-                        <MenuItem key={option.id} value={option.value}>
-                            {option.value}
-                        </MenuItem>
-                    ))}
-                </HookedTextField>
-                <AddressAutocomplete
-                    name="address"
-                    defaultValue={addressPlaceType ?? null}
-                    register={register}
-                    error={errors?.address?.message}
-                />
-                <HookedTextField
-                    name="phoneNumber"
-                    control={control}
-                    error={errors.phoneNumber?.message}
-                    placeholder="Phone Number"
-                />
-            </form>
-        </OnboardingLayout>
+                </form>
+            </OnboardingLayout>
+        </>
     );
 }
 

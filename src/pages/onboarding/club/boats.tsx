@@ -1,5 +1,5 @@
 import { PropagateLoader } from 'react-spinners';
-import { BoatsForm, OnboardingLayout } from '@/components';
+import { BoatsForm, OnboardingLayout, PageTitle } from '@/components';
 import { useBoats } from '@/hooks/pages';
 
 function Boats() {
@@ -8,6 +8,7 @@ function Boats() {
     if (isCreatingAccount) {
         return (
             <div className="loading">
+                <PageTitle text="Club Boats" />
                 <PropagateLoader color="rgb(255, 179, 109)" />
                 <p>Please wait while we create your account</p>
             </div>
@@ -15,10 +16,13 @@ function Boats() {
     }
 
     return (
-        <OnboardingLayout>
-            <h1>Club Boats</h1>
-            <BoatsForm {...boatFormProps} />
-        </OnboardingLayout>
+        <>
+            <PageTitle text="Club Boats" />
+            <OnboardingLayout>
+                <h1>Club Boats</h1>
+                <BoatsForm {...boatFormProps} />
+            </OnboardingLayout>
+        </>
     );
 }
 

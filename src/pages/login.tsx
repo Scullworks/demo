@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { AuthForm, AuthProviders, PageAnimation } from '@/components';
+import { AuthForm, AuthProviders, PageAnimation, PageTitle } from '@/components';
 import { useStoredUserType } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store';
 import { getUserFromFirebase } from '@/services/firebase';
@@ -64,17 +64,20 @@ function Login() {
     }, [routeToChangeTo, router]);
 
     return (
-        <PageAnimation className="auth">
-            <h1 className="auth__heading">Welcome Back</h1>
-            <p className="auth__text">
-                Don&apos;t have an account?{' '}
-                <Link className="auth__link" href="/register">
-                    Register
-                </Link>
-            </p>
-            <AuthForm as="login" />
-            <AuthProviders />
-        </PageAnimation>
+        <>
+            <PageTitle text="Login" />
+            <PageAnimation className="auth">
+                <h1 className="auth__heading">Welcome Back</h1>
+                <p className="auth__text">
+                    Don&apos;t have an account?{' '}
+                    <Link className="auth__link" href="/register">
+                        Register
+                    </Link>
+                </p>
+                <AuthForm as="login" />
+                <AuthProviders />
+            </PageAnimation>
+        </>
     );
 }
 

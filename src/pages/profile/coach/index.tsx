@@ -1,4 +1,4 @@
-import { ProfileLayout, SessionCalendar, SessionContainer } from '@/components';
+import { PageTitle, ProfileLayout, SessionCalendar, SessionContainer } from '@/components';
 import { useDashboard } from '@/hooks/pages/profile/useDashboard';
 
 function CoachDashboard() {
@@ -6,6 +6,7 @@ function CoachDashboard() {
 
     return (
         <ProfileLayout for="coaches">
+            <PageTitle text="Your Services" />
             <div className="profile-dashboard">
                 <SessionCalendar {...calendarProps} />
                 <SessionContainer as="coaches" sessions={sessions} />

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { About, ContactUs, Header, Navbar, PageAnimation } from '@/components';
+import { About, ContactUs, Header, Navbar, PageAnimation, PageTitle } from '@/components';
 import { useAnimationStore } from '@/hooks/store';
 import { pageTransitions } from '@/utils/animations/pages';
 
@@ -20,6 +20,7 @@ function Home() {
 
     return (
         <>
+            <PageTitle text="ScullWorks | Rowing Management Made Easy" custom />
             <Navbar />
             <PageAnimation custom={isInitialLoad} isMobile={isMobile} {...pageTransitions}>
                 <Header />

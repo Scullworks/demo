@@ -1,6 +1,6 @@
 import { MenuItem } from '@mui/material';
 import { PropagateLoader } from 'react-spinners';
-import { Autocomplete, HookedTextField, OnboardingLayout } from '@/components';
+import { Autocomplete, HookedTextField, OnboardingLayout, PageTitle } from '@/components';
 import { useAthleteMembership } from '@/hooks/pages';
 import { useGetClubsQuery } from '@/hooks/queries';
 import { AthleteMembershipType, Option, PositionPreference } from '@/models';
@@ -33,6 +33,7 @@ function AthleteMembership() {
     if (isCreatingAccount) {
         return (
             <div className="loading">
+                <PageTitle text="Membership Details" />
                 <PropagateLoader color="rgb(255, 179, 109)" />
                 <p>Please wait while we create your account</p>
             </div>
@@ -40,46 +41,49 @@ function AthleteMembership() {
     }
 
     return (
-        <OnboardingLayout>
-            <h1>Membership Details</h1>
-            <form className="onboarding__form" onSubmit={onSubmit}>
-                <Autocomplete
-                    label="Your Club"
-                    name="club"
-                    defaultValue=""
-                    register={register}
-                    clearErrors={clearErrors}
-                    options={clubs ?? ([] as Option[])}
-                    error={errors.club?.message}
-                />
-                <HookedTextField
-                    name="membershipType"
-                    placeholder="Membership Type"
-                    control={control}
-                    error={errors.membershipType?.message}
-                    select
-                >
-                    {athleteMembershipOptions.map(option => (
-                        <MenuItem key={option.id} value={option.value}>
-                            {option.value}
-                        </MenuItem>
-                    ))}
-                </HookedTextField>
-                <HookedTextField
-                    name="positionPreference"
-                    placeholder="Position Preference"
-                    control={control}
-                    error={errors.positionPreference?.message}
-                    select
-                >
-                    {positionPreferenceOptions.map(option => (
-                        <MenuItem key={option.id} value={option.value}>
-                            {option.value}
-                        </MenuItem>
-                    ))}
-                </HookedTextField>
-            </form>
-        </OnboardingLayout>
+        <>
+            <PageTitle text="Membership Details" />
+            <OnboardingLayout>
+                <h1>Membership Details</h1>
+                <form className="onboarding__form" onSubmit={onSubmit}>
+                    <Autocomplete
+                        label="Your Club"
+                        name="club"
+                        defaultValue=""
+                        register={register}
+                        clearErrors={clearErrors}
+                        options={clubs ?? ([] as Option[])}
+                        error={errors.club?.message}
+                    />
+                    <HookedTextField
+                        name="membershipType"
+                        placeholder="Membership Type"
+                        control={control}
+                        error={errors.membershipType?.message}
+                        select
+                    >
+                        {athleteMembershipOptions.map(option => (
+                            <MenuItem key={option.id} value={option.value}>
+                                {option.value}
+                            </MenuItem>
+                        ))}
+                    </HookedTextField>
+                    <HookedTextField
+                        name="positionPreference"
+                        placeholder="Position Preference"
+                        control={control}
+                        error={errors.positionPreference?.message}
+                        select
+                    >
+                        {positionPreferenceOptions.map(option => (
+                            <MenuItem key={option.id} value={option.value}>
+                                {option.value}
+                            </MenuItem>
+                        ))}
+                    </HookedTextField>
+                </form>
+            </OnboardingLayout>
+        </>
     );
 }
 

@@ -1,11 +1,14 @@
-import { OnboardingLayout, ProfileInfo } from '@/components';
+import { OnboardingLayout, PageTitle, ProfileInfo } from '@/components';
 
 function Profile() {
     return (
-        <OnboardingLayout>
-            <h1>Club Name and Logo</h1>
-            <ProfileInfo />
-        </OnboardingLayout>
+        <>
+            <PageTitle text="Basic Details" />
+            <OnboardingLayout>
+                <h1>Club Name and Logo</h1>
+                <ProfileInfo />
+            </OnboardingLayout>
+        </>
     );
 }
 

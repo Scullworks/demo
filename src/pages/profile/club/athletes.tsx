@@ -1,12 +1,15 @@
-import { AthleteTable, ProfileLayout } from '@/components';
+import { AthleteTable, PageTitle, ProfileLayout } from '@/components';
 
 function ClubAthletes() {
     return (
-        <ProfileLayout for="clubs">
-            <div className="profile-athletes">
-                <AthleteTable />
-            </div>
-        </ProfileLayout>
+        <>
+            <PageTitle text="Athletes" />
+            <ProfileLayout for="clubs">
+                <div className="profile-athletes">
+                    <AthleteTable />
+                </div>
+            </ProfileLayout>
+        </>
     );
 }
 

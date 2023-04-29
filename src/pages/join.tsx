@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { PageAnimation } from '@/components';
+import { PageAnimation, PageTitle } from '@/components';
 import { useAuthStore } from '@/hooks/store';
 import { UserType } from '@/models';
 
@@ -15,20 +15,23 @@ function Join() {
     }
 
     return (
-        <PageAnimation className="join">
-            <h1 className="join__heading">Select User Type</h1>
-            <div className="join__options">
-                <button className="button" onClick={() => onClick('athlete')}>
-                    Athlete
-                </button>
-                <button className="button" onClick={() => onClick('club')}>
-                    Club
-                </button>
-                <button className="button" onClick={() => onClick('coach')}>
-                    Coach
-                </button>
-            </div>
-        </PageAnimation>
+        <>
+            <PageTitle text="Join" />
+            <PageAnimation className="join">
+                <h1 className="join__heading">Select User Type</h1>
+                <div className="join__options">
+                    <button className="button" onClick={() => onClick('athlete')}>
+                        Athlete
+                    </button>
+                    <button className="button" onClick={() => onClick('club')}>
+                        Club
+                    </button>
+                    <button className="button" onClick={() => onClick('coach')}>
+                        Coach
+                    </button>
+                </div>
+            </PageAnimation>
+        </>
     );
 }
 

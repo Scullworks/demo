@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
 import { FormEvent, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { HookedTextField, ProfileLayout, SnackbarAlert } from '@/components';
+import { HookedTextField, PageTitle, ProfileLayout, SnackbarAlert } from '@/components';
 import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
 import { FirebaseClub } from '@/models';
 import { database } from '@/services/firebase';
@@ -54,28 +54,31 @@ function AddService() {
     }
 
     return (
-        <ProfileLayout for="clubs">
-            <h1>Add services available at your club</h1>
-            <form className="profile-services-form" onSubmit={onSubmit}>
-                <HookedTextField
-                    name="name"
-                    placeholder="Name"
-                    control={control}
-                    error={errors.name?.message}
-                />
-                <button className="button__static" type="submit">
-                    Add Service
-                </button>
-            </form>
+        <>
+            <PageTitle text="Add Service" />
+            <ProfileLayout for="clubs">
+                <h1>Add services available at your club</h1>
+                <form className="profile-services-form" onSubmit={onSubmit}>
+                    <HookedTextField
+                        name="name"
+                        placeholder="Name"
+                        control={control}
+                        error={errors.name?.message}
+                    />
+                    <button className="button__static" type="submit">
+                        Add Service
+                    </button>
+                </form>
 
-            <SnackbarAlert
-                text="Service was added successfully"
-                severity="success"
-                hideCloseButton
-                open={showAlert}
-                setOpen={setShowAlert}
-            />
-        </ProfileLayout>
+                <SnackbarAlert
+                    text="Service was added successfully"
+                    severity="success"
+                    hideCloseButton
+                    open={showAlert}
+                    setOpen={setShowAlert}
+                />
+            </ProfileLayout>
+        </>
     );
 }
 

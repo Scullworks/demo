@@ -1,5 +1,5 @@
 import { MenuItem } from '@mui/material';
-import { HookedTextField, ProfileLayout, SnackbarAlert } from '@/components';
+import { HookedTextField, PageTitle, ProfileLayout, SnackbarAlert } from '@/components';
 import { useAddBoat } from '@/hooks/pages';
 import { Option } from '@/models';
 
@@ -18,49 +18,52 @@ function AddBoats() {
     const { showAlert, setShowAlert, control, errors, onSubmit } = useAddBoat();
 
     return (
-        <ProfileLayout for="clubs">
-            <div className="profile-services-boats">
-                <h1>Add the boats available at your club</h1>
-                <form className="profile-services-form" onSubmit={onSubmit}>
-                    <HookedTextField
-                        name="boatSize"
-                        placeholder="Boat Size"
-                        control={control}
-                        error={errors.boatSize?.message}
-                        select
-                    >
-                        {boatSizes.map(boat => (
-                            <MenuItem key={boat.id} value={boat.value}>
-                                {boat.value}
-                            </MenuItem>
-                        ))}
-                    </HookedTextField>
-                    <HookedTextField
-                        name="boatMake"
-                        placeholder="Boat Make"
-                        control={control}
-                        error={errors.boatMake?.message}
-                    />
-                    <HookedTextField
-                        name="boatName"
-                        placeholder="Boat Name"
-                        control={control}
-                        error={errors.boatName?.message}
-                    />
-                    <button className="button__static" type="submit">
-                        Add Boat
-                    </button>
-                </form>
+        <>
+            <PageTitle text="Add Boat" />
+            <ProfileLayout for="clubs">
+                <div className="profile-services-boats">
+                    <h1>Add the boats available at your club</h1>
+                    <form className="profile-services-form" onSubmit={onSubmit}>
+                        <HookedTextField
+                            name="boatSize"
+                            placeholder="Boat Size"
+                            control={control}
+                            error={errors.boatSize?.message}
+                            select
+                        >
+                            {boatSizes.map(boat => (
+                                <MenuItem key={boat.id} value={boat.value}>
+                                    {boat.value}
+                                </MenuItem>
+                            ))}
+                        </HookedTextField>
+                        <HookedTextField
+                            name="boatMake"
+                            placeholder="Boat Make"
+                            control={control}
+                            error={errors.boatMake?.message}
+                        />
+                        <HookedTextField
+                            name="boatName"
+                            placeholder="Boat Name"
+                            control={control}
+                            error={errors.boatName?.message}
+                        />
+                        <button className="button__static" type="submit">
+                            Add Boat
+                        </button>
+                    </form>
 
-                <SnackbarAlert
-                    text="Boat was added successfully"
-                    severity="success"
-                    hideCloseButton
-                    open={showAlert}
-                    setOpen={setShowAlert}
-                />
-            </div>
-        </ProfileLayout>
+                    <SnackbarAlert
+                        text="Boat was added successfully"
+                        severity="success"
+                        hideCloseButton
+                        open={showAlert}
+                        setOpen={setShowAlert}
+                    />
+                </div>
+            </ProfileLayout>
+        </>
     );
 }
 

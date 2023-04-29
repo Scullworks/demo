@@ -1,6 +1,6 @@
 import { MenuItem } from '@mui/material';
 import { PropagateLoader } from 'react-spinners';
-import { Autocomplete, HookedTextField, OnboardingLayout } from '@/components';
+import { Autocomplete, HookedTextField, OnboardingLayout, PageTitle } from '@/components';
 import { useCoachDetails } from '@/hooks/pages';
 import { useGetClubsQuery } from '@/hooks/queries';
 import { CoachMembershipType, Option } from '@/models';
@@ -25,47 +25,53 @@ function CoachDetails() {
 
     if (isCreatingAccount) {
         return (
-            <div className="loading">
-                <PropagateLoader color="rgb(255, 179, 109)" />
-                <p>Please wait while we create your account</p>
-            </div>
+            <>
+                <PageTitle text="Further Details" />
+                <div className="loading">
+                    <PropagateLoader color="rgb(255, 179, 109)" />
+                    <p>Please wait while we create your account</p>
+                </div>
+            </>
         );
     }
 
     return (
-        <OnboardingLayout>
-            <h1>Your Details</h1>
-            <form onSubmit={onSubmit}>
-                <HookedTextField
-                    name="phoneNumber"
-                    control={control}
-                    error={errors.phoneNumber?.message}
-                    placeholder="Phone Number"
-                />
-                <Autocomplete
-                    name="club"
-                    label="Your Club"
-                    defaultValue=""
-                    register={register}
-                    clearErrors={clearErrors}
-                    options={clubs ?? ([] as Option[])}
-                    error={errors.club?.message}
-                />
-                <HookedTextField
-                    name="membershipType"
-                    control={control}
-                    error={errors.membershipType?.message}
-                    placeholder="Membership Type"
-                    select
-                >
-                    {coachMembershipOptions.map(option => (
-                        <MenuItem key={option.id} value={option.value}>
-                            {option.value}
-                        </MenuItem>
-                    ))}
-                </HookedTextField>
-            </form>
-        </OnboardingLayout>
+        <>
+            <PageTitle text="Further Details" />
+            <OnboardingLayout>
+                <h1>Your Details</h1>
+                <form onSubmit={onSubmit}>
+                    <HookedTextField
+                        name="phoneNumber"
+                        control={control}
+                        error={errors.phoneNumber?.message}
+                        placeholder="Phone Number"
+                    />
+                    <Autocomplete
+                        name="club"
+                        label="Your Club"
+                        defaultValue=""
+                        register={register}
+                        clearErrors={clearErrors}
+                        options={clubs ?? ([] as Option[])}
+                        error={errors.club?.message}
+                    />
+                    <HookedTextField
+                        name="membershipType"
+                        control={control}
+                        error={errors.membershipType?.message}
+                        placeholder="Membership Type"
+                        select
+                    >
+                        {coachMembershipOptions.map(option => (
+                            <MenuItem key={option.id} value={option.value}>
+                                {option.value}
+                            </MenuItem>
+                        ))}
+                    </HookedTextField>
+                </form>
+            </OnboardingLayout>
+        </>
     );
 }
 
