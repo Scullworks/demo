@@ -6,7 +6,7 @@ function CoachDashboard() {
 
     return (
         <ProfileLayout for="coaches">
-            <PageTitle text="Your Services" />
+            <PageTitle text="Schedule" />
             <div className="profile-dashboard">
                 <SessionCalendar {...calendarProps} />
                 <SessionContainer as="coaches" sessions={sessions} />

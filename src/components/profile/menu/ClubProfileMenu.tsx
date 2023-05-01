@@ -15,9 +15,14 @@ function ClubProfileMenu() {
 
     return (
         <aside className="profile-menu">
-            <Image className="logo" src={logo} alt="ScullWorks logo" height={40} priority />
-
             <div className="profile-menu__header">
+                <Image
+                    className="profile-menu__logo logo"
+                    src={logo}
+                    alt="ScullWorks logo"
+                    height={40}
+                    priority
+                />
                 <Avatar profileImage={club?.profileImageRef} name={club?.name} />
                 <h3>{club?.name}</h3>
             </div>
