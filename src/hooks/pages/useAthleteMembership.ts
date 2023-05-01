@@ -4,7 +4,7 @@ import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocalStorage } from '@/hooks/common';
 import { useAddAthleteData } from '@/hooks/firebase';
-import { useAthleteOnboardingStore, useStepperStore } from '@/hooks/store';
+import { useAthleteOnboardingStore, useAuthStore, useStepperStore } from '@/hooks/store';
 import {
     AthleteMembershipType,
     OnboardingAthlete,
@@ -12,7 +12,7 @@ import {
     OptionWIthStripe,
     PositionPreference
 } from '@/models';
-import { createAccount } from '@/services/firebase';
+import { createAccount, updateFirebaseDoc } from '@/services/firebase';
 import { athleteMembershipSchema } from '@/utils/validations';
 
 interface AthleteMembershipValues {
@@ -24,6 +24,7 @@ interface AthleteMembershipValues {
 export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefined) {
     const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
+    const user = useAuthStore(state => state.user);
     const club = useAthleteOnboardingStore(state => state.club);
     const membershipType = useAthleteOnboardingStore(state => state.membershipType);
     const positionPreference = useAthleteOnboardingStore(state => state.positionPreference);
@@ -90,6 +91,8 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
 
                     if (success) {
                         clearOnboardingStores();
+                        const uid = user?.uid as string;
+                        await updateFirebaseDoc('users', uid, { completedOnboarding: true });
                         localStorage.setItem('completed', 'true');
                         router.push('/profile/athlete');
                     }
@@ -105,7 +108,8 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
             router,
             setClub,
             setMembershipType,
-            setPositionPreference
+            setPositionPreference,
+            user
         ]
     );
 

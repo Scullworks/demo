@@ -2,7 +2,7 @@ import { FieldValue, Timestamp } from 'firebase/firestore';
 import { FeeProcessingOption } from './profile';
 import { UserType } from './user';
 
-export type CollectionName = 'clubs' | 'athletes' | 'coaches';
+export type CollectionName = 'clubs' | 'athletes' | 'coaches' | 'users';
 export type NestedCollectionName = 'athletes' | 'coaches' | 'sessions' | 'boats' | 'attendees';
 
 interface Club {

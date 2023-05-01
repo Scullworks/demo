@@ -22,7 +22,14 @@ export interface AuthResponse {
 
 async function createUserDoc(user: User, email: string, userType: UserType) {
     const userDoc = doc(database, 'users', user.uid);
-    const data = { uid: user.uid, email, type: userType };
+
+    const data = {
+        uid: user.uid,
+        email,
+        type: userType,
+        completedOnboarding: false
+    };
+
     await setDoc(userDoc, data);
 }
 

@@ -4,9 +4,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocalStorage } from '@/hooks/common';
 import { useAddClubData } from '@/hooks/firebase';
-import { useClubOnboardingStore, useStepperStore } from '@/hooks/store';
+import { useAuthStore, useClubOnboardingStore, useStepperStore } from '@/hooks/store';
 import { Boat, BoatSize, OnboardingClub } from '@/models';
-import { createAccount } from '@/services/firebase';
+import { createAccount, updateFirebaseDoc } from '@/services/firebase';
 import { boatSchema } from '@/utils/validations';
 
 export interface BoatValues {
@@ -20,6 +20,7 @@ export function useBoats() {
     const [boatCountText, setBoatCountText] = useState('');
     const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
+    const user = useAuthStore(state => state.user);
     const boats = useClubOnboardingStore(state => state.boats);
     const addBoat = useClubOnboardingStore(state => state.addBoat);
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
@@ -84,6 +85,8 @@ export function useBoats() {
 
             if (success) {
                 clearOnboardingStores();
+                const uid = user?.uid as string;
+                await updateFirebaseDoc('users', uid, { completedOnboarding: true });
                 localStorage.setItem('completed', 'true');
                 router.push('/profile/club');
             }
@@ -101,7 +104,8 @@ export function useBoats() {
         clearOnboardingStores,
         setIsCreatingAccount,
         setTriggerSubmit,
-        router
+        router,
+        user
     ]);
 
     useEffect(() => {

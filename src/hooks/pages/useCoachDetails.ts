@@ -12,7 +12,7 @@ import {
     Option,
     OptionWIthStripe
 } from '@/models';
-import { createAccount } from '@/services/firebase';
+import { createAccount, updateFirebaseDoc } from '@/services/firebase';
 import { coachDetailsSchema } from '@/utils/validations';
 
 interface CoachDetailsValues {
@@ -81,6 +81,8 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
 
                     if (success) {
                         clearOnboardingStores();
+                        const uid = user?.uid as string;
+                        await updateFirebaseDoc('users', uid, { completedOnboarding: true });
                         localStorage.setItem('completed', 'true');
                         router.push('/profile/coach');
                     }
