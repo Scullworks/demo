@@ -1,36 +1,83 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/router';
-import { ReactNode, useEffect, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { PropagateLoader } from 'react-spinners';
+import { useStoredUserType } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store/useAuthStore';
-import { auth } from '@/services/firebase';
+import { auth, getUserFromFirebase } from '@/services/firebase';
 
 interface AuthStateProviderProps {
-    readonly children: ReactNode;
+    readonly isAuthRoute?: boolean;
 }
 
-function AuthStateProvider({ children }: AuthStateProviderProps) {
+function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
+    const { isAuthRoute, children } = props;
+
     const [isLoading, setIsLoading] = useState(false);
 
-    const userLoggedOut = useAuthStore(state => state.userLoggedOut);
     const setCurrentUser = useAuthStore(state => state.setUser);
 
     const router = useRouter();
 
+    const { storedUserType } = useStoredUserType();
+
+    const isWindow = typeof window !== 'undefined';
+    const completedOnboarding = isWindow && localStorage.getItem('completed') ? true : false;
+
     useEffect(() => {
-        onAuthStateChanged(auth, user => {
+        onAuthStateChanged(auth, async user => {
             setIsLoading(true);
 
-            if (user) {
-                setCurrentUser(user);
+            if (!user && isAuthRoute) {
                 setIsLoading(false);
-            } else {
+                return;
+            }
+
+            if (!user && !isAuthRoute) {
                 setCurrentUser(null);
-                if (!userLoggedOut) localStorage.setItem('path', router.asPath);
                 router.push('/login');
+                setIsLoading(false);
+                return;
+            }
+
+            // Completed onboarding status  and user type in local storage
+            if (user && storedUserType && completedOnboarding) {
+                setCurrentUser(user);
+                const isInProfileRoute = router.asPath.includes(`/profile/${storedUserType}`);
+                if (!isInProfileRoute) router.push(`/profile/${storedUserType}`);
+                setIsLoading(false);
+                return;
+            }
+
+            // Missing onboarding status and/or  missing user type in local storage
+            if (user && (!storedUserType || !completedOnboarding)) {
+                setCurrentUser(user);
+
+                const { userDoc } = await getUserFromFirebase(user.uid);
+
+                if (userDoc) {
+                    const { completedOnboarding, type } = userDoc;
+
+                    const isProfileRoute = router.asPath.includes(`/profile/${type}`);
+                    const isOnboardingRoute = router.asPath.includes(`/onboarding/${userDoc.type}`);
+
+                    localStorage.setItem('user', type);
+
+                    if (completedOnboarding && !isProfileRoute) {
+                        localStorage.setItem('completed', `${completedOnboarding}`);
+                        router.push(`/profile/${type}`);
+                    }
+
+                    if (!completedOnboarding && !isOnboardingRoute) {
+                        router.push(`/onboarding/${userDoc.type}/profile`);
+                    }
+
+                    setIsLoading(false);
+                    return;
+                }
             }
         });
-    }, [setCurrentUser, userLoggedOut, router]);
+    }, [setCurrentUser, router, storedUserType, completedOnboarding, isAuthRoute]);
 
     if (isLoading) {
         return (

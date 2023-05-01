@@ -1,70 +1,21 @@
 import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { AuthForm, AuthProviders, PageAnimation, PageTitle } from '@/components';
-import { useStoredUserType } from '@/hooks/common';
-import { useAuthStore } from '@/hooks/store';
-import { getUserFromFirebase } from '@/services/firebase';
+import { useEffect } from 'react';
+import { AuthForm, AuthProviders, AuthStateProvider, PageAnimation, PageTitle } from '@/components';
 
 function Login() {
-    const [routeToChangeTo, setRouteToChangeTo] = useState<string | null>(null);
-
-    const user = useAuthStore(state => state.user);
-    const userLoggedOut = useAuthStore(state => state.userLoggedOut);
-
-    const { storedUserType } = useStoredUserType();
     const queryClient = useQueryClient();
-    const router = useRouter();
 
-    /**
-     Keep track of the original path a user was attempting to go to, 
-     before being redirected due to not being authenticated. Once they 
-     are authenticated remove the path from storage and redirect them 
-     to the requested path.
-     */
     useEffect(() => {
-        let mounted = true;
-        // const originalPathRequest = localStorage.getItem('path');
-
-        async function redirect() {
-            if (!user || !mounted) return;
-
-            // if (userLoggedOut) localStorage.removeItem('path');
-
-            // if (originalPathRequest && !userLoggedOut) {
-            //     localStorage.removeItem('path');
-            //     setRouteToChangeTo(originalPathRequest);
-            //     return;
-            // }
-
-            // if (storedUserType) {
-            //     setRouteToChangeTo(`/profile/${storedUserType}`);
-            //     return;
-            // }
-
-            const { userDoc } = await getUserFromFirebase(user.uid);
-
-            if (userDoc) {
-                localStorage.setItem('user', userDoc.type);
-                await queryClient.resetQueries();
-                setRouteToChangeTo(`/profile/${userDoc.type}`);
-            }
+        async function resetQueryClient() {
+            await queryClient.resetQueries();
         }
 
-        redirect();
-
-        return () => {
-            mounted = false;
-        };
-    }, [user, userLoggedOut, storedUserType, queryClient, router]);
-
-    useEffect(() => {
-        if (routeToChangeTo) router.push(routeToChangeTo);
-    }, [routeToChangeTo, router]);
+        resetQueryClient();
+    }, [queryClient]);
 
     return (
-        <>
+        <AuthStateProvider isAuthRoute>
             <PageTitle text="Login" />
             <PageAnimation className="auth">
                 <h1 className="auth__heading">Welcome Back</h1>
@@ -77,7 +28,7 @@ function Login() {
                 <AuthForm as="login" />
                 <AuthProviders />
             </PageAnimation>
-        </>
+        </AuthStateProvider>
     );
 }
 

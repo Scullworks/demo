@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { AuthForm, AuthProviders, PageAnimation, PageTitle } from '@/components';
+import { AuthForm, AuthProviders, AuthStateProvider, PageAnimation, PageTitle } from '@/components';
 
 function Register() {
     return (
-        <>
+        <AuthStateProvider isAuthRoute>
             <PageTitle text="Register" />
             <PageAnimation className="auth">
                 <h1 className="auth__heading">Create Account</h1>
@@ -16,7 +16,7 @@ function Register() {
                 <AuthForm as="register" />
                 <AuthProviders />
             </PageAnimation>
-        </>
+        </AuthStateProvider>
     );
 }
 
