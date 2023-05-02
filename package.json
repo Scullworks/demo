@@ -1,5 +1,5 @@
 {
-    "name": "row-evo",
+    "name": "scullworks",
     "version": "0.1.0",
     "private": true,
     "scripts": {
@@ -33,6 +33,7 @@
         "firebase": "^9.18.0",
         "framer-motion": "^10.2.4",
         "next": "13.2.4",
+        "next-pwa": "^5.6.0",
         "react": "18.2.0",
         "react-calendar": "4.0.0",
         "react-dom": "18.2.0",

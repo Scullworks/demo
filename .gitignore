@@ -18,7 +18,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -77,6 +78,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# PWA files
+**/public/sw.js
+**/public/sw.js.map
+**/public/worker-*.js
+**/public/worker-*.js.map
+**/public/workbox-*.js
+**/public/workbox-*.js.map
 
 ### VisualStudioCode ###
 .vscode/*
