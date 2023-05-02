@@ -15,9 +15,7 @@ function AuthProviders() {
 
     function userLogin(authResponse: AuthResponse) {
         const { user } = authResponse;
-
         if (user) setUser(user);
-        // TODO: Display an alert with a message
     }
 
     async function onGoogleLoginClick() {

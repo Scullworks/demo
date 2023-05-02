@@ -18,9 +18,7 @@ function Avatar(props: AvatarProps) {
             {profileImage ? (
                 <MuiAvatar src={profileImage} alt={name ?? ''} sx={{ width: 100, height: 100 }} />
             ) : (
-                <MuiAvatar sx={{ width: 100, height: 100, backgroundColor: 'rgb(0, 128, 128)' }}>
-                    {displayName}
-                </MuiAvatar>
+                <MuiAvatar sx={{ width: 100, height: 100 }}>{displayName}</MuiAvatar>
             )}
         </>
     );

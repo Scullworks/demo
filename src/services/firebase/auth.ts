@@ -42,7 +42,7 @@ export async function registerWithEmailAndPassword(
 ): Promise<AuthResponse> {
     try {
         const { user } = await createUserWithEmailAndPassword(auth, email, password);
-        createUserDoc(user, email, userType);
+        await createUserDoc(user, email, userType);
         return { user, error: null };
     } catch (error) {
         console.error('Sign Up With Email and Password Error: ', error.message);

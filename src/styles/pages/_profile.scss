@@ -36,10 +36,6 @@
         text-transform: capitalize;
     }
 
-    .MuiAvatar-root {
-        border: 4px solid $color-orange;
-    }
-
     @include respond-to(1200px) {
         height: fit-content;
         width: fit-content;

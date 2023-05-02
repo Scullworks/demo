@@ -28,18 +28,6 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
         onAuthStateChanged(auth, async user => {
             setIsLoading(true);
 
-            if (!user && isAuthRoute) {
-                setIsLoading(false);
-                return;
-            }
-
-            if (!user && !isAuthRoute) {
-                setCurrentUser(null);
-                router.push('/login');
-                setIsLoading(false);
-                return;
-            }
-
             // Completed onboarding status  and user type in local storage
             if (user && storedUserType && completedOnboarding) {
                 setCurrentUser(user);
@@ -75,9 +63,13 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
                     setIsLoading(false);
                     return;
                 }
+            } else {
+                setCurrentUser(null);
+                if (!isAuthRoute) router.push('/login');
+                setIsLoading(false);
             }
         });
-    }, [setCurrentUser, router, storedUserType, completedOnboarding, isAuthRoute]);
+    }, [setCurrentUser, router, isAuthRoute, storedUserType, completedOnboarding]);
 
     if (isLoading) {
         return (
@@ -87,7 +79,7 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
         );
     }
 
-    return <div>{children}</div>;
+    return <>{children}</>;
 }
 
 export default AuthStateProvider;
