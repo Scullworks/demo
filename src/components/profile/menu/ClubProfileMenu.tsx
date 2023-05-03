@@ -23,7 +23,7 @@ function ClubProfileMenu() {
                     height={40}
                     priority
                 />
-                <Avatar profileImage={club?.profileImageRef} name={club?.name} />
+                <Avatar profileImage={club?.profileImageRef} name={club?.name} isProfileMenu />
                 <h3>{club?.name}</h3>
             </div>
 

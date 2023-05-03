@@ -29,7 +29,7 @@ function ProfileMenu(props: ProfileMenuProps) {
                     height={40}
                     priority
                 />
-                <Avatar profileImage={data?.profileImageRef} name={data?.name} />
+                <Avatar profileImage={data?.profileImageRef} name={data?.name} isProfileMenu />
                 <h3>{data?.name}</h3>
             </div>
 

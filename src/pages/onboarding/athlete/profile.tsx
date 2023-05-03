@@ -5,7 +5,7 @@ function Profile() {
         <>
             <PageTitle text="Basic Details" />
             <OnboardingLayout>
-                <h1>Your Name and Profile Image</h1>
+                <h1>Your Name and Image</h1>
                 <ProfileInfo />
             </OnboardingLayout>
         </>
