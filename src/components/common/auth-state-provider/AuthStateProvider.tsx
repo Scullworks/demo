@@ -2,7 +2,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { PropagateLoader } from 'react-spinners';
-import { useStoredUserType } from '@/hooks/common';
+import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store/useAuthStore';
 import { auth, getUserFromFirebase } from '@/services/firebase';
 
@@ -15,33 +15,26 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
 
     const [isLoading, setIsLoading] = useState(false);
 
+    const currentUser = useAuthStore(state => state.user);
     const setCurrentUser = useAuthStore(state => state.setUser);
 
     const router = useRouter();
+    const { userType } = useLocalStorage();
 
-    const { storedUserType } = useStoredUserType();
+    const completedOnboarding = typeof window !== 'undefined' && localStorage.getItem('completed');
 
-    const isWindow = typeof window !== 'undefined';
-    const completedOnboarding = isWindow && localStorage.getItem('completed') ? true : false;
+    // Completed onboarding status  and user type in local storage
+    if (currentUser && userType && completedOnboarding) {
+        const isInProfileRoute = router.asPath.includes(`/profile/${userType}`);
+        if (!isInProfileRoute) router.push(`/profile/${userType}`);
+    }
 
     useEffect(() => {
-        onAuthStateChanged(auth, async user => {
-            setIsLoading(true);
+        async function getUserOnboardingStatus() {
+            const noOnboardingStatus = !userType || !completedOnboarding;
 
-            // Completed onboarding status  and user type in local storage
-            if (user && storedUserType && completedOnboarding) {
-                setCurrentUser(user);
-                const isInProfileRoute = router.asPath.includes(`/profile/${storedUserType}`);
-                if (!isInProfileRoute) router.push(`/profile/${storedUserType}`);
-                setIsLoading(false);
-                return;
-            }
-
-            // Missing onboarding status and/or  missing user type in local storage
-            if (user && (!storedUserType || !completedOnboarding)) {
-                setCurrentUser(user);
-
-                const { userDoc } = await getUserFromFirebase(user.uid);
+            if (currentUser && noOnboardingStatus) {
+                const { userDoc } = await getUserFromFirebase(currentUser.uid);
 
                 if (userDoc) {
                     const { completedOnboarding, type } = userDoc;
@@ -53,23 +46,35 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
 
                     if (completedOnboarding && !isProfileRoute) {
                         localStorage.setItem('completed', `${completedOnboarding}`);
-                        router.push(`/profile/${type}`);
+                        await router.push(`/profile/${type}`);
                     }
 
                     if (!completedOnboarding && !isOnboardingRoute) {
-                        router.push(`/onboarding/${userDoc.type}/profile`);
+                        await router.push(`/onboarding/${userDoc.type}/profile`);
                     }
-
-                    setIsLoading(false);
-                    return;
                 }
-            } else {
+            }
+        }
+
+        getUserOnboardingStatus();
+    }, [completedOnboarding, currentUser, router, userType]);
+
+    useEffect(() => {
+        onAuthStateChanged(auth, user => {
+            setIsLoading(true);
+
+            if (user) {
+                setCurrentUser(user);
+                setIsLoading(false);
+            }
+
+            if (!user) {
                 setCurrentUser(null);
                 if (!isAuthRoute) router.push('/login');
                 setIsLoading(false);
             }
         });
-    }, [setCurrentUser, router, isAuthRoute, storedUserType, completedOnboarding]);
+    }, [setCurrentUser, isAuthRoute, router]);
 
     if (isLoading) {
         return (
@@ -79,7 +84,7 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
         );
     }
 
-    return <>{children}</>;
+    return <div>{children}</div>;
 }
 
 export default AuthStateProvider;
