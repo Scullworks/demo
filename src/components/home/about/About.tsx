@@ -94,7 +94,9 @@ function About() {
                 <motion.button
                     className="about__button button"
                     variants={buttonVariants}
-                    {...animations}
+                    initial="initial"
+                    animate="animate"
+                    viewport={{ once: true }}
                 >
                     Request a Demo
                 </motion.button>

@@ -1,10 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AlertDialog, HookedTextField, Severity, SnackbarAlert } from '@/components';
-import { useStoredUserType } from '@/hooks/common';
-import { useAuthStore } from '@/hooks/store';
+import { useLocalStorage } from '@/hooks/common';
 import { UserType } from '@/models';
 import { loginWithEmailAndPassword, registerWithEmailAndPassword } from '@/services/firebase/auth';
 import { authSchema } from '@/utils/validations';
@@ -19,16 +18,14 @@ export interface AuthFormProps {
 }
 
 function AuthForm({ as: type }: AuthFormProps) {
+    const { userType } = useLocalStorage();
+
     const [alert, setAlert] = useState('');
     const [showAlert, setShowAlert] = useState(false);
-    const [showDialog, setShowDialog] = useState(false);
+    const [showDialog, setShowDialog] = useState(type === 'register' && !userType);
     const [severity, setSeverity] = useState<Severity>('error');
 
-    const setUser = useAuthStore(state => state.setUser);
-
-    const { storedUserType } = useStoredUserType();
-
-    const router = useRouter();
+    const queryClient = useQueryClient();
 
     const {
         control,
@@ -47,10 +44,7 @@ function AuthForm({ as: type }: AuthFormProps) {
         const { user, error } = await loginWithEmailAndPassword(email, password);
 
         if (user) {
-            setUser(user);
-            setSeverity('success');
-            setAlert('You have successfully logged in');
-            setShowAlert(true);
+            await queryClient.resetQueries();
         }
 
         if (error) {
@@ -65,15 +59,11 @@ function AuthForm({ as: type }: AuthFormProps) {
         const { user, error } = await registerWithEmailAndPassword(
             email,
             password,
-            storedUserType as UserType
+            userType as UserType
         );
 
         if (user) {
-            setUser(user);
-            setSeverity('success');
-            setAlert('Account created successfully');
-            setShowAlert(true);
-            router.push(`/onboarding/${storedUserType}/profile`);
+            await queryClient.resetQueries();
         }
 
         if (error) {
@@ -82,10 +72,6 @@ function AuthForm({ as: type }: AuthFormProps) {
             setShowAlert(true);
         }
     });
-
-    useEffect(() => {
-        if (type === 'register' && !storedUserType) setShowDialog(true);
-    }, [type, storedUserType, router]);
 
     const onSubmit = type === 'login' ? onLoginSubmit : onRegisterSubmit;
     const buttonText = type === 'login' ? 'Login' : 'Register';
@@ -108,7 +94,7 @@ function AuthForm({ as: type }: AuthFormProps) {
                 open={showAlert}
                 setOpen={setShowAlert}
             />
-            <AlertDialog openDialog={showDialog} setOpenDialog={setShowDialog} />
+            <AlertDialog open={showDialog} setOpen={setShowDialog} />
         </form>
     );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { About, ContactUs, Header, Navbar, PageAnimation, PageTitle } from '@/components';
 import { useAnimationStore } from '@/hooks/store';
 import { pageTransitions } from '@/utils/animations/pages';
@@ -10,13 +10,7 @@ function Home() {
     const isMobileRef = useRef(typeof window !== 'undefined' && window.innerWidth <= 500);
     const isMobile = isMobileRef.current;
 
-    useEffect(() => {
-        function cleanup() {
-            if (isInitialLoad) setIsInitialLoad(false);
-        }
-
-        return cleanup();
-    }, [isInitialLoad, setIsInitialLoad]);
+    if (isInitialLoad) setIsInitialLoad(false);
 
     return (
         <>

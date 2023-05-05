@@ -5,7 +5,9 @@ import { useForm } from 'react-hook-form';
 import { useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
 import { profileSchema } from '@/utils/validations';
 
-interface ProfileValues {
+let isInitialLoad = true;
+
+export interface ProfileValues {
     readonly name: string;
 }
 
@@ -38,11 +40,12 @@ export function useProfileInfo() {
                 setName(data.name);
 
                 if (isValid) {
+                    setTriggerSubmit(false);
                     router.push('details');
                     nextStep();
                 }
             }),
-        [handleSubmit, isValid, nextStep, router, setName]
+        [handleSubmit, isValid, nextStep, router, setName, setTriggerSubmit]
     );
 
     function onImageInputChange(event: ChangeEvent<HTMLInputElement>) {
@@ -61,14 +64,11 @@ export function useProfileInfo() {
         submitDetails()();
     }
 
-    useEffect(() => {
-        if (triggerSubmit) {
-            submitDetails()();
-            setTriggerSubmit(false);
-        }
-    }, [triggerSubmit, setTriggerSubmit, submitDetails]);
+    if (triggerSubmit) submitDetails()();
 
     useEffect(() => {
+        if (!isInitialLoad) return;
+        isInitialLoad = false;
         setActiveStep(0);
     }, [setActiveStep]);
 

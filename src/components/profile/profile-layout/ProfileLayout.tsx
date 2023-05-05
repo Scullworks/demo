@@ -20,11 +20,11 @@ function ProfileLayout(props: PropsWithChildren<ProfileLayoutProps>) {
             {data && (
                 <div className="profile">
                     {collectionName === 'clubs' ? (
-                        <ClubProfileMenu key={data.uid} />
+                        <ClubProfileMenu />
                     ) : (
-                        <ProfileMenu for={collectionName} key={data.uid} />
+                        <ProfileMenu for={collectionName} />
                     )}
-                    <PageAnimation className="profile-main" isMobile={isMobile} key={data.uid}>
+                    <PageAnimation className="profile-main" isMobile={isMobile}>
                         {children}
                     </PageAnimation>
                 </div>

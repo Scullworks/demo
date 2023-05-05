@@ -1,13 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocalStorage } from '@/hooks/common';
 import { useAddClubData } from '@/hooks/firebase';
 import { useAuthStore, useClubOnboardingStore, useStepperStore } from '@/hooks/store';
 import { Boat, BoatSize, OnboardingClub } from '@/models';
 import { createAccount, updateFirebaseDoc } from '@/services/firebase';
 import { boatSchema } from '@/utils/validations';
+
+let isInitialLoad = true;
 
 export interface BoatValues {
     readonly boatSize: BoatSize | string;
@@ -17,7 +18,6 @@ export interface BoatValues {
 
 export function useBoats() {
     const [showAlert, setShowAlert] = useState(false);
-    const [boatCountText, setBoatCountText] = useState('');
     const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
     const user = useAuthStore(state => state.user);
@@ -28,7 +28,6 @@ export function useBoats() {
     const setActiveStep = useStepperStore(state => state.setActiveStep);
 
     const { clubData, imageUrl } = useAddClubData();
-    const { clearOnboardingStores } = useLocalStorage();
 
     const router = useRouter();
 
@@ -45,8 +44,6 @@ export function useBoats() {
             boatName: ''
         }
     });
-
-    const boatCount = useMemo(() => Object.keys(boats).length, [boats]);
 
     const addBoatToStore = useCallback(
         () =>
@@ -68,8 +65,11 @@ export function useBoats() {
         [handleSubmit, isValid, addBoat, clearFields]
     );
 
+    const boatCount = boats.length;
+
     const submitDetails = useCallback(async () => {
         if (boatCount) {
+            setTriggerSubmit(false);
             setIsCreatingAccount(true);
 
             const { success, error } = await createAccount<OnboardingClub>(
@@ -84,7 +84,6 @@ export function useBoats() {
             }
 
             if (success) {
-                clearOnboardingStores();
                 const uid = user?.uid as string;
                 await updateFirebaseDoc('users', uid, { completedOnboarding: true });
                 localStorage.setItem('completed', 'true');
@@ -101,33 +100,28 @@ export function useBoats() {
         boats,
         clubData,
         imageUrl,
-        clearOnboardingStores,
         setIsCreatingAccount,
         setTriggerSubmit,
         router,
         user
     ]);
 
-    useEffect(() => {
-        setActiveStep(3);
-    }, [setActiveStep]);
-
-    useEffect(() => {
-        if (triggerSubmit) {
-            setTriggerSubmit(false);
-            submitDetails();
-        }
-    }, [setTriggerSubmit, submitDetails, triggerSubmit]);
+    if (triggerSubmit) submitDetails();
 
     const isMobilePhoneRef = useRef(typeof window !== 'undefined' && window.innerWidth <= 500);
     const isMobilePhone = isMobilePhoneRef.current;
 
+    let boatCountText = '';
+
+    if (isMobilePhone && !boatCount) boatCountText = 'No boats added';
+    if (isMobilePhone && boatCount === 1) boatCountText = '1 boat added';
+    if (isMobilePhone && boatCount > 1) boatCountText = `${boatCount} boats added`;
+
     useEffect(() => {
-        if (!isMobilePhone) return;
-        if (!boatCount) setBoatCountText('No boats added');
-        if (boatCount === 1) setBoatCountText('1 boat added');
-        if (boatCount > 1) setBoatCountText(`${boatCount} boats added`);
-    }, [isMobilePhone, boatCount]);
+        if (!isInitialLoad) return;
+        isInitialLoad = false;
+        setActiveStep(3);
+    }, [setActiveStep]);
 
     return {
         isCreatingAccount,

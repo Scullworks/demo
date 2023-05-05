@@ -10,7 +10,9 @@ import {
 } from '@/hooks/store';
 import { athleteDetailsSchema } from '@/utils/validations';
 
-interface AthleteDetailsValues {
+let isInitialLoad = true;
+
+export interface AthleteDetailsValues {
     readonly phoneNumber: string;
     readonly dateOfBirth: string;
     readonly emergencyName: string;
@@ -61,6 +63,7 @@ export function useAthleteDetails() {
                 setEmergencyNumber(emergencyNumber);
 
                 if (isValid) {
+                    setTriggerSubmit(false);
                     router.push('membership');
                     nextStep();
                 }
@@ -73,7 +76,8 @@ export function useAthleteDetails() {
             setDateOfBirth,
             setEmergencyName,
             setEmergencyNumber,
-            setPhoneNumber
+            setPhoneNumber,
+            setTriggerSubmit
         ]
     );
 
@@ -82,16 +86,13 @@ export function useAthleteDetails() {
         submitDetails()();
     }
 
-    useEffect(() => {
-        setActiveStep(1);
-    }, [setActiveStep]);
+    if (triggerSubmit) submitDetails()();
 
     useEffect(() => {
-        if (triggerSubmit) {
-            submitDetails()();
-            setTriggerSubmit(false);
-        }
-    }, [triggerSubmit, setTriggerSubmit, submitDetails]);
+        if (!isInitialLoad) return;
+        isInitialLoad = false;
+        setActiveStep(1);
+    }, [setActiveStep]);
 
     return {
         onSubmit,

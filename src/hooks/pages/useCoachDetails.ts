@@ -3,7 +3,6 @@ import { serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
 import {
     CoachMembershipType,
@@ -14,6 +13,8 @@ import {
 } from '@/models';
 import { createAccount, updateFirebaseDoc } from '@/services/firebase';
 import { coachDetailsSchema } from '@/utils/validations';
+
+let isInitialLoad = true;
 
 interface CoachDetailsValues {
     readonly phoneNumber: string;
@@ -30,8 +31,6 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
-
-    const { clearOnboardingStores } = useLocalStorage();
 
     const router = useRouter();
 
@@ -70,6 +69,7 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
 
                 if (isValid) {
                     setIsCreatingAccount(true);
+                    setTriggerSubmit(false);
 
                     const { success, error } = await createAccount<OnboardingClubDoc>(
                         'coaches',
@@ -80,7 +80,6 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
                     if (error) setIsCreatingAccount(false);
 
                     if (success) {
-                        clearOnboardingStores();
                         const uid = user?.uid as string;
                         await updateFirebaseDoc('users', uid, { completedOnboarding: true });
                         localStorage.setItem('completed', 'true');
@@ -89,7 +88,6 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
                 }
             }),
         [
-            clearOnboardingStores,
             clubs,
             handleSubmit,
             imageUrl,
@@ -97,7 +95,8 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
             name,
             router,
             user?.email,
-            user?.uid
+            user?.uid,
+            setTriggerSubmit
         ]
     );
 
@@ -106,16 +105,13 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
         submitDetails()();
     }
 
-    useEffect(() => {
-        setActiveStep(1);
-    }, [setActiveStep]);
+    if (triggerSubmit) submitDetails()();
 
     useEffect(() => {
-        if (triggerSubmit) {
-            submitDetails()();
-            setTriggerSubmit(false);
-        }
-    }, [triggerSubmit, setTriggerSubmit, submitDetails]);
+        if (!isInitialLoad) return;
+        isInitialLoad = false;
+        setActiveStep(1);
+    }, [setActiveStep]);
 
     return {
         isCreatingAccount,

@@ -14,7 +14,7 @@ function AthleteDetails() {
                         name="phoneNumber"
                         control={control}
                         error={errors.phoneNumber?.message}
-                        type="number"
+                        type="tel"
                         placeholder="Phone Number"
                     />
                     <HookedDateField

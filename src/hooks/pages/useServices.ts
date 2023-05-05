@@ -1,7 +1,9 @@
 import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelectedServices } from '@/hooks/pages';
 import { useClubOnboardingStore, useStepperStore } from '@/hooks/store';
+
+let isInitialLoad = true;
 
 export function useServices() {
     const [showAlert, setShowAlert] = useState(false);
@@ -11,12 +13,11 @@ export function useServices() {
     const setActiveStep = useStepperStore(state => state.setActiveStep);
     const storedServices = useClubOnboardingStore(state => state.services);
     const updateServices = useClubOnboardingStore(state => state.updateServices);
-    const storageSelectedServices = useMemo(() => storedServices, [storedServices]);
 
     const router = useRouter();
 
     const {
-        selectedServices,
+        services,
         setServices,
         selectSculling,
         selectErg,
@@ -26,33 +27,33 @@ export function useServices() {
         selectRental
     } = useSelectedServices();
 
-    const scullingHighlight = selectedServices.includes('Sculling');
-    const ergHighlight = selectedServices.includes('ERG Workout');
-    const coachingHighlight = selectedServices.includes('Private Coaching');
-    const sweepRowHighlight = selectedServices.includes('Sweep Rowing');
-    const eightSweepHighlight = selectedServices.includes('8x8 Sweep');
-    const rentalHighlight = selectedServices.includes('Gear Rental');
+    const scullingHighlight = services.includes('Sculling');
+    const ergHighlight = services.includes('ERG Workout');
+    const coachingHighlight = services.includes('Private Coaching');
+    const sweepRowHighlight = services.includes('Sweep Rowing');
+    const eightSweepHighlight = services.includes('8x8 Sweep');
+    const rentalHighlight = services.includes('Gear Rental');
+
+    if (triggerSubmit && services.length) {
+        setTriggerSubmit(false);
+        updateServices(services);
+        router.push('boats');
+    }
+
+    if (triggerSubmit && !services.length) {
+        setTriggerSubmit(false);
+        setShowAlert(true);
+    }
 
     useEffect(() => {
+        if (!isInitialLoad) return;
+        isInitialLoad = false;
         setActiveStep(2);
     }, [setActiveStep]);
 
     useEffect(() => {
-        setServices(storageSelectedServices);
-    }, [setServices, storageSelectedServices]);
-
-    useEffect(() => {
-        if (triggerSubmit && selectedServices.length) {
-            setTriggerSubmit(false);
-            updateServices(selectedServices);
-            router.push('boats');
-        }
-
-        if (triggerSubmit && !selectedServices.length) {
-            setTriggerSubmit(false);
-            setShowAlert(true);
-        }
-    }, [triggerSubmit, selectedServices, setTriggerSubmit, router, updateServices]);
+        setServices(storedServices);
+    }, [setServices, storedServices]);
 
     return {
         scullingHighlight,

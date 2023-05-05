@@ -26,7 +26,6 @@ export async function createDoc(
 ): Promise<AddDocResponse> {
     try {
         const collectionRef = collection(database, 'clubs', clubId, collectionName);
-        console.log('data to add', data);
         await addDoc(collectionRef, data);
 
         return {

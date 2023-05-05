@@ -2,7 +2,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocalStorage } from '@/hooks/common';
 import { useAddAthleteData } from '@/hooks/firebase';
 import { useAthleteOnboardingStore, useAuthStore, useStepperStore } from '@/hooks/store';
 import {
@@ -14,6 +13,8 @@ import {
 } from '@/models';
 import { createAccount, updateFirebaseDoc } from '@/services/firebase';
 import { athleteMembershipSchema } from '@/utils/validations';
+
+let isInitialLoad = true;
 
 interface AthleteMembershipValues {
     readonly club: string;
@@ -37,7 +38,6 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
 
     const { partialAthleteData, imageUrl } = useAddAthleteData();
-    const { clearOnboardingStores } = useLocalStorage();
 
     const router = useRouter();
 
@@ -79,6 +79,7 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
                 setPositionPreference(positionPreference as PositionPreference);
 
                 if (isValid) {
+                    setTriggerSubmit(false);
                     setIsCreatingAccount(true);
 
                     const { success, error } = await createAccount<OnboardingClubDoc>(
@@ -90,7 +91,6 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
                     if (error) setIsCreatingAccount(false);
 
                     if (success) {
-                        clearOnboardingStores();
                         const uid = user?.uid as string;
                         await updateFirebaseDoc('users', uid, { completedOnboarding: true });
                         localStorage.setItem('completed', 'true');
@@ -99,7 +99,6 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
                 }
             }),
         [
-            clearOnboardingStores,
             clubs,
             handleSubmit,
             imageUrl,
@@ -109,7 +108,8 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
             setClub,
             setMembershipType,
             setPositionPreference,
-            user
+            user,
+            setTriggerSubmit
         ]
     );
 
@@ -119,15 +119,12 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
     }
 
     useEffect(() => {
+        if (!isInitialLoad) return;
+        isInitialLoad = false;
         setActiveStep(2);
     }, [setActiveStep]);
 
-    useEffect(() => {
-        if (triggerSubmit) {
-            submitDetails()();
-            setTriggerSubmit(false);
-        }
-    }, [triggerSubmit, setTriggerSubmit, submitDetails]);
+    if (triggerSubmit) submitDetails()();
 
     return {
         isCreatingAccount,

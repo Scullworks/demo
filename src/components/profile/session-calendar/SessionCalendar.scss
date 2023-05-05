@@ -104,8 +104,8 @@
     }
 }
 
-.react-calendar__month-view__days__day--neighboringMonth {
-    color: rgb(117, 117, 117);
+.react-calendar__month-view__days__day--neighboringMonth abbr {
+    color: rgba(117, 117, 117, 0.7);
 }
 
 .react-calendar__year-view .react-calendar__tile,

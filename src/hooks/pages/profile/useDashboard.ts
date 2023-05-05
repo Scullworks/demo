@@ -1,13 +1,12 @@
 import dayjs from 'dayjs';
 import { Timestamp } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ViewCallbackProperties } from 'react-calendar';
 import { useFirebaseDocQuery, useSessionsQuery } from '@/hooks/queries';
 import { useDateStore } from '@/hooks/store';
 import { CollectionName, FirebaseCollection } from '@/models';
 
 export function useDashboard<T extends FirebaseCollection>(collectionName: CollectionName) {
-    const [shouldFetch, setShouldFetch] = useState(false);
     const [monthViewChanged, setMonthViewChanged] = useState(false);
 
     const activeStartDate = useDateStore(state => state.activeStartDate);
@@ -17,6 +16,7 @@ export function useDashboard<T extends FirebaseCollection>(collectionName: Colle
 
     const { data } = useFirebaseDocQuery<T>(collectionName);
     const clubId = data && 'club' in data ? data.club.id : data?.id;
+    const shouldFetch = data !== undefined;
     const { sessions, refetch } = useSessionsQuery(clubId, shouldFetch);
 
     const datesWithSessions = sessions?.map(session => {
@@ -36,25 +36,26 @@ export function useDashboard<T extends FirebaseCollection>(collectionName: Colle
     }
 
     useEffect(() => {
-        if (data) setShouldFetch(true);
-    }, [data]);
-
-    useEffect(() => {
         if (monthViewChanged) {
             refetch();
             setMonthViewChanged(false);
         }
-    }, [monthViewChanged, refetch, setMonthViewChanged]);
+    }, [monthViewChanged, refetch]);
+
+    const firstDateWithSession = useMemo(
+        () =>
+            sessions?.find(session => {
+                const month = dayjs(session.date.toDate()).get('month');
+                const currentMonth = dayjs(activeStartDate).get('month');
+                return month === currentMonth;
+            }),
+        [sessions, activeStartDate]
+    );
 
     useEffect(() => {
-        const firstDateWithSession = sessions?.find(session => {
-            const month = dayjs(session.date.toDate()).get('month');
-            const currentMonth = dayjs(activeStartDate).get('month');
-            return month === currentMonth;
-        });
-
         if (firstDateWithSession) setDate(firstDateWithSession.date.toDate());
-    }, [sessions, activeStartDate, setDate]);
+        if (!firstDateWithSession) setDate(activeStartDate);
+    }, [activeStartDate, firstDateWithSession, sessions, setDate]);
 
     return {
         sessions,

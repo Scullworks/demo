@@ -1,10 +1,5 @@
 export function useLocalStorage() {
-    function clearOnboardingStores() {
-        localStorage.removeItem('onboarding');
-        localStorage.removeItem('athlete-onboarding');
-        localStorage.removeItem('club-onboarding');
-        localStorage.removeItem('image');
-    }
+    const userType = typeof window !== 'undefined' && localStorage.getItem('user');
 
-    return { clearOnboardingStores };
+    return { userType };
 }

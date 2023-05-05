@@ -1,11 +1,9 @@
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useAuthStore, useStepperStore } from '@/hooks/store';
 import { Step, athleteSteps, clubSteps, coachSteps } from './steps';
 
 export function useProgressStepper() {
-    const [steps, setSteps] = useState<Step[]>([]);
-
     const userType = useAuthStore(state => state.userType);
     const activeStep = useStepperStore(state => state.activeStep);
     const previousStep = useStepperStore(state => state.previousStep);
@@ -24,11 +22,11 @@ export function useProgressStepper() {
         setTriggerOnSubmit(true);
     }
 
-    useEffect(() => {
-        if (userType === 'athlete') setSteps(athleteSteps);
-        if (userType === 'club') setSteps(clubSteps);
-        if (userType === 'coach') setSteps(coachSteps);
-    }, [userType]);
+    let steps: Step[] = [];
+
+    if (userType === 'athlete') steps = athleteSteps;
+    if (userType === 'club') steps = clubSteps;
+    if (userType === 'coach') steps = coachSteps;
 
     return {
         isMobileRef,

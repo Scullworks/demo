@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { TransitionProps as MuiTransitionProps } from '@mui/material/transitions';
 import { Dispatch, forwardRef, ReactElement, Ref, SetStateAction } from 'react';
+import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store';
 import { UserType } from '@/models';
 
@@ -21,23 +22,29 @@ const Transition = forwardRef(function Transition(props: TransitionProps, ref: R
 });
 
 interface AlertDialogProps {
-    readonly openDialog: boolean;
-    readonly setOpenDialog: Dispatch<SetStateAction<boolean>>;
+    readonly open: boolean;
+    readonly setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 function AlertDialog(props: AlertDialogProps) {
-    const { openDialog, setOpenDialog } = props;
+    const { open, setOpen } = props;
 
+    const { userType } = useLocalStorage();
     const setUserType = useAuthStore(state => state.setUserType);
+
+    if (userType) {
+        setOpen(false);
+        setUserType(userType as UserType);
+    }
 
     function onClick(userType: UserType) {
         localStorage.setItem('user', userType);
         setUserType(userType);
-        setOpenDialog(false);
+        setOpen(false);
     }
 
     return (
-        <Dialog open={openDialog} TransitionComponent={Transition}>
+        <Dialog open={open} TransitionComponent={Transition}>
             <DialogTitle>Please select your user type</DialogTitle>
             <DialogContent>
                 <DialogContentText>

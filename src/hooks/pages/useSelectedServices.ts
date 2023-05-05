@@ -1,10 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Service } from '@/models';
 
 export function useSelectedServices() {
     const [services, setServices] = useState<Service[]>([]);
-
-    const selectedServices = useMemo(() => services, [services]);
 
     function selectSculling() {
         setServices(prevState =>
@@ -55,7 +53,7 @@ export function useSelectedServices() {
     }
 
     return {
-        selectedServices,
+        services,
         setServices,
         selectSculling,
         selectErg,

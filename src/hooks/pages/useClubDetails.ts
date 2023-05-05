@@ -7,6 +7,8 @@ import { PlaceType } from '@/components';
 import { useClubOnboardingStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
 import { operationSchema } from '@/utils/validations';
 
+let isInitialLoad = true;
+
 interface OperationValues {
     readonly openingTime: string;
     readonly closingTime: string;
@@ -64,6 +66,7 @@ export function useClubDetails() {
                 setPhoneNumber(phoneNumber);
 
                 if (isValid) {
+                    setTriggerSubmit(false);
                     router.push('services');
                     nextStep();
                 }
@@ -76,7 +79,8 @@ export function useClubDetails() {
             setCancellationPolicy,
             setClosingTime,
             setOpeningTime,
-            setPhoneNumber
+            setPhoneNumber,
+            setTriggerSubmit
         ]
     );
 
@@ -85,16 +89,13 @@ export function useClubDetails() {
         submitDetails()();
     }
 
-    useEffect(() => {
-        setActiveStep(1);
-    }, [setActiveStep]);
+    if (triggerSubmit) submitDetails()();
 
     useEffect(() => {
-        if (triggerSubmit) {
-            submitDetails()();
-            setTriggerSubmit(false);
-        }
-    }, [triggerSubmit, setTriggerSubmit, submitDetails]);
+        if (!isInitialLoad) return;
+        isInitialLoad = false;
+        setActiveStep(1);
+    }, [setActiveStep]);
 
     return {
         addressPlaceType,

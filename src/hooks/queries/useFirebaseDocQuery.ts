@@ -19,7 +19,7 @@ export function useFirebaseDocQueryOptions<T extends FirebaseCollection>(
 
 export function useFirebaseDocQuery<T extends FirebaseCollection>(collectionName: CollectionName) {
     const { firebaseDocQueryOptions } = useFirebaseDocQueryOptions(collectionName);
-    const { data } = useQuery({ ...firebaseDocQueryOptions });
+    const { data } = useQuery(firebaseDocQueryOptions);
 
     return {
         data: !data ? undefined : (data as T)

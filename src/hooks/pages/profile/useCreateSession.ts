@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { Timestamp, serverTimestamp } from 'firebase/firestore';
-import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { FormEvent, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
 import { useNestedOptionsQuery } from '@/hooks/queries';
@@ -26,13 +26,14 @@ export interface SessionValues {
 }
 
 export function useCreateSession() {
-    const [shouldFetch, setShouldFetch] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
     const memberPriceToCharge = useFeeProcessingStore(state => state.memberPriceToCharge);
     const guestPriceToCharge = useFeeProcessingStore(state => state.guestPriceToCharge);
 
     const { data: club } = useEnsureFirebaseDocQuery<FirebaseClub>('clubs');
+    const shouldFetch = club?.id ? true : false;
+
     const { options: coaches } = useNestedOptionsQuery(club?.id, 'coaches', shouldFetch);
     const { options: boats } = useNestedOptionsQuery(club?.id, 'boats', shouldFetch);
 
@@ -125,10 +126,6 @@ export function useCreateSession() {
         event.preventDefault();
         submitDetails()();
     }
-
-    useEffect(() => {
-        if (club?.id) setShouldFetch(true);
-    }, [club?.id]);
 
     return {
         clubServices,

@@ -26,7 +26,6 @@ function MuiTextField<T extends FieldValues>(props: PropsWithChildren<MuiTextFie
         startAdornment
     } = props;
 
-    const [textFieldType, setTextFieldType] = useState<HTMLInputTypeAttribute>('text');
     const [showPassword, setShowPassword] = useState(false);
 
     const setMemberPrice = useFeeProcessingStore(state => state.setMemberPrice);
@@ -37,11 +36,11 @@ function MuiTextField<T extends FieldValues>(props: PropsWithChildren<MuiTextFie
     const isError = typeof error === 'string';
     const isMultiLine = name === 'message';
 
-    useEffect(() => {
-        if (type === 'password' && showPassword) setTextFieldType('text');
-        if (type === 'password' && !showPassword) setTextFieldType('password');
-        if (type !== 'password') setTextFieldType(type ?? 'text');
-    }, [type, showPassword, setTextFieldType]);
+    let textFieldType: HTMLInputTypeAttribute = 'text';
+
+    if (type === 'password' && showPassword) textFieldType = 'text';
+    if (type === 'password' && !showPassword) textFieldType = 'password';
+    if (type !== 'password') textFieldType = type ?? 'text';
 
     useEffect(() => {
         if (name === 'sessionPrice') setMemberPrice(parseInt(value) + 0.3);

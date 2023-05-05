@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
-import { useEffect, useState } from 'react';
 import { useDateStore } from '@/hooks/store';
 import { CollectionName, FirebaseSession } from '@/models';
 import SessionCard from './SessionCard';
@@ -14,22 +13,16 @@ interface SessionContainerProps {
 
 function SessionContainer(props: SessionContainerProps) {
     const { as: collectionName, sessions } = props;
+
     const selectedDate = useDateStore(state => state.date);
-    const [filteredSessions, setFilteredSessions] = useState<FirebaseSession[] | null | undefined>(
-        null
-    );
+
+    const filteredSessions = sessions?.filter(session => {
+        const sessionDate = dayjs(session.date.toDate()).format('MM/DD/YYYY');
+        const formattedSelectedDate = dayjs(selectedDate).format('MM/DD/YYYY');
+        return sessionDate === formattedSelectedDate;
+    });
 
     const singleSession = filteredSessions?.length === 1;
-
-    useEffect(() => {
-        const sessionsForSelectedDate = sessions?.filter(session => {
-            const sessionDate = dayjs(session.date.toDate()).format('MM/DD/YYYY');
-            const formattedSelectedDate = dayjs(selectedDate).format('MM/DD/YYYY');
-            return sessionDate === formattedSelectedDate;
-        });
-
-        setFilteredSessions(sessionsForSelectedDate);
-    }, [sessions, selectedDate]);
 
     if (!filteredSessions?.length)
         return (

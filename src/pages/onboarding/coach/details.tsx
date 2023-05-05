@@ -45,6 +45,7 @@ function CoachDetails() {
                         name="phoneNumber"
                         control={control}
                         error={errors.phoneNumber?.message}
+                        type="tel"
                         placeholder="Phone Number"
                     />
                     <Autocomplete
