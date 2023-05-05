@@ -12,7 +12,7 @@ export interface DateState {
 
 export const useDateStore = create<DateState>()(set => ({
     date: new Date(),
-    activeStartDate: new Date(),
+    activeStartDate: dayjs(new Date()).startOf('month').toDate(),
     activeEndDate: dayjs(new Date()).endOf('month').toDate(),
     setDate: date => set(() => ({ date })),
     setActiveStartDate: activeStartDate => set(() => ({ activeStartDate })),
