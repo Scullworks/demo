@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
 interface CommonOnboardingState {
     readonly imageUrl: string | null;
@@ -12,18 +11,13 @@ interface CommonOnboardingState {
     readonly setPhoneNumber: (phoneNumber: string) => void;
 }
 
-export const useCommonOnboardingStore = create<CommonOnboardingState>()(
-    persist(
-        set => ({
-            imageUrl: null,
-            name: null,
-            email: null,
-            phoneNumber: null,
-            setImageUrl: imageUrl => set(() => ({ imageUrl })),
-            setName: name => set(() => ({ name })),
-            setEmail: email => set(() => ({ email })),
-            setPhoneNumber: phoneNumber => set(() => ({ phoneNumber }))
-        }),
-        { name: 'onboarding' }
-    )
-);
+export const useCommonOnboardingStore = create<CommonOnboardingState>()(set => ({
+    imageUrl: null,
+    name: null,
+    email: null,
+    phoneNumber: null,
+    setImageUrl: imageUrl => set(() => ({ imageUrl })),
+    setName: name => set(() => ({ name })),
+    setEmail: email => set(() => ({ email })),
+    setPhoneNumber: phoneNumber => set(() => ({ phoneNumber }))
+}));

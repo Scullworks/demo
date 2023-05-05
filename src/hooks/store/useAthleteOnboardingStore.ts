@@ -1,6 +1,5 @@
 import { Dayjs } from 'dayjs';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import { AthleteMembershipType, PositionPreference } from '@/models';
 
 interface AthleteOnboardingState {
@@ -18,22 +17,17 @@ interface AthleteOnboardingState {
     readonly setPositionPreference: (positionPreference: PositionPreference) => void;
 }
 
-export const useAthleteOnboardingStore = create<AthleteOnboardingState>()(
-    persist(
-        set => ({
-            dateOfBirth: null,
-            emergencyName: null,
-            emergencyNumber: null,
-            club: null,
-            membershipType: null,
-            positionPreference: null,
-            setDateOfBirth: dateOfBirth => set(() => ({ dateOfBirth })),
-            setEmergencyName: emergencyName => set(() => ({ emergencyName })),
-            setEmergencyNumber: emergencyNumber => set(() => ({ emergencyNumber })),
-            setClub: club => set(() => ({ club })),
-            setMembershipType: membershipType => set(() => ({ membershipType })),
-            setPositionPreference: positionPreference => set(() => ({ positionPreference }))
-        }),
-        { name: 'athlete-onboarding' }
-    )
-);
+export const useAthleteOnboardingStore = create<AthleteOnboardingState>()(set => ({
+    dateOfBirth: null,
+    emergencyName: null,
+    emergencyNumber: null,
+    club: null,
+    membershipType: null,
+    positionPreference: null,
+    setDateOfBirth: dateOfBirth => set(() => ({ dateOfBirth })),
+    setEmergencyName: emergencyName => set(() => ({ emergencyName })),
+    setEmergencyNumber: emergencyNumber => set(() => ({ emergencyNumber })),
+    setClub: club => set(() => ({ club })),
+    setMembershipType: membershipType => set(() => ({ membershipType })),
+    setPositionPreference: positionPreference => set(() => ({ positionPreference }))
+}));

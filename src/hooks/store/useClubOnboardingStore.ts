@@ -1,6 +1,5 @@
 import { Dayjs } from 'dayjs';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import { Boat, Service } from '@/models';
 
 interface ClubOnboardingState {
@@ -18,25 +17,20 @@ interface ClubOnboardingState {
     readonly addBoat: (boat: Boat) => void;
 }
 
-export const useClubOnboardingStore = create<ClubOnboardingState>()(
-    persist(
-        set => ({
-            openingTime: null,
-            closingTime: null,
-            cancellationPolicy: null,
-            address: null,
-            services: [],
-            boats: [],
-            boatSize: null,
-            boatMake: null,
-            boatName: null,
-            setOpeningTime: openingTime => set(() => ({ openingTime })),
-            setClosingTime: closingTime => set(() => ({ closingTime })),
-            setCancellationPolicy: cancellationPolicy => set(() => ({ cancellationPolicy })),
-            setAddress: address => set(() => ({ address })),
-            updateServices: services => set(() => ({ services })),
-            addBoat: boat => set(state => ({ boats: [...state.boats, boat] }))
-        }),
-        { name: 'club-onboarding' }
-    )
-);
+export const useClubOnboardingStore = create<ClubOnboardingState>()(set => ({
+    openingTime: null,
+    closingTime: null,
+    cancellationPolicy: null,
+    address: null,
+    services: [],
+    boats: [],
+    boatSize: null,
+    boatMake: null,
+    boatName: null,
+    setOpeningTime: openingTime => set(() => ({ openingTime })),
+    setClosingTime: closingTime => set(() => ({ closingTime })),
+    setCancellationPolicy: cancellationPolicy => set(() => ({ cancellationPolicy })),
+    setAddress: address => set(() => ({ address })),
+    updateServices: services => set(() => ({ services })),
+    addBoat: boat => set(state => ({ boats: [...state.boats, boat] }))
+}));
