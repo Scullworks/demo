@@ -40,8 +40,7 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
         setStorageUserType,
         setStorageStartedOnboarding,
         setStorageCompletedOnboarding,
-        setStorageLoggedIn,
-        clearStorage
+        setStorageLoggedIn
     } = useLocalStorage();
 
     const router = useRouter();
@@ -103,12 +102,11 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
             }
 
             if (!user) {
-                clearStorage();
                 setCurrentUser(null);
                 if (!isAuthRoute) router.push('/login');
             }
         });
-    }, [setCurrentUser, setStorageLoggedIn, isAuthRoute, router, clearStorage]);
+    }, [setCurrentUser, setStorageLoggedIn, isAuthRoute, router]);
 
     if (isLoading) {
         return <Loader />;

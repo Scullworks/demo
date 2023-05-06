@@ -2,6 +2,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
+import { useLocalStorage } from '@/hooks/common';
 import { UserType } from '@/models';
 
 import { signOutUser } from '@/services/firebase';
@@ -41,6 +42,8 @@ function MenuLink(props: MenuLinkProps) {
 
     const router = useRouter();
 
+    const { clearStorage } = useLocalStorage();
+
     const baseRoute = `/profile/${userType}`;
     const currentRoute = router.pathname;
     const hrefRoute = home ? baseRoute : baseRoute + '/' + href;
@@ -50,6 +53,7 @@ function MenuLink(props: MenuLinkProps) {
     const linkClassName = currentRoute.includes(`/profile/club/${href}`) ? 'active' : className;
 
     async function onLogoutClick() {
+        clearStorage();
         await signOutUser();
     }
 
