@@ -4,7 +4,7 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 import { Loader } from '@/components';
 import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store/useAuthStore';
-import { auth, getUserFromFirebase } from '@/services/firebase';
+import { auth, getUserFromFirebase, signOutUser } from '@/services/firebase';
 
 interface AuthRouteProps {
     readonly isAuthRoute: boolean;
@@ -37,6 +37,7 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
     const {
         userType,
         userHasCompletedOnboarding,
+        userIsLoggedIn,
         setStorageUserType,
         setStorageStartedOnboarding,
         setStorageCompletedOnboarding,
@@ -57,11 +58,13 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
         let mounted = true;
 
         async function getUserOnboardingStatus() {
-            if (mounted && currentUser && (!userType || !userHasCompletedOnboarding)) {
+            if (
+                mounted &&
+                userIsLoggedIn &&
+                currentUser &&
+                (!userType || !userHasCompletedOnboarding)
+            ) {
                 const { userDoc } = await getUserFromFirebase(currentUser.uid);
-                console.log('userDoc:', userDoc);
-
-                console.log('currentUser.uid ', currentUser.uid);
 
                 if (!userDoc) return;
 
@@ -95,7 +98,8 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
         userType,
         setStorageUserType,
         setStorageStartedOnboarding,
-        setStorageCompletedOnboarding
+        setStorageCompletedOnboarding,
+        userIsLoggedIn
     ]);
 
     useEffect(() => {
@@ -111,6 +115,17 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
             }
         });
     }, [setCurrentUser, setStorageLoggedIn, isAuthRoute, router]);
+
+    useEffect(() => {
+        async function tempSignOut() {
+            const userSignOutRequest = typeof window !== 'undefined' && localStorage.getItem('out');
+            if (userIsLoggedIn && userSignOutRequest) {
+                await signOutUser();
+            }
+        }
+
+        tempSignOut();
+    }, [userIsLoggedIn]);
 
     if (isLoading) {
         return <Loader />;
