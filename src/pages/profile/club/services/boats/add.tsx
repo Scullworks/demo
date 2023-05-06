@@ -22,7 +22,7 @@ function AddBoats() {
             <PageTitle text="Add Boat" />
             <ProfileLayout for="clubs">
                 <div className="profile-services-boats">
-                    <h1>Add the boats available at your club</h1>
+                    <h2 className="profile-services-heading">Boats Available At Your Club</h2>
                     <form className="profile-services-form" onSubmit={onSubmit}>
                         <HookedTextField
                             name="boatSize"

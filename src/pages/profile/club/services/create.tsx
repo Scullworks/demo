@@ -57,7 +57,7 @@ function AddService() {
         <>
             <PageTitle text="Add Service" />
             <ProfileLayout for="clubs">
-                <h1>Add services available at your club</h1>
+                <h2 className="profile-services-heading">Services Available At Your Club</h2>
                 <form className="profile-services-form" onSubmit={onSubmit}>
                     <HookedTextField
                         name="name"

@@ -467,15 +467,11 @@
     width: 100%;
 
     h2 {
-        margin-bottom: 1rem;
+        margin-bottom: 0;
     }
 
     @include mobile-large {
         padding-bottom: 5rem;
-
-        h2 {
-            margin-bottom: 0;
-        }
     }
 }
 
@@ -529,7 +525,7 @@
 }
 
 .profile-services__button {
-    margin-top: 3rem;
+    margin-top: 2rem;
 
     &:first-of-type {
         margin-bottom: 5rem;
@@ -550,13 +546,30 @@
     width: 90%;
     min-height: 100vh;
     margin-top: 5rem;
+
+    @include mobile-large {
+        justify-content: flex-start;
+        margin-top: 0;
+    }
+}
+
+.profile-services-heading {
+    margin-bottom: 1.5rem;
+
+    @include mobile-large {
+        font-size: 3rem;
+    }
 }
 
 .profile-services-form {
     @include flex-center;
+}
 
-    button {
-        margin-top: 2rem;
+.profile-session-form button {
+    margin-top: 2rem;
+
+    @include mobile-large {
+        margin-top: 1.5rem;
     }
 }
 
