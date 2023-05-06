@@ -15,8 +15,6 @@ import {
 import { createAccount, updateFirebaseDoc } from '@/services/firebase';
 import { coachDetailsSchema } from '@/utils/validations';
 
-let isInitialLoad = true;
-
 interface CoachDetailsValues {
     readonly phoneNumber: string;
     readonly club: string;
@@ -72,7 +70,6 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
 
                 if (isValid) {
                     setIsCreatingAccount(true);
-                    setTriggerSubmit(false);
 
                     const { success, error } = await createAccount<OnboardingClubDoc>(
                         'coaches',
@@ -99,7 +96,6 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
             name,
             router,
             user,
-            setTriggerSubmit,
             clearStorageStartedOnboarding,
             setStorageCompletedOnboarding
         ]
@@ -110,11 +106,14 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
         submitDetails()();
     }
 
-    if (triggerSubmit) submitDetails()();
+    useEffect(() => {
+        if (triggerSubmit) {
+            submitDetails()();
+            setTriggerSubmit(false);
+        }
+    }, [setTriggerSubmit, submitDetails, triggerSubmit]);
 
     useEffect(() => {
-        if (!isInitialLoad) return;
-        isInitialLoad = false;
         setActiveStep(1);
     }, [setActiveStep]);
 

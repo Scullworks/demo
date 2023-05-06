@@ -8,7 +8,7 @@ import {
     Slide
 } from '@mui/material';
 import { TransitionProps as MuiTransitionProps } from '@mui/material/transitions';
-import { forwardRef, ReactElement, Ref } from 'react';
+import { Dispatch, forwardRef, ReactElement, Ref, SetStateAction } from 'react';
 import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store';
 import { UserType } from '@/models';
@@ -23,9 +23,12 @@ const Transition = forwardRef(function Transition(props: TransitionProps, ref: R
 
 interface AlertDialogProps {
     readonly open: boolean;
+    readonly setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-function AlertDialog({ open }: AlertDialogProps) {
+function AlertDialog(props: AlertDialogProps) {
+    const { open, setOpen } = props;
+
     const setUserType = useAuthStore(state => state.setUserType);
 
     const { setStorageUserType } = useLocalStorage();
@@ -33,6 +36,7 @@ function AlertDialog({ open }: AlertDialogProps) {
     function onClick(userType: UserType) {
         setStorageUserType(userType);
         setUserType(userType);
+        setOpen(false);
     }
 
     return (

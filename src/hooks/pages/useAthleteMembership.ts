@@ -15,8 +15,6 @@ import {
 import { createAccount, updateFirebaseDoc } from '@/services/firebase';
 import { athleteMembershipSchema } from '@/utils/validations';
 
-let isInitialLoad = true;
-
 interface AthleteMembershipValues {
     readonly club: string;
     readonly membershipType: string;
@@ -82,7 +80,6 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
                 setPositionPreference(positionPreference as PositionPreference);
 
                 if (isValid) {
-                    setTriggerSubmit(false);
                     setIsCreatingAccount(true);
 
                     const { success, error } = await createAccount<OnboardingClubDoc>(
@@ -113,13 +110,10 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
             setMembershipType,
             setPositionPreference,
             user,
-            setTriggerSubmit,
             clearStorageStartedOnboarding,
             setStorageCompletedOnboarding
         ]
     );
-
-    if (triggerSubmit) submitDetails()();
 
     function onSubmit(event: FormEvent) {
         event.preventDefault();
@@ -127,8 +121,13 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
     }
 
     useEffect(() => {
-        if (!isInitialLoad) return;
-        isInitialLoad = false;
+        if (triggerSubmit) {
+            submitDetails()();
+            setTriggerSubmit(false);
+        }
+    }, [setTriggerSubmit, submitDetails, triggerSubmit]);
+
+    useEffect(() => {
         setActiveStep(2);
     }, [setActiveStep]);
 

@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import { useSelectedServices } from '@/hooks/pages';
 import { useClubOnboardingStore, useStepperStore } from '@/hooks/store';
 
-let isInitialLoad = true;
-
 export function useServices() {
     const [showAlert, setShowAlert] = useState(false);
 
@@ -34,20 +32,20 @@ export function useServices() {
     const eightSweepHighlight = services.includes('8x8 Sweep');
     const rentalHighlight = services.includes('Gear Rental');
 
-    if (triggerSubmit && services.length) {
-        setTriggerSubmit(false);
-        updateServices(services);
-        router.push('boats');
-    }
+    useEffect(() => {
+        if (triggerSubmit && services.length) {
+            setTriggerSubmit(false);
+            updateServices(services);
+            router.push('boats');
+        }
 
-    if (triggerSubmit && !services.length) {
-        setTriggerSubmit(false);
-        setShowAlert(true);
-    }
+        if (triggerSubmit && !services.length) {
+            setTriggerSubmit(false);
+            setShowAlert(true);
+        }
+    }, [router, services, setTriggerSubmit, triggerSubmit, updateServices]);
 
     useEffect(() => {
-        if (!isInitialLoad) return;
-        isInitialLoad = false;
         setActiveStep(2);
     }, [setActiveStep]);
 

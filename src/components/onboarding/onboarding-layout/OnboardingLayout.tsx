@@ -21,15 +21,16 @@ function Onboarding({ children }: PropsWithChildren) {
 function OnboardingLayout({ children }: PropsWithChildren) {
     const userType = useAuthStore(state => state.userType);
 
-    const [showLoader, setShowLoader] = useState(false);
-
     const {
         userHasCompletedOnboarding,
         storageIsEmpty,
         userType: storageUserType
     } = useLocalStorage();
 
-    const openDialog = !storageIsEmpty && typeof storageUserType !== 'string';
+    const [showLoader, setShowLoader] = useState(false);
+    const [openDialog, setOpenDialog] = useState(
+        !storageIsEmpty && typeof storageUserType !== 'string'
+    );
 
     useEffect(() => {
         if (userHasCompletedOnboarding) setShowLoader(true);
@@ -45,7 +46,11 @@ function OnboardingLayout({ children }: PropsWithChildren) {
 
     return (
         <AuthStateProvider isOnboardingRoute>
-            {userType ? <Onboarding>{children}</Onboarding> : <AlertDialog open={openDialog} />}
+            {userType ? (
+                <Onboarding>{children}</Onboarding>
+            ) : (
+                <AlertDialog open={openDialog} setOpen={setOpenDialog} />
+            )}
         </AuthStateProvider>
     );
 }

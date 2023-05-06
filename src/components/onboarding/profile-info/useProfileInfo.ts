@@ -7,8 +7,6 @@ import { useAuthStore, useCommonOnboardingStore, useStepperStore } from '@/hooks
 import { updateFirebaseDoc } from '@/services/firebase';
 import { profileSchema } from '@/utils/validations';
 
-let isInitialLoad = true;
-
 export interface ProfileValues {
     readonly name: string;
 }
@@ -47,12 +45,11 @@ export function useProfileInfo() {
                 if (isValid) {
                     const uid = user?.uid as string;
                     await updateFirebaseDoc('users', uid, { startedOnboarding: true });
-                    setTriggerSubmit(false);
                     router.push('details');
                     nextStep();
                 }
             }),
-        [handleSubmit, isValid, nextStep, router, setName, user, setTriggerSubmit]
+        [handleSubmit, isValid, nextStep, router, setName, user]
     );
 
     function onImageInputChange(event: ChangeEvent<HTMLInputElement>) {
@@ -71,11 +68,14 @@ export function useProfileInfo() {
         submitDetails()();
     }
 
-    if (triggerSubmit) submitDetails()();
+    useEffect(() => {
+        if (triggerSubmit) {
+            submitDetails()();
+            setTriggerSubmit(false);
+        }
+    }, [setTriggerSubmit, submitDetails, triggerSubmit]);
 
     useEffect(() => {
-        if (!isInitialLoad) return;
-        isInitialLoad = false;
         setActiveStep(0);
         setStorageStartedOnboarding();
     }, [setActiveStep, setStorageStartedOnboarding]);

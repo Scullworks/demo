@@ -59,6 +59,10 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
         async function getUserOnboardingStatus() {
             if (mounted && currentUser && (!userType || !userHasCompletedOnboarding)) {
                 const { userDoc } = await getUserFromFirebase(currentUser.uid);
+                console.log('userDoc:', userDoc);
+
+                console.log('currentUser.uid ', currentUser.uid);
+
                 if (!userDoc) return;
 
                 const { startedOnboarding, completedOnboarding, type } = userDoc;

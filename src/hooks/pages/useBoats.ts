@@ -9,8 +9,6 @@ import { Boat, BoatSize, OnboardingClub } from '@/models';
 import { createAccount, updateFirebaseDoc } from '@/services/firebase';
 import { boatSchema } from '@/utils/validations';
 
-let isInitialLoad = true;
-
 export interface BoatValues {
     readonly boatSize: BoatSize | string;
     readonly boatMake: string;
@@ -96,7 +94,6 @@ export function useBoats() {
         }
 
         if (!boatCount) {
-            setTriggerSubmit(false);
             setShowAlert(true);
         }
     }, [
@@ -112,8 +109,6 @@ export function useBoats() {
         setStorageCompletedOnboarding
     ]);
 
-    if (triggerSubmit) submitDetails();
-
     const isMobilePhoneRef = useRef(typeof window !== 'undefined' && window.innerWidth <= 500);
     const isMobilePhone = isMobilePhoneRef.current;
 
@@ -124,8 +119,13 @@ export function useBoats() {
     if (isMobilePhone && boatCount > 1) boatCountText = `${boatCount} boats added`;
 
     useEffect(() => {
-        if (!isInitialLoad) return;
-        isInitialLoad = false;
+        if (triggerSubmit) {
+            setTriggerSubmit(false);
+            submitDetails();
+        }
+    }, [setTriggerSubmit, submitDetails, triggerSubmit]);
+
+    useEffect(() => {
         setActiveStep(3);
     }, [setActiveStep]);
 
