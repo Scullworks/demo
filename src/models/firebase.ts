@@ -69,7 +69,10 @@ export interface FirebaseUserDoc {
     readonly uid: string;
     readonly email: string;
     readonly type: UserType;
+    readonly startedOnboarding: boolean;
     readonly completedOnboarding: boolean;
+    readonly createdAt: FieldValue;
+    readonly updatedAt: FieldValue;
 }
 
 export interface SessionAttendee {

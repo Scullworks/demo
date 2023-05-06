@@ -2,7 +2,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 import { ChangeEvent, FormEvent, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
+import { useLocalStorage } from '@/hooks/common';
+import { useAuthStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
+import { updateFirebaseDoc } from '@/services/firebase';
 import { profileSchema } from '@/utils/validations';
 
 let isInitialLoad = true;
@@ -12,6 +14,7 @@ export interface ProfileValues {
 }
 
 export function useProfileInfo() {
+    const user = useAuthStore(state => state.user);
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const name = useCommonOnboardingStore(state => state.name);
     const imageUrl = useCommonOnboardingStore(state => state.imageUrl);
@@ -20,6 +23,8 @@ export function useProfileInfo() {
     const setActiveStep = useStepperStore(state => state.setActiveStep);
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
     const nextStep = useStepperStore(state => state.nextStep);
+
+    const { setStorageStartedOnboarding } = useLocalStorage();
 
     const router = useRouter();
 
@@ -36,16 +41,18 @@ export function useProfileInfo() {
 
     const submitDetails = useCallback(
         () =>
-            handleSubmit(data => {
+            handleSubmit(async data => {
                 setName(data.name);
 
                 if (isValid) {
+                    const uid = user?.uid as string;
+                    await updateFirebaseDoc('users', uid, { startedOnboarding: true });
                     setTriggerSubmit(false);
                     router.push('details');
                     nextStep();
                 }
             }),
-        [handleSubmit, isValid, nextStep, router, setName, setTriggerSubmit]
+        [handleSubmit, isValid, nextStep, router, setName, user, setTriggerSubmit]
     );
 
     function onImageInputChange(event: ChangeEvent<HTMLInputElement>) {
@@ -70,7 +77,8 @@ export function useProfileInfo() {
         if (!isInitialLoad) return;
         isInitialLoad = false;
         setActiveStep(0);
-    }, [setActiveStep]);
+        setStorageStartedOnboarding();
+    }, [setActiveStep, setStorageStartedOnboarding]);
 
     return {
         imageUrl,

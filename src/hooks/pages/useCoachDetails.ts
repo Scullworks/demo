@@ -3,6 +3,7 @@ import { serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
 import {
     CoachMembershipType,
@@ -31,6 +32,8 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
+
+    const { clearStorageStartedOnboarding, setStorageCompletedOnboarding } = useLocalStorage();
 
     const router = useRouter();
 
@@ -82,7 +85,8 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
                     if (success) {
                         const uid = user?.uid as string;
                         await updateFirebaseDoc('users', uid, { completedOnboarding: true });
-                        localStorage.setItem('completed', 'true');
+                        clearStorageStartedOnboarding();
+                        setStorageCompletedOnboarding();
                         router.push('/profile/coach');
                     }
                 }
@@ -94,9 +98,10 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
             isValid,
             name,
             router,
-            user?.email,
-            user?.uid,
-            setTriggerSubmit
+            user,
+            setTriggerSubmit,
+            clearStorageStartedOnboarding,
+            setStorageCompletedOnboarding
         ]
     );
 

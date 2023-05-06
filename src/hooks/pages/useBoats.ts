@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useLocalStorage } from '@/hooks/common';
 import { useAddClubData } from '@/hooks/firebase';
 import { useAuthStore, useClubOnboardingStore, useStepperStore } from '@/hooks/store';
 import { Boat, BoatSize, OnboardingClub } from '@/models';
@@ -26,6 +27,8 @@ export function useBoats() {
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
+
+    const { clearStorageStartedOnboarding, setStorageCompletedOnboarding } = useLocalStorage();
 
     const { clubData, imageUrl } = useAddClubData();
 
@@ -86,7 +89,8 @@ export function useBoats() {
             if (success) {
                 const uid = user?.uid as string;
                 await updateFirebaseDoc('users', uid, { completedOnboarding: true });
-                localStorage.setItem('completed', 'true');
+                clearStorageStartedOnboarding();
+                setStorageCompletedOnboarding();
                 router.push('/profile/club');
             }
         }
@@ -103,7 +107,9 @@ export function useBoats() {
         setIsCreatingAccount,
         setTriggerSubmit,
         router,
-        user
+        user,
+        clearStorageStartedOnboarding,
+        setStorageCompletedOnboarding
     ]);
 
     if (triggerSubmit) submitDetails();

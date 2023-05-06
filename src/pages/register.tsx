@@ -1,7 +1,31 @@
 import Link from 'next/link';
-import { AuthForm, AuthProviders, AuthStateProvider, PageAnimation, PageTitle } from '@/components';
+import { useEffect, useState } from 'react';
+import {
+    AuthForm,
+    AuthProviders,
+    AuthStateProvider,
+    Loader,
+    PageAnimation,
+    PageTitle
+} from '@/components';
+import { useLocalStorage } from '@/hooks/common';
 
 function Register() {
+    const [showLoader, setShowLoader] = useState(false);
+    const { userHasStartedOnboarding, userHasCompletedOnboarding } = useLocalStorage();
+
+    useEffect(() => {
+        if (userHasStartedOnboarding || userHasCompletedOnboarding) setShowLoader(true);
+    }, [userHasStartedOnboarding, userHasCompletedOnboarding]);
+
+    if (showLoader) {
+        return (
+            <AuthStateProvider isAuthRoute>
+                <Loader />
+            </AuthStateProvider>
+        );
+    }
+
     return (
         <AuthStateProvider isAuthRoute>
             <PageTitle text="Register" />

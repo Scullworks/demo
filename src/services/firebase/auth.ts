@@ -8,8 +8,8 @@ import {
     TwitterAuthProvider,
     User
 } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
-import { UserType } from '@/models';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { FirebaseUserDoc, UserType } from '@/models';
 import { EXISTING_EMAIL, USER_NOT_FOUND, WRONG_PASSWORD } from '@/utils/errors/firebase';
 import { auth, database } from './setup';
 
@@ -23,11 +23,14 @@ export interface AuthResponse {
 async function createUserDoc(user: User, email: string, userType: UserType) {
     const userDoc = doc(database, 'users', user.uid);
 
-    const data = {
+    const data: FirebaseUserDoc = {
         uid: user.uid,
         email,
         type: userType,
-        completedOnboarding: false
+        startedOnboarding: false,
+        completedOnboarding: false,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
     };
 
     await setDoc(userDoc, data);

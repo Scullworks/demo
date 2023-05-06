@@ -10,7 +10,7 @@ function CheckoutSuccess() {
     return (
         <>
             <PageTitle text="Checkout" />
-            <AuthStateProvider>
+            <AuthStateProvider isProfileRoute>
                 <div className="profile-checkout">
                     <Image src={checkoutSuccess} alt="Successful payment" />
                     <h1>Payment was successful</h1>

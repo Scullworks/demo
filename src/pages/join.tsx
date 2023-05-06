@@ -1,17 +1,45 @@
 import { useRouter } from 'next/router';
-import { PageAnimation, PageTitle } from '@/components';
+import { useEffect, useState } from 'react';
+import { Loader, PageAnimation, PageTitle } from '@/components';
+import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store';
 import { UserType } from '@/models';
 
 function Join() {
+    const [showLoader, setShowLoader] = useState(false);
+
     const setUserType = useAuthStore(state => state.setUserType);
+
+    const {
+        userIsLoggedIn,
+        userHasStartedOnboarding,
+        userHasCompletedOnboarding,
+        userType,
+        setStorageUserType
+    } = useLocalStorage();
 
     const router = useRouter();
 
     function onClick(userType: UserType) {
-        localStorage.setItem('user', userType);
+        setStorageUserType(userType);
         setUserType(userType);
         router.push('/register');
+    }
+
+    useEffect(() => {
+        if (userIsLoggedIn) setShowLoader(true);
+    }, [userIsLoggedIn]);
+
+    if (userIsLoggedIn && userHasCompletedOnboarding && userType) {
+        router.push(`/profile/${userType}`);
+    }
+
+    if (userIsLoggedIn && userHasStartedOnboarding && userType) {
+        router.push(`/onboarding/${userType}/profile`);
+    }
+
+    if (showLoader) {
+        return <Loader />;
     }
 
     return (

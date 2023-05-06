@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useLocalStorage } from '@/hooks/common';
 import { useAddAthleteData } from '@/hooks/firebase';
 import { useAthleteOnboardingStore, useAuthStore, useStepperStore } from '@/hooks/store';
 import {
@@ -36,6 +37,8 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
+
+    const { clearStorageStartedOnboarding, setStorageCompletedOnboarding } = useLocalStorage();
 
     const { partialAthleteData, imageUrl } = useAddAthleteData();
 
@@ -93,7 +96,8 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
                     if (success) {
                         const uid = user?.uid as string;
                         await updateFirebaseDoc('users', uid, { completedOnboarding: true });
-                        localStorage.setItem('completed', 'true');
+                        clearStorageStartedOnboarding();
+                        setStorageCompletedOnboarding();
                         router.push('/profile/athlete');
                     }
                 }
@@ -109,9 +113,13 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
             setMembershipType,
             setPositionPreference,
             user,
-            setTriggerSubmit
+            setTriggerSubmit,
+            clearStorageStartedOnboarding,
+            setStorageCompletedOnboarding
         ]
     );
+
+    if (triggerSubmit) submitDetails()();
 
     function onSubmit(event: FormEvent) {
         event.preventDefault();
@@ -123,8 +131,6 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
         isInitialLoad = false;
         setActiveStep(2);
     }, [setActiveStep]);
-
-    if (triggerSubmit) submitDetails()();
 
     return {
         isCreatingAccount,

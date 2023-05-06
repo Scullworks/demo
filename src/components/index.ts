@@ -10,6 +10,7 @@ export { default as Input } from './common/custom-input/Input';
 export { default as HookedDateField } from './common/hooked-date-field/HookedDateField';
 export { default as HookedTextField } from './common/hooked-text-field/HookedTextField';
 export { default as HookedTimeField } from './common/hooked-time-field/HookedTimeField';
+export { default as Loader } from './common/loader/Loader';
 export { default as PageAnimation } from './common/page-animation/PageAnimation';
 export { default as PageTitle } from './common/page-title/PageTitle';
 export { default as SnackbarAlert } from './common/snackbar-alert/SnackbarAlert';

@@ -41,16 +41,15 @@ function MenuLink(props: MenuLinkProps) {
 
     const router = useRouter();
 
-    const BASE_ROUTE = `/profile/${userType}`;
-    const CURRENT_ROUTE = router.pathname;
-    const HREF_ROUTE = home ? BASE_ROUTE : BASE_ROUTE + '/' + href;
+    const baseRoute = `/profile/${userType}`;
+    const currentRoute = router.pathname;
+    const hrefRoute = home ? baseRoute : baseRoute + '/' + href;
 
     const className = 'profile-menu__link';
-    const homeClassName = CURRENT_ROUTE === BASE_ROUTE ? 'active' : className;
-    const linkClassName = CURRENT_ROUTE.includes(`/profile/club/${href}`) ? 'active' : className;
+    const homeClassName = currentRoute === baseRoute ? 'active' : className;
+    const linkClassName = currentRoute.includes(`/profile/club/${href}`) ? 'active' : className;
 
     async function onLogoutClick() {
-        localStorage.clear();
         await signOutUser();
     }
 
@@ -62,7 +61,7 @@ function MenuLink(props: MenuLinkProps) {
                     Logout
                 </Link>
             ) : (
-                <Link className={home ? homeClassName : linkClassName} href={HREF_ROUTE}>
+                <Link className={home ? homeClassName : linkClassName} href={hrefRoute}>
                     {Icon}
                     {home ? label : href}
                 </Link>

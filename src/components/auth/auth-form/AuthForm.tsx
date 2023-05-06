@@ -22,10 +22,11 @@ function AuthForm({ as: type }: AuthFormProps) {
 
     const [alert, setAlert] = useState('');
     const [showAlert, setShowAlert] = useState(false);
-    const [showDialog, setShowDialog] = useState(type === 'register' && !userType);
     const [severity, setSeverity] = useState<Severity>('error');
 
     const queryClient = useQueryClient();
+
+    const openDialog = type === 'register' && !userType;
 
     const {
         control,
@@ -94,7 +95,7 @@ function AuthForm({ as: type }: AuthFormProps) {
                 open={showAlert}
                 setOpen={setShowAlert}
             />
-            <AlertDialog open={showDialog} setOpen={setShowDialog} />
+            <AlertDialog open={openDialog} />
         </form>
     );
 }
