@@ -57,10 +57,6 @@
         color: rgb(34, 34, 34);
     }
 
-    p {
-        font-size: 1.5rem;
-    }
-
     @include respond-to(1200px) {
         width: 90vw;
         margin-top: 10rem;
@@ -69,6 +65,10 @@
 
 .profile-menu__logo {
     margin-bottom: 7rem;
+
+    @media (min-width: 1200px) and (max-height: 800px) {
+        margin-bottom: 4rem;
+    }
 }
 
 .profile-menu__links {
@@ -140,6 +140,10 @@
     width: min(90%, 105rem);
     height: 90vh;
 
+    @include respond-to(1320px) {
+        width: 95%;
+    }
+
     @include respond-to(1200px) {
         flex-direction: column;
         height: max-content;
@@ -149,6 +153,10 @@
 
 .profile-session__no-sessions {
     font-size: 1.6rem;
+
+    @include respond-to(1320px) {
+        font-size: 1.5rem;
+    }
 
     @include respond-to(1200px) {
         margin-top: 5rem;
@@ -436,7 +444,7 @@
     margin-top: 1rem;
 }
 
-.profile-session-form-button {
+.profile-session-form__button {
     margin-top: 2rem;
 }
 
@@ -563,7 +571,7 @@
     @include flex-center;
 }
 
-.profile-session-form button {
+.profile-services-form button {
     margin-top: 2rem;
 
     @include mobile-large {

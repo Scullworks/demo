@@ -132,7 +132,7 @@ function SessionForm(props: SessionFormProps) {
             {guestPayoutText && (
                 <p className="profile-session-form__guest-payout-text">{guestPayoutText}</p>
             )}
-            <button className="profile-session-form-button button__static" type="submit">
+            <button className="profile-session-form__button button__static" type="submit">
                 Create Session
             </button>
         </form>
