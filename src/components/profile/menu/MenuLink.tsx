@@ -3,6 +3,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 import { useLocalStorage } from '@/hooks/common';
+import {
+    useAthleteOnboardingStore,
+    useClubOnboardingStore,
+    useCommonOnboardingStore
+} from '@/hooks/store';
 import { UserType } from '@/models';
 
 import { signOutUser } from '@/services/firebase';
@@ -40,6 +45,10 @@ function MenuLink(props: MenuLinkProps) {
     const { label, to: href, icon: Icon, userType = 'club', home } = props as LinkProps;
     const { logout } = props as LogoutProps;
 
+    const resetCommonStore = useCommonOnboardingStore(state => state.reset);
+    const resetClubStore = useClubOnboardingStore(state => state.reset);
+    const resetAthleteStore = useAthleteOnboardingStore(state => state.reset);
+
     const router = useRouter();
 
     const { clearStorage } = useLocalStorage();
@@ -54,6 +63,9 @@ function MenuLink(props: MenuLinkProps) {
 
     async function onLogoutClick() {
         clearStorage();
+        resetCommonStore();
+        resetClubStore();
+        resetAthleteStore();
         await signOutUser();
     }
 
