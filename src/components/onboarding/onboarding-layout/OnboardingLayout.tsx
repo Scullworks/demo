@@ -8,6 +8,7 @@ import {
 } from '@/components';
 import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store';
+import { UserType } from '@/models';
 
 function Onboarding({ children }: PropsWithChildren) {
     return (
@@ -20,6 +21,7 @@ function Onboarding({ children }: PropsWithChildren) {
 
 function OnboardingLayout({ children }: PropsWithChildren) {
     const userType = useAuthStore(state => state.userType);
+    const setUserType = useAuthStore(state => state.setUserType);
 
     const {
         userHasCompletedOnboarding,
@@ -31,6 +33,10 @@ function OnboardingLayout({ children }: PropsWithChildren) {
     const [openDialog, setOpenDialog] = useState(
         !storageIsEmpty && typeof storageUserType !== 'string'
     );
+
+    useEffect(() => {
+        if (!userType && storageUserType) setUserType(storageUserType as UserType);
+    }, [setUserType, storageUserType, userType]);
 
     useEffect(() => {
         if (userHasCompletedOnboarding) setShowLoader(true);
