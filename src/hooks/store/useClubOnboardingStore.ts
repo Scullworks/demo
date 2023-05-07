@@ -9,28 +9,36 @@ interface ClubOnboardingState {
     readonly address: string | null;
     readonly services: Service[];
     readonly boats: Boat[];
+}
+
+interface ClubOnboardingActions {
     readonly setOpeningTime: (openingTime: Dayjs) => void;
     readonly setClosingTime: (closingTime: Dayjs) => void;
     readonly setCancellationPolicy: (cancellationPolicy: string) => void;
     readonly setAddress: (address: string) => void;
     readonly updateServices: (services: Service[]) => void;
     readonly addBoat: (boat: Boat) => void;
+    readonly reset: () => void;
 }
 
-export const useClubOnboardingStore = create<ClubOnboardingState>()(set => ({
+const initialState: ClubOnboardingState = {
     openingTime: null,
     closingTime: null,
     cancellationPolicy: null,
     address: null,
     services: [],
-    boats: [],
-    boatSize: null,
-    boatMake: null,
-    boatName: null,
-    setOpeningTime: openingTime => set(() => ({ openingTime })),
-    setClosingTime: closingTime => set(() => ({ closingTime })),
-    setCancellationPolicy: cancellationPolicy => set(() => ({ cancellationPolicy })),
-    setAddress: address => set(() => ({ address })),
-    updateServices: services => set(() => ({ services })),
-    addBoat: boat => set(state => ({ boats: [...state.boats, boat] }))
-}));
+    boats: []
+};
+
+export const useClubOnboardingStore = create<ClubOnboardingState & ClubOnboardingActions>()(
+    set => ({
+        ...initialState,
+        setOpeningTime: openingTime => set(() => ({ openingTime })),
+        setClosingTime: closingTime => set(() => ({ closingTime })),
+        setCancellationPolicy: cancellationPolicy => set(() => ({ cancellationPolicy })),
+        setAddress: address => set(() => ({ address })),
+        updateServices: services => set(() => ({ services })),
+        addBoat: boat => set(state => ({ boats: [...state.boats, boat] })),
+        reset: () => set(initialState)
+    })
+);
