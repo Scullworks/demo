@@ -4,7 +4,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocalStorage } from '@/hooks/common';
 import { useAddClubData } from '@/hooks/firebase';
-import { useAuthStore, useClubOnboardingStore, useStepperStore } from '@/hooks/store';
+import {
+    useAuthStore,
+    useClubOnboardingStore,
+    useCommonOnboardingStore,
+    useStepperStore
+} from '@/hooks/store';
 import { Boat, BoatSize, OnboardingClub } from '@/models';
 import { createAccount, updateFirebaseDoc } from '@/services/firebase';
 import { boatSchema } from '@/utils/validations';
@@ -22,6 +27,9 @@ export function useBoats() {
     const user = useAuthStore(state => state.user);
     const boats = useClubOnboardingStore(state => state.boats);
     const addBoat = useClubOnboardingStore(state => state.addBoat);
+    const resetClubStore = useClubOnboardingStore(state => state.reset);
+    const resetCommonStore = useCommonOnboardingStore(state => state.reset);
+
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
@@ -87,6 +95,8 @@ export function useBoats() {
             if (success) {
                 const uid = user?.uid as string;
                 await updateFirebaseDoc('users', uid, { completedOnboarding: true });
+                resetCommonStore();
+                resetClubStore();
                 clearStorageStartedOnboarding();
                 setStorageCompletedOnboarding();
                 router.push('/profile/club');
@@ -101,6 +111,8 @@ export function useBoats() {
         boats,
         clubData,
         imageUrl,
+        resetCommonStore,
+        resetClubStore,
         setIsCreatingAccount,
         setTriggerSubmit,
         router,
@@ -119,15 +131,13 @@ export function useBoats() {
     if (isMobilePhone && boatCount > 1) boatCountText = `${boatCount} boats added`;
 
     useEffect(() => {
-        if (triggerSubmit) {
-            setTriggerSubmit(false);
-            submitDetails();
-        }
-    }, [setTriggerSubmit, submitDetails, triggerSubmit]);
-
-    useEffect(() => {
         setActiveStep(3);
     }, [setActiveStep]);
+
+    if (triggerSubmit) {
+        setTriggerSubmit(false);
+        submitDetails();
+    }
 
     return {
         isCreatingAccount,

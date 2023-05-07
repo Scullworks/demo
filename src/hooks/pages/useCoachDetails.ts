@@ -27,6 +27,7 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
     const user = useAuthStore(state => state.user);
     const name = useCommonOnboardingStore(state => state.name);
     const imageUrl = useCommonOnboardingStore(state => state.imageUrl);
+    const resetStore = useCommonOnboardingStore(state => state.reset);
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
     const setTriggerSubmit = useStepperStore(state => state.setTriggerSubmit);
@@ -82,6 +83,7 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
                     if (success) {
                         const uid = user?.uid as string;
                         await updateFirebaseDoc('users', uid, { completedOnboarding: true });
+                        resetStore();
                         clearStorageStartedOnboarding();
                         setStorageCompletedOnboarding();
                         router.push('/profile/coach');
@@ -96,6 +98,7 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
             name,
             router,
             user,
+            resetStore,
             clearStorageStartedOnboarding,
             setStorageCompletedOnboarding
         ]
@@ -107,15 +110,13 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
     }
 
     useEffect(() => {
-        if (triggerSubmit) {
-            submitDetails()();
-            setTriggerSubmit(false);
-        }
-    }, [setTriggerSubmit, submitDetails, triggerSubmit]);
-
-    useEffect(() => {
         setActiveStep(1);
     }, [setActiveStep]);
+
+    if (triggerSubmit) {
+        setTriggerSubmit(false);
+        submitDetails()();
+    }
 
     return {
         isCreatingAccount,

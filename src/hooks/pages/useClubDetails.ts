@@ -89,12 +89,10 @@ export function useClubDetails() {
         setActiveStep(1);
     }, [setActiveStep]);
 
-    useEffect(() => {
-        if (triggerSubmit) {
-            submitDetails()();
-            setTriggerSubmit(false);
-        }
-    }, [triggerSubmit, setTriggerSubmit, submitDetails]);
+    if (triggerSubmit) {
+        setTriggerSubmit(false);
+        submitDetails()();
+    }
 
     return {
         addressPlaceType,

@@ -69,16 +69,14 @@ export function useProfileInfo() {
     }
 
     useEffect(() => {
-        if (triggerSubmit) {
-            submitDetails()();
-            setTriggerSubmit(false);
-        }
-    }, [setTriggerSubmit, submitDetails, triggerSubmit]);
-
-    useEffect(() => {
         setActiveStep(0);
         setStorageStartedOnboarding();
     }, [setActiveStep, setStorageStartedOnboarding]);
+
+    if (triggerSubmit) {
+        setTriggerSubmit(false);
+        submitDetails()();
+    }
 
     return {
         imageUrl,

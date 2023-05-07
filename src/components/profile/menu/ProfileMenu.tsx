@@ -33,7 +33,7 @@ function ProfileMenu(props: ProfileMenuProps) {
                 <h3>{data?.name}</h3>
             </div>
 
-            <div className="profile-menu__links">
+            <div className="profile-menu__links center">
                 <MenuLink label="schedule" icon={<CalendarMonthIcon />} userType={userType} home />
                 {isAthlete && <MenuLink to="sessions" icon={<RowingIcon />} userType={userType} />}
                 <MenuLink logout />

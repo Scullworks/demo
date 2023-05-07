@@ -83,15 +83,13 @@ export function useAthleteDetails() {
     }
 
     useEffect(() => {
-        if (triggerSubmit) {
-            submitDetails()();
-            setTriggerSubmit(false);
-        }
-    }, [setTriggerSubmit, submitDetails, triggerSubmit]);
-
-    useEffect(() => {
         setActiveStep(1);
     }, [setActiveStep]);
+
+    if (triggerSubmit) {
+        setTriggerSubmit(false);
+        submitDetails()();
+    }
 
     return {
         onSubmit,

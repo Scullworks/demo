@@ -42,14 +42,6 @@
         border: none;
 
         .logo {
-            position: absolute;
-            top: 2rem;
-            left: 5rem;
-        }
-    }
-
-    @include mobile-large {
-        .logo {
             @include absolute-center;
             top: 4rem;
         }
@@ -95,6 +87,12 @@
 
     @include mobile-large {
         justify-content: flex-start;
+    }
+}
+
+.profile-menu__links.center {
+    @include respond-to(1200px) {
+        @include flex-center(row);
     }
 }
 

@@ -4,7 +4,12 @@ import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocalStorage } from '@/hooks/common';
 import { useAddAthleteData } from '@/hooks/firebase';
-import { useAthleteOnboardingStore, useAuthStore, useStepperStore } from '@/hooks/store';
+import {
+    useAthleteOnboardingStore,
+    useAuthStore,
+    useCommonOnboardingStore,
+    useStepperStore
+} from '@/hooks/store';
 import {
     AthleteMembershipType,
     OnboardingAthlete,
@@ -31,6 +36,8 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
     const setClub = useAthleteOnboardingStore(state => state.setClub);
     const setMembershipType = useAthleteOnboardingStore(state => state.setMembershipType);
     const setPositionPreference = useAthleteOnboardingStore(state => state.setPositionPreference);
+    const resetAthleteStore = useAthleteOnboardingStore(state => state.reset);
+    const resetCommonStore = useCommonOnboardingStore(state => state.reset);
 
     const triggerSubmit = useStepperStore(state => state.triggerSubmit);
     const setActiveStep = useStepperStore(state => state.setActiveStep);
@@ -93,6 +100,8 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
                     if (success) {
                         const uid = user?.uid as string;
                         await updateFirebaseDoc('users', uid, { completedOnboarding: true });
+                        resetCommonStore();
+                        resetAthleteStore();
                         clearStorageStartedOnboarding();
                         setStorageCompletedOnboarding();
                         router.push('/profile/athlete');
@@ -110,6 +119,8 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
             setMembershipType,
             setPositionPreference,
             user,
+            resetCommonStore,
+            resetAthleteStore,
             clearStorageStartedOnboarding,
             setStorageCompletedOnboarding
         ]
@@ -121,15 +132,13 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
     }
 
     useEffect(() => {
-        if (triggerSubmit) {
-            submitDetails()();
-            setTriggerSubmit(false);
-        }
-    }, [setTriggerSubmit, submitDetails, triggerSubmit]);
-
-    useEffect(() => {
         setActiveStep(2);
     }, [setActiveStep]);
+
+    if (triggerSubmit) {
+        setTriggerSubmit(false);
+        submitDetails()();
+    }
 
     return {
         isCreatingAccount,
