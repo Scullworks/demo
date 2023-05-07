@@ -4,7 +4,7 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 import { Loader } from '@/components';
 import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store/useAuthStore';
-import { auth, getUserFromFirebase, signOutUser } from '@/services/firebase';
+import { auth, getUserFromFirebase } from '@/services/firebase';
 
 interface AuthRouteProps {
     readonly isAuthRoute: boolean;
@@ -36,6 +36,7 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
 
     const {
         userType,
+        userHasStartedOnboarding,
         userHasCompletedOnboarding,
         userIsLoggedIn,
         setStorageUserType,
@@ -54,16 +55,16 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
         router.push(`/onboarding/${userType}/profile`);
     }
 
+    const noOnboardingStatus =
+        userIsLoggedIn &&
+        currentUser &&
+        (!userType || !userHasStartedOnboarding || !userHasCompletedOnboarding);
+
     useEffect(() => {
         let mounted = true;
 
         async function getUserOnboardingStatus() {
-            if (
-                mounted &&
-                userIsLoggedIn &&
-                currentUser &&
-                (!userType || !userHasCompletedOnboarding)
-            ) {
+            if (mounted && noOnboardingStatus) {
                 const { userDoc } = await getUserFromFirebase(currentUser.uid);
 
                 if (!userDoc) return;
@@ -74,7 +75,6 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
                 if (completedOnboarding) {
                     setStorageCompletedOnboarding();
                     if (!isProfileRoute) await router.push(`/profile/${type}`);
-                    return;
                 }
 
                 if (startedOnboarding && !completedOnboarding) {
@@ -99,7 +99,8 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
         setStorageUserType,
         setStorageStartedOnboarding,
         setStorageCompletedOnboarding,
-        userIsLoggedIn
+        userIsLoggedIn,
+        noOnboardingStatus
     ]);
 
     useEffect(() => {
@@ -115,17 +116,6 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
             }
         });
     }, [setCurrentUser, setStorageLoggedIn, isAuthRoute, router]);
-
-    useEffect(() => {
-        async function tempSignOut() {
-            const userSignOutRequest = typeof window !== 'undefined' && localStorage.getItem('out');
-            if (userIsLoggedIn && userSignOutRequest) {
-                await signOutUser();
-            }
-        }
-
-        tempSignOut();
-    }, [userIsLoggedIn]);
 
     if (isLoading) {
         return <Loader />;
