@@ -2,11 +2,11 @@ import dayjs from 'dayjs';
 import { Timestamp } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 import { ViewCallbackProperties } from 'react-calendar';
-import { useFirebaseDocQuery, useSessionsQuery } from '@/hooks/queries';
-import { useDateStore } from '@/hooks/store';
-import { CollectionName, FirebaseCollection } from '@/models';
+import { useSessionsQuery } from '@/hooks/queries';
+import { useDateStore, useFirebaseDocStore } from '@/hooks/store';
+import { FirebaseCollection } from '@/models';
 
-export function useDashboard<T extends FirebaseCollection>(collectionName: CollectionName) {
+export function useDashboard<T extends FirebaseCollection>() {
     const [monthViewChanged, setMonthViewChanged] = useState(false);
 
     const activeStartDate = useDateStore(state => state.activeStartDate);
@@ -14,7 +14,7 @@ export function useDashboard<T extends FirebaseCollection>(collectionName: Colle
     const setActiveStartDate = useDateStore(state => state.setActiveStartDate);
     const setActiveEndDate = useDateStore(state => state.setActiveEndDate);
 
-    const { data } = useFirebaseDocQuery<T>(collectionName);
+    const data = useFirebaseDocStore(state => state.data) as T;
     const clubId = data && 'club' in data ? data.club.id : data?.id;
     const shouldFetch = data !== undefined;
     const { sessions, refetch } = useSessionsQuery(clubId, shouldFetch);

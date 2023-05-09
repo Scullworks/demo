@@ -6,8 +6,7 @@ import { FormEvent, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
 import { useNestedOptionsQuery } from '@/hooks/queries';
-import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
-import { useFeeProcessingStore } from '@/hooks/store';
+import { useFeeProcessingStore, useFirebaseDocStore } from '@/hooks/store';
 import { FirebaseClub, OptionWithProfileImage, ProfileSession } from '@/models';
 import { createDoc } from '@/services/firebase';
 import { checkIsTodayOrGreater } from '@/utils/dates';
@@ -31,7 +30,8 @@ export function useCreateSession() {
     const memberPriceToCharge = useFeeProcessingStore(state => state.memberPriceToCharge);
     const guestPriceToCharge = useFeeProcessingStore(state => state.guestPriceToCharge);
 
-    const { data: club } = useEnsureFirebaseDocQuery<FirebaseClub>('clubs');
+    const data = useFirebaseDocStore(state => state.data);
+    const club = data as FirebaseClub | null;
     const shouldFetch = club?.id ? true : false;
 
     const { options: coaches } = useNestedOptionsQuery(club?.id, 'coaches', shouldFetch);

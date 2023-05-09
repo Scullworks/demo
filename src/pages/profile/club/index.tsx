@@ -1,8 +1,9 @@
 import { PageTitle, ProfileLayout, SessionCalendar, SessionContainer } from '@/components';
 import { useDashboard } from '@/hooks/pages/profile/useDashboard';
+import { FirebaseClub } from '@/models';
 
 function ClubDashboard() {
-    const { sessions, ...calendarProps } = useDashboard('clubs');
+    const { sessions, ...calendarProps } = useDashboard<FirebaseClub>();
 
     return (
         <>

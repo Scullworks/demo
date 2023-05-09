@@ -6,12 +6,11 @@ import RowingIcon from '@mui/icons-material/Rowing';
 import Image from 'next/image';
 import logo from '@/assets/logos/scullworks.svg';
 import { Avatar } from '@/components';
-import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
-import { FirebaseClub } from '@/models';
+import { useFirebaseDocStore } from '@/hooks/store';
 import MenuLink from './MenuLink';
 
 function ClubProfileMenu() {
-    const { data: club } = useEnsureFirebaseDocQuery<FirebaseClub>('clubs');
+    const club = useFirebaseDocStore(state => state.data);
 
     return (
         <aside className="profile-menu">
