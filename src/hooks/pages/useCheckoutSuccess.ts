@@ -1,15 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 import { Timestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useState } from 'react';
+import { useLocalStorage } from '@/hooks/common';
+import { useFirebaseDocQuery } from '@/hooks/queries';
 import { useFirebaseDocStore } from '@/hooks/store';
 import { FirebaseAthlete } from '@/models';
 import { createDoc } from '@/services/firebase';
 import { axiosInstance } from '@/services/stripe/utils';
 
 export function useCheckoutSuccess() {
+    const [enabled, setEnabled] = useState(false);
     const sessionJson = typeof window !== 'undefined' && localStorage.getItem('session');
     const session = sessionJson ? JSON.parse(sessionJson) : undefined;
+
+    const { clearStorageSession } = useLocalStorage();
 
     const router = useRouter();
     const stripeSessionId = router.query.sessionId;
@@ -34,8 +39,12 @@ export function useCheckoutSuccess() {
 
     const clubId = athlete?.club.id as string;
 
+    if (!enabled && athlete && paymentId && session) setEnabled(true);
+
+    useFirebaseDocQuery('athletes');
+
     useQuery({
-        enabled: (athlete && paymentId && session) !== undefined,
+        enabled,
         queryKey: ['add-attendee'],
         queryFn: () =>
             createDoc(clubId, 'attendees', {
@@ -50,16 +59,9 @@ export function useCheckoutSuccess() {
     });
 
     function onBackToDashboardClick() {
+        clearStorageSession();
         router.push('/profile/athlete');
     }
-
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            localStorage.removeItem('session');
-        }, 3000);
-
-        return () => clearTimeout(timeout);
-    }, []);
 
     return {
         onBackToDashboardClick

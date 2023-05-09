@@ -7,6 +7,7 @@ export function useLocalStorage() {
     const userHasStartedOnboarding = isBrowser && localStorage.getItem('started');
     const userHasCompletedOnboarding = isBrowser && localStorage.getItem('completed');
     const userIsLoggedIn = isBrowser && localStorage.getItem('in');
+    const clubHasConnectedStripe = isBrowser && localStorage.getItem('connected');
     const storageIsEmpty = isBrowser && localStorage.length === 0;
 
     function setStorageLoggedIn() {
@@ -29,6 +30,10 @@ export function useLocalStorage() {
         localStorage.removeItem('started');
     }
 
+    function clearStorageSession() {
+        typeof window !== 'undefined' && localStorage.removeItem('session');
+    }
+
     function clearStorage() {
         localStorage.clear();
     }
@@ -37,13 +42,15 @@ export function useLocalStorage() {
         userType,
         userHasStartedOnboarding,
         userHasCompletedOnboarding,
-        storageIsEmpty,
         userIsLoggedIn,
+        clubHasConnectedStripe,
+        storageIsEmpty,
         setStorageLoggedIn,
         setStorageUserType,
         setStorageCompletedOnboarding,
         setStorageStartedOnboarding,
         clearStorageStartedOnboarding,
+        clearStorageSession,
         clearStorage
     };
 }
