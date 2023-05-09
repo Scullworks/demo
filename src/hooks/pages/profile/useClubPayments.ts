@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { useLocalStorage } from '@/hooks/common';
 import { useFirebaseDocStore } from '@/hooks/store';
 import { FirebaseClub } from '@/models';
 import { updateFirebaseDoc } from '@/services/firebase';
@@ -7,7 +8,8 @@ import { connectToStripe } from '@/services/stripe';
 import { axiosInstance } from '@/services/stripe/utils';
 
 export function useClubPayments() {
-    const [isLoading, setIsLoading] = useState(false);
+    const { clubHasConnectedStripe } = useLocalStorage();
+    const [isLoading, setIsLoading] = useState(clubHasConnectedStripe ? false : true);
     const [isRedirecting, setIsRedirecting] = useState(false);
 
     const queryClient = useQueryClient();
@@ -40,8 +42,6 @@ export function useClubPayments() {
 
         // REVIEW: Switch to react-query implementation
         async function checkAccountStatus() {
-            setIsLoading(true);
-
             const accountIsConnected = club && club.stripe.id && club.stripe.connected;
 
             if (accountIsConnected) {
@@ -62,7 +62,7 @@ export function useClubPayments() {
 
             if (detailsSubmitted) {
                 await updateFirebaseDoc('clubs', club.id, { 'stripe.connected': true });
-                await queryClient.refetchQueries({ queryKey: ['club'] });
+                await queryClient.refetchQueries({ queryKey: ['clubs'] });
             }
 
             setIsLoading(false);
