@@ -17,7 +17,7 @@ async function handler(req: PayForSessionRequest, res: NextApiResponse<string>) 
         const session = await stripe.checkout.sessions.create({
             line_items: [{ price_data, quantity }],
             success_url: `${req.headers.origin}/checkout/success?sessionId={CHECKOUT_SESSION_ID}`,
-            cancel_url: req.headers.origin,
+            cancel_url: `${req.headers.origin}/profile/athlete`,
             mode: 'payment',
             payment_intent_data: {
                 application_fee_amount: Math.round(fees * 100),

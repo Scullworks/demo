@@ -23,8 +23,9 @@ function ProfileLayout(props: PropsWithChildren<ProfileLayoutProps>) {
     const isMobile = isMobileRef.current;
     const isClub = collectionName === 'clubs';
 
-    const { userHasCompletedOnboarding, userType } = useLocalStorage();
+    const { userHasCompletedOnboarding, userType, clearStorageSession } = useLocalStorage();
 
+    clearStorageSession();
     useFirebaseDocQuery(collectionName);
 
     useEffect(() => {
