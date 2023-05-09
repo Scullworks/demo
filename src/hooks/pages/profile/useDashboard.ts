@@ -8,6 +8,7 @@ import { FirebaseCollection } from '@/models';
 
 export function useDashboard<T extends FirebaseCollection>() {
     const [monthViewChanged, setMonthViewChanged] = useState(false);
+    const [shouldFetch, setShouldFetch] = useState(false);
 
     const activeStartDate = useDateStore(state => state.activeStartDate);
     const setDate = useDateStore(state => state.setDate);
@@ -16,8 +17,9 @@ export function useDashboard<T extends FirebaseCollection>() {
 
     const data = useFirebaseDocStore(state => state.data) as T;
     const clubId = data && 'club' in data ? data.club.id : data?.id;
-    const shouldFetch = data !== undefined;
     const { sessions, refetch } = useSessionsQuery(clubId, shouldFetch);
+
+    if (data && clubId && !shouldFetch) setShouldFetch(true);
 
     const datesWithSessions = sessions?.map(session => {
         const timestamp = new Timestamp(session.date.seconds, session.date.nanoseconds);
