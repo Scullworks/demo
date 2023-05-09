@@ -1,7 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { deleteDoc, doc } from 'firebase/firestore';
-import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
-import { useAuthStore } from '@/hooks/store';
+import { useAuthStore, useFirebaseDocStore } from '@/hooks/store';
 import { CollectionName, FirebaseAthlete, FirebaseSession } from '@/models';
 import { database } from '@/services/firebase';
 import { StripeItem, payForStripeSession } from '@/services/stripe';
@@ -15,9 +14,9 @@ export function useSessionCard(props: UseSessionCardProps) {
     const { session, as: userType } = props;
 
     const currentUser = useAuthStore(state => state.user);
+    const data = useFirebaseDocStore(state => state.data);
 
     const queryClient = useQueryClient();
-    const { data } = useEnsureFirebaseDocQuery(userType);
 
     const isSessionCoach = userType === 'coaches' && session.coach?.id === currentUser?.uid;
 

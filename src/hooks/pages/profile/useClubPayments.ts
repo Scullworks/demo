@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
+import { useFirebaseDocStore } from '@/hooks/store';
 import { FirebaseClub } from '@/models';
 import { updateFirebaseDoc } from '@/services/firebase';
 import { connectToStripe } from '@/services/stripe';
@@ -11,7 +11,9 @@ export function useClubPayments() {
     const [isRedirecting, setIsRedirecting] = useState(false);
 
     const queryClient = useQueryClient();
-    const { data: club } = useEnsureFirebaseDocQuery<FirebaseClub>('clubs');
+
+    const data = useFirebaseDocStore(state => state.data);
+    const club = data as FirebaseClub | null;
 
     async function onConnectClick() {
         if (!club?.name || !club?.email) return;

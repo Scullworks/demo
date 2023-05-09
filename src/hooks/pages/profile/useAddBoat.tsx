@@ -3,14 +3,15 @@ import { useQueryClient } from '@tanstack/react-query';
 import { FormEvent, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BoatValues } from '@/hooks/pages/useBoats';
-import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
-import { Boat, BoatSize, FirebaseClub } from '@/models';
+import { useFirebaseDocStore } from '@/hooks/store';
+import { Boat, BoatSize } from '@/models';
 import { createDoc } from '@/services/firebase';
 import { boatSchema } from '@/utils/validations';
 
 export function useAddBoat() {
     const [showAlert, setShowAlert] = useState(false);
-    const { data: club } = useEnsureFirebaseDocQuery<FirebaseClub>('clubs');
+    const club = useFirebaseDocStore(state => state.data);
+
     const queryClient = useQueryClient();
 
     const {
@@ -44,7 +45,9 @@ export function useAddBoat() {
                     const { success } = await createDoc(club.id, 'boats', boat);
 
                     if (success) {
-                        await queryClient.refetchQueries({ queryKey: ['clubs'] });
+                        await queryClient.refetchQueries({
+                            queryKey: ['club', 'nested', 'boats']
+                        });
                         setShowAlert(true);
                         clearFields();
                     }

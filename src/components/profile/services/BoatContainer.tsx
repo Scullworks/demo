@@ -4,8 +4,8 @@ import { useNestedCollectionsQuery } from '@/hooks/queries';
 import { FirebaseBoat } from '@/models';
 
 function BoatContainer() {
-    const { data } = useNestedCollectionsQuery('boats');
-    const boats = data as unknown as FirebaseBoat[];
+    const { data } = useNestedCollectionsQuery<FirebaseBoat>('boats');
+    const boats = data as FirebaseBoat[];
 
     const router = useRouter();
 
@@ -19,7 +19,7 @@ function BoatContainer() {
             <div className="profile-services__boats-container">
                 <FormControl>
                     <InputLabel id="boats">Your Boats</InputLabel>
-                    <Select labelId="boats" label="Your Boats" color="info">
+                    <Select labelId="boats" label="Your Boats" color="info" defaultValue="">
                         {boats?.map(boat => (
                             <MenuItem value={boat.name} key={boat.id}>
                                 {boat.name} ({boat.make})

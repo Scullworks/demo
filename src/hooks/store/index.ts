@@ -5,4 +5,5 @@ export * from './useClubOnboardingStore';
 export * from './useCommonOnboardingStore';
 export * from './useDateStore';
 export * from './useFeeProcessingStore';
+export * from './useFirebaseDocStore';
 export * from './useStepperStore';

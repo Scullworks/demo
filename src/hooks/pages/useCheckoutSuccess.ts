@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Timestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
+import { useFirebaseDocStore } from '@/hooks/store';
 import { FirebaseAthlete } from '@/models';
 import { createDoc } from '@/services/firebase';
 import { axiosInstance } from '@/services/stripe/utils';
@@ -23,7 +23,8 @@ export function useCheckoutSuccess() {
         }
     }
 
-    const { data: athlete } = useEnsureFirebaseDocQuery<FirebaseAthlete>('athletes');
+    const data = useFirebaseDocStore(state => state.data);
+    const athlete = data as FirebaseAthlete | null;
 
     const { data: paymentId } = useQuery<string>({
         queryKey: ['stripe-session-id', stripeSessionId],

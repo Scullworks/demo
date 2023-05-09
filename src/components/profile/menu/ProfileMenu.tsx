@@ -3,7 +3,7 @@ import RowingIcon from '@mui/icons-material/Rowing';
 import Image from 'next/image';
 import logo from '@/assets/logos/scullworks.svg';
 import { Avatar } from '@/components';
-import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
+import { useFirebaseDocStore } from '@/hooks/store';
 import { CollectionName } from '@/models';
 import MenuLink from './MenuLink';
 
@@ -14,7 +14,7 @@ interface ProfileMenuProps {
 function ProfileMenu(props: ProfileMenuProps) {
     const { for: collectionName } = props;
 
-    const { data } = useEnsureFirebaseDocQuery(collectionName);
+    const data = useFirebaseDocStore(state => state.data);
 
     const isAthlete = collectionName === 'athletes';
     const userType = isAthlete ? 'athlete' : 'coach';

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAuthStore } from '@/hooks/store';
+import { useEffect } from 'react';
+import { useAuthStore, useFirebaseDocStore } from '@/hooks/store';
 import { CollectionName, FirebaseCollection } from '@/models';
 import { getDocDataFromFirebase } from '@/services/firebase';
 
@@ -21,7 +22,13 @@ export function useFirebaseDocQuery<T extends FirebaseCollection>(collectionName
     const { firebaseDocQueryOptions } = useFirebaseDocQueryOptions(collectionName);
     const { data } = useQuery(firebaseDocQueryOptions);
 
-    return {
-        data: !data ? undefined : (data as T)
-    };
+    const currentUsersData = useFirebaseDocStore(state => state.data);
+    const setCurrentUsersData = useFirebaseDocStore(state => state.setData);
+
+    const previousData = JSON.stringify(currentUsersData);
+    const currentData = JSON.stringify(data);
+
+    useEffect(() => {
+        if (previousData !== currentData) setCurrentUsersData(data as T);
+    }, [currentData, data, previousData, setCurrentUsersData]);
 }

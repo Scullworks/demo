@@ -4,8 +4,7 @@ import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
 import { FormEvent, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { HookedTextField, PageTitle, ProfileLayout, SnackbarAlert } from '@/components';
-import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
-import { FirebaseClub } from '@/models';
+import { useFirebaseDocStore } from '@/hooks/store';
 import { database } from '@/services/firebase';
 import { profileSchema } from '@/utils/validations';
 
@@ -15,7 +14,8 @@ interface ServiceValues {
 
 function AddService() {
     const [showAlert, setShowAlert] = useState(false);
-    const { data: club } = useEnsureFirebaseDocQuery<FirebaseClub>('clubs');
+    const club = useFirebaseDocStore(state => state.data);
+
     const queryClient = useQueryClient();
 
     const {

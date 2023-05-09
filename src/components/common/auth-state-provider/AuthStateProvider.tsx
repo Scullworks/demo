@@ -1,7 +1,6 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/router';
-import { PropsWithChildren, useEffect, useState } from 'react';
-import { Loader } from '@/components';
+import { PropsWithChildren, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore } from '@/hooks/store/useAuthStore';
 import { auth, getUserFromFirebase } from '@/services/firebase';
@@ -28,8 +27,6 @@ type AuthStateProviderProps = AuthRouteProps | OnboardingRouteProps | ProfileRou
 
 function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
     const { isAuthRoute, isOnboardingRoute, isProfileRoute, children } = props;
-
-    const [isLoading, setIsLoading] = useState(false);
 
     const currentUser = useAuthStore(state => state.user);
     const setCurrentUser = useAuthStore(state => state.setUser);
@@ -74,12 +71,12 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
 
                 if (completedOnboarding) {
                     setStorageCompletedOnboarding();
-                    if (!isProfileRoute) await router.push(`/profile/${type}`);
+                    !isProfileRoute && router.push(`/profile/${type}`);
                 }
 
                 if (startedOnboarding && !completedOnboarding) {
                     setStorageStartedOnboarding();
-                    if (!isOnboardingRoute) await router.push(`/onboarding/${type}/profile`);
+                    !isOnboardingRoute && router.push(`/onboarding/${type}/profile`);
                 }
             }
         }
@@ -94,7 +91,6 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
         isOnboardingRoute,
         isProfileRoute,
         router,
-        setIsLoading,
         userType,
         setStorageUserType,
         setStorageStartedOnboarding,
@@ -104,7 +100,7 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
     ]);
 
     useEffect(() => {
-        onAuthStateChanged(auth, user => {
+        const unsubscribe = onAuthStateChanged(auth, user => {
             if (user) {
                 setCurrentUser(user);
                 setStorageLoggedIn();
@@ -112,14 +108,12 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
 
             if (!user) {
                 setCurrentUser(null);
-                if (!isAuthRoute) router.push('/login');
+                !isAuthRoute && router.push('/login');
             }
         });
-    }, [setCurrentUser, setStorageLoggedIn, isAuthRoute, router]);
 
-    if (isLoading) {
-        return <Loader />;
-    }
+        return () => unsubscribe();
+    }, [currentUser, isAuthRoute, router, setCurrentUser, setStorageLoggedIn]);
 
     return <div>{children}</div>;
 }

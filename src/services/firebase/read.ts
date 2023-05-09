@@ -84,7 +84,7 @@ export async function getNestedClubOptions(
     }
 }
 
-export async function getNestedClubCollections<T extends FirebaseCollection>(
+export async function getNestedClubCollections<T>(
     clubId: string | undefined,
     collectionName: NestedCollectionName
 ) {

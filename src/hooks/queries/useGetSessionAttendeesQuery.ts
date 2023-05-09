@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
+import { useFirebaseDocStore } from '@/hooks/store';
 import { CollectionName, FirebaseSession } from '@/models';
 import { getAttendeesFromFirebase } from '@/services/firebase';
-import { useEnsureFirebaseDocQuery } from './useEnsureFirebaseDocQuery';
 
 export function useGetSessionAttendeesQuery(
     session: FirebaseSession,
     collectionName: CollectionName
 ) {
-    const { data: doc } = useEnsureFirebaseDocQuery(collectionName);
+    const doc = useFirebaseDocStore(state => state.data);
 
     const { data } = useQuery({
         queryKey: ['attendees', session.id],
         queryFn: () => getAttendeesFromFirebase(session.clubId, session.id),
-        enabled: doc !== undefined
+        enabled: doc !== null
     });
 
     const isAthlete = collectionName === 'athletes';

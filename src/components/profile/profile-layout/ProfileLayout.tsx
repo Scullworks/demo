@@ -7,7 +7,7 @@ import {
     ProfileMenu
 } from '@/components';
 import { useLocalStorage } from '@/hooks/common';
-import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
+import { useFirebaseDocQuery } from '@/hooks/queries';
 import { CollectionName } from '@/models';
 
 interface ProfileLayoutProps {
@@ -19,12 +19,13 @@ function ProfileLayout(props: PropsWithChildren<ProfileLayoutProps>) {
 
     const [showLoader, setShowLoader] = useState(false);
 
-    const { data } = useEnsureFirebaseDocQuery(collectionName);
-
     const isMobileRef = useRef(typeof window !== 'undefined' && window.innerWidth <= 500);
     const isMobile = isMobileRef.current;
+    const isClub = collectionName === 'clubs';
 
     const { userHasCompletedOnboarding, userType } = useLocalStorage();
+
+    useFirebaseDocQuery(collectionName);
 
     useEffect(() => {
         if (!userHasCompletedOnboarding || !userType) setShowLoader(true);
@@ -40,18 +41,12 @@ function ProfileLayout(props: PropsWithChildren<ProfileLayoutProps>) {
 
     return (
         <AuthStateProvider isProfileRoute>
-            {data && (
-                <div className="profile">
-                    {collectionName === 'clubs' ? (
-                        <ClubProfileMenu />
-                    ) : (
-                        <ProfileMenu for={collectionName} />
-                    )}
-                    <PageAnimation className="profile-main" isMobile={isMobile}>
-                        {children}
-                    </PageAnimation>
-                </div>
-            )}
+            <div className="profile">
+                {isClub ? <ClubProfileMenu /> : <ProfileMenu for={collectionName} />}
+                <PageAnimation className="profile-main" isMobile={isMobile}>
+                    {children}
+                </PageAnimation>
+            </div>
         </AuthStateProvider>
     );
 }

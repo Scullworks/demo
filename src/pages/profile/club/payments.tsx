@@ -1,12 +1,14 @@
 import { PropagateLoader } from 'react-spinners';
 import { PageTitle, ProfileLayout } from '@/components';
 import { useClubPayments } from '@/hooks/pages';
-import { useEnsureFirebaseDocQuery } from '@/hooks/queries/useEnsureFirebaseDocQuery';
+import { useFirebaseDocStore } from '@/hooks/store';
 import { FirebaseClub } from '@/models';
 
 function ClubPayments() {
     const { isLoading, isRedirecting, onConnectClick } = useClubPayments();
-    const { data: club } = useEnsureFirebaseDocQuery<FirebaseClub>('clubs');
+
+    const data = useFirebaseDocStore(state => state.data);
+    const club = data as FirebaseClub | null;
 
     if (isLoading || isRedirecting) {
         return (
