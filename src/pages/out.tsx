@@ -6,7 +6,8 @@ import { useLocalStorage } from '@/hooks/common';
 import {
     useAthleteOnboardingStore,
     useClubOnboardingStore,
-    useCommonOnboardingStore
+    useCommonOnboardingStore,
+    useFirebaseDocStore
 } from '@/hooks/store';
 import { signOutUser } from '@/services/firebase';
 
@@ -14,6 +15,7 @@ function SignOut() {
     const resetCommonStore = useCommonOnboardingStore(state => state.reset);
     const resetClubStore = useClubOnboardingStore(state => state.reset);
     const resetAthleteStore = useAthleteOnboardingStore(state => state.reset);
+    const resetFirebaseDocStore = useFirebaseDocStore(state => state.reset);
 
     const { clearStorage } = useLocalStorage();
 
@@ -25,12 +27,20 @@ function SignOut() {
             resetCommonStore();
             resetClubStore();
             resetAthleteStore();
+            resetFirebaseDocStore();
             await signOutUser();
             router.replace('/login');
         }
 
         signOut();
-    }, [clearStorage, resetCommonStore, resetClubStore, resetAthleteStore, router]);
+    }, [
+        clearStorage,
+        resetCommonStore,
+        resetClubStore,
+        resetAthleteStore,
+        resetFirebaseDocStore,
+        router
+    ]);
 
     return (
         <div className="loading">

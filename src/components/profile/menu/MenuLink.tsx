@@ -6,7 +6,8 @@ import { useLocalStorage } from '@/hooks/common';
 import {
     useAthleteOnboardingStore,
     useClubOnboardingStore,
-    useCommonOnboardingStore
+    useCommonOnboardingStore,
+    useFirebaseDocStore
 } from '@/hooks/store';
 import { UserType } from '@/models';
 
@@ -48,6 +49,7 @@ function MenuLink(props: MenuLinkProps) {
     const resetCommonStore = useCommonOnboardingStore(state => state.reset);
     const resetClubStore = useClubOnboardingStore(state => state.reset);
     const resetAthleteStore = useAthleteOnboardingStore(state => state.reset);
+    const resetFirebaseDocStore = useFirebaseDocStore(state => state.reset);
 
     const router = useRouter();
 
@@ -66,6 +68,7 @@ function MenuLink(props: MenuLinkProps) {
         resetCommonStore();
         resetClubStore();
         resetAthleteStore();
+        resetFirebaseDocStore();
         await signOutUser();
     }
 
