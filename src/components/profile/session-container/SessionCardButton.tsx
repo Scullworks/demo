@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PulseLoader } from 'react-spinners';
+import { useAuthStore } from '@/hooks/store';
 import { CollectionName, FirebaseSession } from '@/models';
 import { useSessionCard } from './useSessionCard';
 
@@ -12,16 +13,20 @@ interface SessionCardButtonProps {
 function SessionCardButton(props: SessionCardButtonProps) {
     const { isAttending, as: collectionName, session } = props;
     const [redirecting, setRedirecting] = useState(false);
+    const currentUser = useAuthStore(state => state.user);
 
-    const { onClick, isSessionCoach } = useSessionCard({ as: collectionName, session });
+    const { onClick } = useSessionCard(session, collectionName);
 
     const isAthlete = collectionName === 'athletes';
     const isCoach = collectionName === 'coaches';
+    const isSessionCoach = collectionName === 'coaches' && session.coach?.id === currentUser?.uid;
 
     function onPayForSessionClick() {
         setRedirecting(true);
         onClick();
     }
+
+    if ((isCoach && !isSessionCoach) || !currentUser) return <></>;
 
     if (isSessionCoach) {
         return (
@@ -30,8 +35,6 @@ function SessionCardButton(props: SessionCardButtonProps) {
             </button>
         );
     }
-
-    if (isCoach) return <></>;
 
     if (isAthlete && isAttending) {
         return (

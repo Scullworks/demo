@@ -1,24 +1,14 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { deleteDoc, doc } from 'firebase/firestore';
-import { useAuthStore, useFirebaseDocStore } from '@/hooks/store';
+import { useFirebaseDocStore } from '@/hooks/store';
 import { CollectionName, FirebaseAthlete, FirebaseSession } from '@/models';
 import { database } from '@/services/firebase';
 import { StripeItem, payForStripeSession } from '@/services/stripe';
 
-interface UseSessionCardProps {
-    readonly session: FirebaseSession;
-    readonly as: CollectionName;
-}
-
-export function useSessionCard(props: UseSessionCardProps) {
-    const { session, as: userType } = props;
-
-    const currentUser = useAuthStore(state => state.user);
+export function useSessionCard(session: FirebaseSession, collectionName: CollectionName) {
     const data = useFirebaseDocStore(state => state.data);
 
     const queryClient = useQueryClient();
-
-    const isSessionCoach = userType === 'coaches' && session.coach?.id === currentUser?.uid;
 
     async function deleteSession(sessionId: string) {
         if (!data) return;
@@ -58,22 +48,15 @@ export function useSessionCard(props: UseSessionCardProps) {
         }
     }
 
-    async function onClick() {
-        if (userType === 'athletes') {
-            await payForSession(session);
+    function onClick() {
+        if (collectionName === 'athletes') {
+            payForSession(session);
         }
 
-        if (userType === 'clubs') {
-            await deleteSession(session.id);
-        }
-
-        if (isSessionCoach) {
-            await deleteSession(session.id);
+        if (collectionName === 'clubs') {
+            deleteSession(session.id);
         }
     }
 
-    return {
-        onClick,
-        isSessionCoach
-    };
+    return { onClick };
 }
