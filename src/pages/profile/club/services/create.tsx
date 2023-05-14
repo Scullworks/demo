@@ -1,10 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useQueryClient } from '@tanstack/react-query';
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
-import { FormEvent, useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { HookedTextField, PageTitle, ProfileLayout, SnackbarAlert } from '@/components';
 import { useFirebaseDocStore } from '@/hooks/store';
+import { FirebaseClub } from '@/models';
 import { database } from '@/services/firebase';
 import { profileSchema } from '@/utils/validations';
 
@@ -14,7 +15,7 @@ interface ServiceValues {
 
 function AddService() {
     const [showAlert, setShowAlert] = useState(false);
-    const club = useFirebaseDocStore(state => state.data);
+    const club = useFirebaseDocStore(state => state.data) as FirebaseClub;
 
     const queryClient = useQueryClient();
 
@@ -30,26 +31,23 @@ function AddService() {
         }
     });
 
-    const submitDetails = useCallback(
-        () =>
-            handleSubmit(async data => {
-                if (isValid && club) {
-                    try {
-                        const docRef = doc(database, 'clubs', club.id);
-                        await updateDoc(docRef, { services: arrayUnion(data.name) });
-                        await queryClient.refetchQueries({ queryKey: ['clubs'] });
-                        setShowAlert(true);
-                        clearFields();
-                    } catch (error) {
-                        console.error('Add Service Error: ', error.message);
-                    }
+    function submitDetails() {
+        return handleSubmit(async data => {
+            if (isValid && club) {
+                try {
+                    const docRef = doc(database, 'clubs', club.id);
+                    await updateDoc(docRef, { services: arrayUnion(data.name) });
+                    await queryClient.refetchQueries({ queryKey: ['clubs'] });
+                    setShowAlert(true);
+                    clearFields();
+                } catch (error) {
+                    console.error('Add Service Error: ', error.message);
                 }
-            }),
-        [clearFields, club, handleSubmit, queryClient, isValid]
-    );
+            }
+        });
+    }
 
-    function onSubmit(event: FormEvent) {
-        event.preventDefault();
+    function onSubmit() {
         submitDetails()();
     }
 

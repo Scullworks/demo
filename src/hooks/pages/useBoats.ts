@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocalStorage } from '@/hooks/common';
 import { useAddClubData } from '@/hooks/firebase';
@@ -54,72 +54,57 @@ export function useBoats() {
         }
     });
 
-    const addBoatToStore = useCallback(
-        () =>
-            handleSubmit(data => {
-                const { boatSize, boatMake, boatName } = data;
+    function addBoatToStore() {
+        return handleSubmit(data => {
+            const { boatSize, boatMake, boatName } = data;
 
-                const userAddedBoat = boatSize !== null && boatMake !== null && boatName !== null;
-                const boat: Boat = {
-                    size: boatSize as BoatSize,
-                    make: boatMake,
-                    name: boatName
-                };
+            const userAddedBoat = boatSize && boatMake && boatName;
 
-                if (isValid && userAddedBoat) {
-                    addBoat(boat);
-                    clearFields();
-                }
-            }),
-        [handleSubmit, isValid, addBoat, clearFields]
-    );
+            const boat: Boat = {
+                size: boatSize as BoatSize,
+                make: boatMake,
+                name: boatName
+            };
+
+            if (isValid && userAddedBoat) {
+                addBoat(boat);
+                clearFields();
+            }
+        });
+    }
 
     const boatCount = boats.length;
 
-    const submitDetails = useCallback(async () => {
-        if (boatCount) {
-            setTriggerSubmit(false);
-            setIsCreatingAccount(true);
-
-            const { success, error } = await createAccount<OnboardingClub>(
-                'clubs',
-                clubData,
-                imageUrl,
-                boats
-            );
-
-            if (error) {
-                setIsCreatingAccount(false);
-            }
-
-            if (success) {
-                const uid = user?.uid as string;
-                await updateFirebaseDoc('users', uid, { completedOnboarding: true });
-                resetCommonStore();
-                resetClubStore();
-                clearStorageStartedOnboarding();
-                setStorageCompletedOnboarding();
-                router.push('/profile/club');
-            }
-        }
-
+    async function submitDetails() {
         if (!boatCount) {
             setShowAlert(true);
+            return;
         }
-    }, [
-        boatCount,
-        boats,
-        clubData,
-        imageUrl,
-        resetCommonStore,
-        resetClubStore,
-        setIsCreatingAccount,
-        setTriggerSubmit,
-        router,
-        user,
-        clearStorageStartedOnboarding,
-        setStorageCompletedOnboarding
-    ]);
+
+        setTriggerSubmit(false);
+        setIsCreatingAccount(true);
+
+        const { success, error } = await createAccount<OnboardingClub>(
+            'clubs',
+            clubData,
+            imageUrl,
+            boats
+        );
+
+        if (error) {
+            setIsCreatingAccount(false);
+        }
+
+        if (success) {
+            const uid = user?.uid as string;
+            await updateFirebaseDoc('users', uid, { completedOnboarding: true });
+            resetCommonStore();
+            resetClubStore();
+            clearStorageStartedOnboarding();
+            setStorageCompletedOnboarding();
+            router.push('/profile/club');
+        }
+    }
 
     const isMobilePhoneRef = useRef(typeof window !== 'undefined' && window.innerWidth <= 500);
     const isMobilePhone = isMobilePhoneRef.current;

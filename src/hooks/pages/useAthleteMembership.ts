@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
-import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocalStorage } from '@/hooks/common';
 import { useAddAthleteData } from '@/hooks/firebase';
@@ -64,67 +64,52 @@ export function useAthleteMembership(clubs: OptionWIthStripe[] | null | undefine
         }
     });
 
-    const submitDetails = useCallback(
-        () =>
-            handleSubmit(async data => {
-                const { club, membershipType, positionPreference } = data;
+    function submitDetails() {
+        return handleSubmit(async data => {
+            const { club, membershipType, positionPreference } = data;
 
-                const selectedClub = clubs?.find(c => c.value === club) as OptionWIthStripe;
+            const selectedClub = clubs?.find(c => c.value === club) as OptionWIthStripe;
 
-                const athleteData: OnboardingAthlete = {
-                    ...partialAthleteData,
-                    club: {
-                        id: selectedClub.id,
-                        name: selectedClub.value,
-                        stripeId: selectedClub.stripeId
-                    },
-                    membershipType,
-                    positionPreference
-                };
+            const athleteData: OnboardingAthlete = {
+                ...partialAthleteData,
+                club: {
+                    id: selectedClub.id,
+                    name: selectedClub.value,
+                    stripeId: selectedClub.stripeId
+                },
+                membershipType,
+                positionPreference
+            };
 
-                setClub(club);
-                setMembershipType(membershipType as AthleteMembershipType);
-                setPositionPreference(positionPreference as PositionPreference);
+            setClub(club);
+            setMembershipType(membershipType as AthleteMembershipType);
+            setPositionPreference(positionPreference as PositionPreference);
 
-                if (isValid) {
-                    setIsCreatingAccount(true);
+            if (isValid) {
+                setIsCreatingAccount(true);
 
-                    const { success, error } = await createAccount<OnboardingClubDoc>(
-                        'athletes',
-                        athleteData,
-                        imageUrl
-                    );
+                const { success, error } = await createAccount<OnboardingClubDoc>(
+                    'athletes',
+                    athleteData,
+                    imageUrl
+                );
 
-                    if (error) setIsCreatingAccount(false);
-
-                    if (success) {
-                        const uid = user?.uid as string;
-                        await updateFirebaseDoc('users', uid, { completedOnboarding: true });
-                        resetCommonStore();
-                        resetAthleteStore();
-                        clearStorageStartedOnboarding();
-                        setStorageCompletedOnboarding();
-                        router.push('/profile/athlete');
-                    }
+                if (error) {
+                    setIsCreatingAccount(false);
                 }
-            }),
-        [
-            clubs,
-            handleSubmit,
-            imageUrl,
-            isValid,
-            partialAthleteData,
-            router,
-            setClub,
-            setMembershipType,
-            setPositionPreference,
-            user,
-            resetCommonStore,
-            resetAthleteStore,
-            clearStorageStartedOnboarding,
-            setStorageCompletedOnboarding
-        ]
-    );
+
+                if (success) {
+                    const uid = user?.uid as string;
+                    await updateFirebaseDoc('users', uid, { completedOnboarding: true });
+                    resetCommonStore();
+                    resetAthleteStore();
+                    clearStorageStartedOnboarding();
+                    setStorageCompletedOnboarding();
+                    router.push('/profile/athlete');
+                }
+            }
+        });
+    }
 
     function onSubmit(event: FormEvent) {
         event.preventDefault();

@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { FormEvent, useCallback, useEffect } from 'react';
+import { FormEvent, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import {
     useAthleteOnboardingStore,
@@ -50,32 +50,21 @@ export function useAthleteDetails() {
         }
     });
 
-    const submitDetails = useCallback(
-        () =>
-            handleSubmit(data => {
-                const { phoneNumber, dateOfBirth, emergencyName, emergencyNumber } = data;
+    function submitDetails() {
+        return handleSubmit(data => {
+            const { phoneNumber, dateOfBirth, emergencyName, emergencyNumber } = data;
 
-                setPhoneNumber(phoneNumber);
-                setDateOfBirth(dayjs(dateOfBirth));
-                setEmergencyName(emergencyName);
-                setEmergencyNumber(emergencyNumber);
+            setPhoneNumber(phoneNumber);
+            setDateOfBirth(dayjs(dateOfBirth));
+            setEmergencyName(emergencyName);
+            setEmergencyNumber(emergencyNumber);
 
-                if (isValid) {
-                    router.push('membership');
-                    nextStep();
-                }
-            }),
-        [
-            handleSubmit,
-            isValid,
-            nextStep,
-            router,
-            setDateOfBirth,
-            setEmergencyName,
-            setEmergencyNumber,
-            setPhoneNumber
-        ]
-    );
+            if (isValid) {
+                router.push('membership');
+                nextStep();
+            }
+        });
+    }
 
     function onSubmit(event: FormEvent) {
         event.preventDefault();

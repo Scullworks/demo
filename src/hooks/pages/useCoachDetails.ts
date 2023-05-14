@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
@@ -51,58 +51,45 @@ export function useCoachDetails(clubs: OptionWIthStripe[] | null | undefined) {
         }
     });
 
-    const submitDetails = useCallback(
-        () =>
-            handleSubmit(async data => {
-                const { phoneNumber, club, membershipType } = data;
+    function submitDetails() {
+        return handleSubmit(async data => {
+            const { phoneNumber, club, membershipType } = data;
 
-                const selectedClub = clubs?.find(c => c.value === club) as Option;
+            const selectedClub = clubs?.find(c => c.value === club) as Option;
 
-                const coachData: OnboardingCoach = {
-                    uid: user?.uid as string,
-                    name,
-                    email: user?.email as string,
-                    phoneNumber,
-                    club: { id: selectedClub.id, name: selectedClub.value, stripeId: null },
-                    membershipType,
-                    createdAt: serverTimestamp(),
-                    updatedAt: serverTimestamp()
-                };
+            const coachData: OnboardingCoach = {
+                uid: user?.uid as string,
+                name,
+                email: user?.email as string,
+                phoneNumber,
+                club: { id: selectedClub.id, name: selectedClub.value, stripeId: null },
+                membershipType,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            };
 
-                if (isValid) {
-                    setIsCreatingAccount(true);
+            if (isValid) {
+                setIsCreatingAccount(true);
 
-                    const { success, error } = await createAccount<OnboardingClubDoc>(
-                        'coaches',
-                        coachData,
-                        imageUrl
-                    );
+                const { success, error } = await createAccount<OnboardingClubDoc>(
+                    'coaches',
+                    coachData,
+                    imageUrl
+                );
 
-                    if (error) setIsCreatingAccount(false);
+                if (error) setIsCreatingAccount(false);
 
-                    if (success) {
-                        const uid = user?.uid as string;
-                        await updateFirebaseDoc('users', uid, { completedOnboarding: true });
-                        resetStore();
-                        clearStorageStartedOnboarding();
-                        setStorageCompletedOnboarding();
-                        router.push('/profile/coach');
-                    }
+                if (success) {
+                    const uid = user?.uid as string;
+                    await updateFirebaseDoc('users', uid, { completedOnboarding: true });
+                    resetStore();
+                    clearStorageStartedOnboarding();
+                    setStorageCompletedOnboarding();
+                    router.push('/profile/coach');
                 }
-            }),
-        [
-            clubs,
-            handleSubmit,
-            imageUrl,
-            isValid,
-            name,
-            router,
-            user,
-            resetStore,
-            clearStorageStartedOnboarding,
-            setStorageCompletedOnboarding
-        ]
-    );
+            }
+        });
+    }
 
     function onSubmit(event: FormEvent) {
         event.preventDefault();

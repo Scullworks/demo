@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useQueryClient } from '@tanstack/react-query';
-import { FormEvent, useCallback, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BoatValues } from '@/hooks/pages/useBoats';
 import { useFirebaseDocStore } from '@/hooks/store';
@@ -28,33 +28,31 @@ export function useAddBoat() {
         }
     });
 
-    const submitDetails = useCallback(
-        () =>
-            handleSubmit(async data => {
-                const { boatSize, boatMake, boatName } = data;
+    function submitDetails() {
+        return handleSubmit(async data => {
+            const { boatSize, boatMake, boatName } = data;
 
-                const userAddedBoat = boatSize !== null && boatMake !== null && boatName !== null;
+            const userAddedBoat = boatSize !== null && boatMake !== null && boatName !== null;
 
-                const boat: Boat = {
-                    size: boatSize as BoatSize,
-                    make: boatMake,
-                    name: boatName
-                };
+            const boat: Boat = {
+                size: boatSize as BoatSize,
+                make: boatMake,
+                name: boatName
+            };
 
-                if (club && isValid && userAddedBoat) {
-                    const { success } = await createDoc(club.id, 'boats', boat);
+            if (club && isValid && userAddedBoat) {
+                const { success } = await createDoc(club.id, 'boats', boat);
 
-                    if (success) {
-                        await queryClient.refetchQueries({
-                            queryKey: ['club', 'nested', 'boats']
-                        });
-                        setShowAlert(true);
-                        clearFields();
-                    }
+                if (success) {
+                    await queryClient.refetchQueries({
+                        queryKey: ['club', 'nested', 'boats']
+                    });
+                    setShowAlert(true);
+                    clearFields();
                 }
-            }),
-        [handleSubmit, club, isValid, queryClient, clearFields]
-    );
+            }
+        });
+    }
 
     function onSubmit(event: FormEvent) {
         event.preventDefault();

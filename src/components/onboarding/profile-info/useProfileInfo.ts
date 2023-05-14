@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
-import { ChangeEvent, FormEvent, useCallback, useEffect } from 'react';
+import { ChangeEvent, FormEvent, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocalStorage } from '@/hooks/common';
 import { useAuthStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
@@ -37,21 +37,6 @@ export function useProfileInfo() {
         }
     });
 
-    const submitDetails = useCallback(
-        () =>
-            handleSubmit(async data => {
-                setName(data.name);
-
-                if (isValid) {
-                    const uid = user?.uid as string;
-                    await updateFirebaseDoc('users', uid, { startedOnboarding: true });
-                    router.push('details');
-                    nextStep();
-                }
-            }),
-        [handleSubmit, isValid, nextStep, router, setName, user]
-    );
-
     function onImageInputChange(event: ChangeEvent<HTMLInputElement>) {
         const image = event.target.files && event.target.files[0];
         const fileReader = new FileReader();
@@ -61,6 +46,19 @@ export function useProfileInfo() {
         });
 
         if (image) fileReader.readAsDataURL(image);
+    }
+
+    function submitDetails() {
+        return handleSubmit(async data => {
+            setName(data.name);
+
+            if (isValid) {
+                const uid = user?.uid as string;
+                await updateFirebaseDoc('users', uid, { startedOnboarding: true });
+                router.push('details');
+                nextStep();
+            }
+        });
     }
 
     function onSubmit(event: FormEvent) {

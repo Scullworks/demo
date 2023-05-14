@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { Timestamp } from 'firebase/firestore';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ViewCallbackProperties } from 'react-calendar';
 import { useSessionsQuery } from '@/hooks/queries';
 import { useDateStore, useFirebaseDocStore } from '@/hooks/store';
@@ -37,27 +37,23 @@ export function useDashboard<T extends FirebaseCollection>() {
         setMonthViewChanged(true);
     }
 
+    const firstDateWithSession = sessions?.find(session => {
+        const month = dayjs(session.date.toDate()).get('month');
+        const currentMonth = dayjs(activeStartDate).get('month');
+        return month === currentMonth;
+    });
+
+    useEffect(() => {
+        if (firstDateWithSession) setDate(firstDateWithSession.date.toDate());
+        if (!firstDateWithSession) setDate(activeStartDate);
+    }, [activeStartDate, firstDateWithSession, sessions, setDate]);
+
     useEffect(() => {
         if (monthViewChanged) {
             refetch();
             setMonthViewChanged(false);
         }
     }, [monthViewChanged, refetch]);
-
-    const firstDateWithSession = useMemo(
-        () =>
-            sessions?.find(session => {
-                const month = dayjs(session.date.toDate()).get('month');
-                const currentMonth = dayjs(activeStartDate).get('month');
-                return month === currentMonth;
-            }),
-        [sessions, activeStartDate]
-    );
-
-    useEffect(() => {
-        if (firstDateWithSession) setDate(firstDateWithSession.date.toDate());
-        if (!firstDateWithSession) setDate(activeStartDate);
-    }, [activeStartDate, firstDateWithSession, sessions, setDate]);
 
     return {
         sessions,

@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { Timestamp, serverTimestamp } from 'firebase/firestore';
-import { FormEvent, useCallback, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
 import { useNestedOptionsQuery } from '@/hooks/queries';
@@ -63,64 +63,52 @@ export function useCreateSession() {
         }
     });
 
-    const submitDetails = useCallback(
-        () =>
-            handleSubmit(async data => {
-                const {
-                    sessionFeeProcessing,
-                    sessionType,
-                    sessionCoach,
-                    sessionDate,
-                    sessionStart,
-                    sessionEnd,
-                    sessionBoat
-                } = data;
+    function submitDetails() {
+        return handleSubmit(async data => {
+            const {
+                sessionFeeProcessing,
+                sessionType,
+                sessionCoach,
+                sessionDate,
+                sessionStart,
+                sessionEnd,
+                sessionBoat
+            } = data;
 
-                const selectedCoach = selectedOption(sessionCoach, coaches);
-                const selectedBoat = selectedOption(sessionBoat, boats);
-                const startTime = dayjs(sessionStart).format('h:mm A');
-                const endTime = dayjs(sessionEnd).format('h:mm A');
+            const selectedCoach = selectedOption(sessionCoach, coaches);
+            const selectedBoat = selectedOption(sessionBoat, boats);
+            const startTime = dayjs(sessionStart).format('h:mm A');
+            const endTime = dayjs(sessionEnd).format('h:mm A');
 
-                const sessionData: ProfileSession = {
-                    clubId: club?.id,
-                    price: memberPriceToCharge,
-                    guestPrice: guestPriceToCharge ?? null,
-                    feeProcessingOption: sessionFeeProcessing,
-                    type: sessionType,
-                    date: Timestamp.fromDate(dayjs(sessionDate).toDate()),
-                    start: dayjs(sessionStart).format('h:mm A'),
-                    end: dayjs(sessionEnd).format('h:mm A'),
-                    time: formatTimeString(startTime, endTime),
-                    coach: selectedCoach,
-                    boat: selectedBoat,
-                    createdAt: serverTimestamp(),
-                    updatedAt: serverTimestamp()
-                };
+            const sessionData: ProfileSession = {
+                clubId: club?.id,
+                price: memberPriceToCharge,
+                guestPrice: guestPriceToCharge ?? null,
+                feeProcessingOption: sessionFeeProcessing,
+                type: sessionType,
+                date: Timestamp.fromDate(dayjs(sessionDate).toDate()),
+                start: dayjs(sessionStart).format('h:mm A'),
+                end: dayjs(sessionEnd).format('h:mm A'),
+                time: formatTimeString(startTime, endTime),
+                coach: selectedCoach,
+                boat: selectedBoat,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            };
 
-                const { isError } = checkIsTodayOrGreater(sessionDate, true);
+            const { isError } = checkIsTodayOrGreater(sessionDate, true);
 
-                if (isValid && club?.id && !isError) {
-                    const { success } = await createDoc(club.id, 'sessions', sessionData);
+            if (isValid && club?.id && !isError) {
+                const { success } = await createDoc(club.id, 'sessions', sessionData);
 
-                    if (success) {
-                        setShowSuccess(true);
-                        clearFields();
-                        await queryClient.refetchQueries({ queryKey: ['club', 'sessions'] });
-                    }
+                if (success) {
+                    setShowSuccess(true);
+                    clearFields();
+                    await queryClient.refetchQueries({ queryKey: ['club', 'sessions'] });
                 }
-            }),
-        [
-            boats,
-            club?.id,
-            coaches,
-            guestPriceToCharge,
-            handleSubmit,
-            isValid,
-            memberPriceToCharge,
-            clearFields,
-            queryClient
-        ]
-    );
+            }
+        });
+    }
 
     function onSubmit(event: FormEvent) {
         event.preventDefault();

@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { FormEvent, useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { PlaceType } from '@/components';
 import { useClubOnboardingStore, useCommonOnboardingStore, useStepperStore } from '@/hooks/store';
@@ -53,35 +53,23 @@ export function useClubDetails() {
         }
     });
 
-    const submitDetails = useCallback(
-        () =>
-            handleSubmit(data => {
-                const { openingTime, closingTime, cancellationPolicy, phoneNumber } = data;
+    function submitDetails() {
+        return handleSubmit(data => {
+            const { openingTime, closingTime, cancellationPolicy, phoneNumber } = data;
 
-                setOpeningTime(dayjs(openingTime));
-                setClosingTime(dayjs(closingTime));
-                setCancellationPolicy(cancellationPolicy);
-                setPhoneNumber(phoneNumber);
+            setOpeningTime(dayjs(openingTime));
+            setClosingTime(dayjs(closingTime));
+            setCancellationPolicy(cancellationPolicy);
+            setPhoneNumber(phoneNumber);
 
-                if (isValid) {
-                    router.push('services');
-                    nextStep();
-                }
-            }),
-        [
-            handleSubmit,
-            isValid,
-            nextStep,
-            router,
-            setCancellationPolicy,
-            setClosingTime,
-            setOpeningTime,
-            setPhoneNumber
-        ]
-    );
+            if (isValid) {
+                router.push('services');
+                nextStep();
+            }
+        });
+    }
 
-    function onSubmit(event: FormEvent) {
-        event.preventDefault();
+    function onSubmit() {
         submitDetails()();
     }
 

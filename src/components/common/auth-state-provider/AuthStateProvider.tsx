@@ -101,7 +101,7 @@ function AuthStateProvider(props: PropsWithChildren<AuthStateProviderProps>) {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, user => {
-            if (user) {
+            if (!currentUser && user) {
                 setCurrentUser(user);
                 setStorageLoggedIn();
             }
