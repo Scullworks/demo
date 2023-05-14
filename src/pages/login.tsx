@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import {
     AuthForm,
     AuthProviders,
@@ -11,17 +10,10 @@ import {
 import { useLocalStorage } from '@/hooks/common';
 
 function Login() {
-    const [showLoader, setShowLoader] = useState(false);
     const { userHasStartedOnboarding, userHasCompletedOnboarding, userIsLoggedIn } =
         useLocalStorage();
 
-    useEffect(() => {
-        if ((userHasStartedOnboarding || userHasCompletedOnboarding) && userIsLoggedIn) {
-            setShowLoader(true);
-        }
-    }, [userHasStartedOnboarding, userHasCompletedOnboarding, userIsLoggedIn]);
-
-    if (showLoader) {
+    if ((userHasStartedOnboarding || userHasCompletedOnboarding) && userIsLoggedIn) {
         return (
             <AuthStateProvider isAuthRoute>
                 <Loader />

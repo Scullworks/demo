@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { PropsWithChildren, useRef } from 'react';
 import {
     AuthStateProvider,
     ClubProfileMenu,
@@ -17,8 +17,6 @@ interface ProfileLayoutProps {
 function ProfileLayout(props: PropsWithChildren<ProfileLayoutProps>) {
     const { for: collectionName, children } = props;
 
-    const [showLoader, setShowLoader] = useState(false);
-
     const isMobileRef = useRef(typeof window !== 'undefined' && window.innerWidth <= 500);
     const isMobile = isMobileRef.current;
     const isClub = collectionName === 'clubs';
@@ -28,11 +26,7 @@ function ProfileLayout(props: PropsWithChildren<ProfileLayoutProps>) {
     clearStorageSession();
     useFirebaseDocQuery(collectionName);
 
-    useEffect(() => {
-        if (!userHasCompletedOnboarding || !userType) setShowLoader(true);
-    }, [userHasCompletedOnboarding, userType]);
-
-    if (showLoader) {
+    if (!userHasCompletedOnboarding || !userType) {
         return (
             <AuthStateProvider isProfileRoute>
                 <Loader />
